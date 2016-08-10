@@ -3,10 +3,10 @@
 <%
     String contextPath = request.getContextPath();
 %>
-<html lang="en">
-<head>
-    <title>外出务工人员管理</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+<html lang="en" >
+<head >
+    <title>贩毒可疑人员管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/zTree/css/ztree.css">
@@ -19,10 +19,9 @@
     <script>
         window.angular.contextPathURL = '<%=contextPath%>';
     </script>
-</head>
-<body>
-
-</body><div class="main condition-row-1" ng-app="drug.labor.list" ng-controller="Ctrl">
+</head >
+<body >
+<div class="main condition-row-1" ng-app="drug.dope.list" ng-controller="Ctrl">
     <div class="list-condition">
         <div class="block">
             <div class="block-header">
@@ -51,11 +50,7 @@
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
-                        <input class="col-2-half" type="text" ng-model="condition.laborName"/>
-                        <div class="form-label col-1-half">
-                            <label>联系方式:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="condition.phone"/>
+                        <input class="col-2-half" type="text" ng-model="condition.name"/>
                     </div>
                 </div>
             </div>
@@ -66,7 +61,7 @@
             <div class="block-header">
                 <div class="header-text">
                     <span class="glyphicons list"></span>
-                    <span>外出务工人员管理</span>
+                    <span>贩毒可疑人员管理</span>
                 </div>
                 <span class="header-button">
                         <a type="button" class="btn btn-green btn-min" ng-click="add();">
@@ -75,8 +70,8 @@
                         <a type="button" class="btn btn-green btn-min" ng-click="remove();">
                             <span class="glyphicons plus"></span> 删除
                         </a>
-                    <a type="button" class="btn btn-green btn-min" ng-click="exportLaborExcel();">
-                        <span class="glyphicons plus"></span> 务工人员导出
+                    <a type="button" class="btn btn-green btn-min" ng-click="exporDopeExcel();">
+                        <span class="glyphicons plus"></span> 贩毒可疑人员导出
                     </a>
                 </span>
             </div>
@@ -91,11 +86,11 @@
                                          anyone-selected="anyone"></div>
                                 </td>
                                 <td>姓名</td>
-                                <td>所属机构</td>
+                                <td>所属地区</td>
                                 <td>性别</td>
                                 <td>民族</td>
-                                <td>是否涉毒登记人员</td>
-                                <td>联系方式</td>
+                                <td>是否有前科</td>
+                                <td>家庭住址</td>
                                 <td>操作</td>
                             </tr>
                             </thead>
@@ -106,13 +101,13 @@
                             <tr bindonce ng-repeat="foo in beans.data" ng-cloak>
                                 <td><input type="checkbox" ng-model="foo.isSelected"/></td>
                                 <td title="点击查询明细！" style="cursor: pointer;">
-                                    <a ng-click="view(foo.id)" bo-text="foo.laborName"></a>
+                                    <a ng-click="view(foo.id)" bo-text="foo.name"></a>
                                 </td>
                                 <td bo-text="foo.orgName"></td>
                                 <td bo-text="foo.sex"></td>
                                 <td bo-text="foo.nation"></td>
-                                <td bo-text="foo.isDrug"></td>
-                                <td bo-text="foo.phone"></td>
+                                <td bo-text="foo.record"></td>
+                                <td bo-text="foo.home"></td>
                                 <td>
                                     <a class="btn-op blue" ng-click="modify(foo.id);">编辑</a>
                                     <a class="btn-op red" ng-click="remove(foo.id);">删除</a>
@@ -127,6 +122,7 @@
     </div>
     <div class="list-pagination" eccrm-page="pager"></div>
 </div>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/labor/labor.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/labor/list/labor_list.js"></script>
-</html>
+</body>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/dope/dope.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/dope/list/dope_list.js" ></script>
+</html >
