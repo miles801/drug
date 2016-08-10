@@ -110,7 +110,7 @@
                     </div>
                     <div class="row">
                         <div class="form-label col-1-half">
-                            <label>所属机构:</label>
+                            <label>所属地区:</label>
                         </div>
                         <div class="col-2-half">
                             <input class="col-12" type="text" ng-model="beans.orgName" validate validate-required
