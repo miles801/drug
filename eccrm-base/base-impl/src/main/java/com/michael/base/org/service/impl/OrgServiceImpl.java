@@ -111,7 +111,7 @@ public class OrgServiceImpl implements OrgService, BeanWrapCallback<Org, OrgVo> 
     public List<OrgVo> children(String parentId) {
         OrgBo bo = new OrgBo();
         bo.setParentId(parentId);
-        bo.setHide(false);
+        bo.setDeleted(false);
         List<Org> data = orgDao.query(bo);
         return BeanWrapBuilder.newInstance().wrapList(data, OrgVo.class);
     }
@@ -124,7 +124,7 @@ public class OrgServiceImpl implements OrgService, BeanWrapCallback<Org, OrgVo> 
         } else {
             bo.setParentId(parentId);
         }
-        bo.setHide(true);
+        bo.setDeleted(true);
         List<Org> data = orgDao.query(bo);
         OrgDTO dto = new OrgDTO();
         dto.setOrgs(data);

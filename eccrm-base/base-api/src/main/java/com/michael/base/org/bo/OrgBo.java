@@ -42,7 +42,7 @@ public class OrgBo implements BO {
     private Integer level;
 
     @Condition
-    private Boolean isHide;
+    private Boolean deleted;
 
     public Boolean getRoot() {
         return isRoot;
@@ -124,11 +124,11 @@ public class OrgBo implements BO {
         this.level = level;
     }
 
-    public Boolean getHide() {
-        return isHide;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setHide(Boolean hide) {
-        isHide = hide;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
