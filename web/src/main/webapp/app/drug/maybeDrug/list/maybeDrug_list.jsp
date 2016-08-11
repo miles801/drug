@@ -61,18 +61,18 @@
             <div class="block-header">
                 <div class="header-text">
                     <span class="glyphicons list"></span>
-                    <span>吸毒可疑人员管理</span>
+                    <span>吸毒可疑人员</span>
                 </div>
                 <span class="header-button">
-                        <a type="button" class="btn btn-green btn-min" ng-click="add();">
-                            <span class="glyphicons plus"></span> 新建
-                        </a>
+                        <%--<a type="button" class="btn btn-green btn-min" ng-click="add();">--%>
+                            <%--<span class="glyphicons plus"></span> 新建--%>
+                        <%--</a>--%>
+                    <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
+                        <span class="glyphicons plus"></span> 吸毒可疑人员导出
+                    </a>
                         <a type="button" class="btn btn-green btn-min" ng-click="remove();">
                             <span class="glyphicons plus"></span> 删除
                         </a>
-                    <a type="button" class="btn btn-green btn-min" ng-click="exporMaybeDrugExcel();">
-                        <span class="glyphicons plus"></span> 吸毒可疑人员导出
-                    </a>
                 </span>
             </div>
             <div class="block-content">
@@ -91,26 +91,29 @@
                                 <td>民族</td>
                                 <td>是否有前科</td>
                                 <td>家庭住址</td>
+                                <td>创建时间</td>
                                 <td>操作</td>
                             </tr>
                             </thead>
                             <tbody class="table-body">
                             <tr ng-show="!beans || !beans.total">
-                                <td colspan="8" class="text-center">没有查询到数据！</td>
+                                <td colspan="9" class="text-center">没有查询到数据！</td>
                             </tr>
                             <tr bindonce ng-repeat="foo in beans.data" ng-cloak>
                                 <td><input type="checkbox" ng-model="foo.isSelected"/></td>
                                 <td title="点击查询明细！" style="cursor: pointer;">
-                                    <a ng-click="view(foo.id)" bo-text="foo.name"></a>
+                                    <a ng-click="view(foo.id)" bo-text="foo.user.name"></a>
                                 </td>
-                                <td bo-text="foo.orgName"></td>
-                                <td bo-text="foo.sex"></td>
-                                <td bo-text="foo.nation"></td>
-                                <td bo-text="foo.record"></td>
-                                <td bo-text="foo.home"></td>
+                                <td bo-text="foo.user.orgName"></td>
+                                <td bo-text="foo.user.sex"></td>
+                                <td bo-text="foo.user.nation"></td>
+                                <td ng-if="foo.maybe.record==1">否</td>
+                                <td ng-if="foo.maybe.record==2">是</td>
+                                <td bo-text="foo.user.home"></td>
+                                <td bo-text="foo.user.createdDatetime |eccrmDate"></td>
                                 <td>
-                                    <a class="btn-op blue" ng-click="modify(foo.id);">编辑</a>
-                                    <a class="btn-op red" ng-click="remove(foo.id);">删除</a>
+                                    <a class="btn-op blue" ng-click="modify(foo.maybe.id);">编辑</a>
+                                    <a class="btn-op red" ng-click="remove(foo.maybe.id);">删除</a>
                                 </td>
                             </tr>
                             </tbody>

@@ -12,14 +12,19 @@
     ]);
     app.controller('Ctrl', function ($scope, CommonUtils, AlertFactory, ModalFactory, LaborService, LaborParam,OrgTree) {
         $scope.condition = {
-            orderby:"laborName"
         };
 
-        $scope.exportLaborExcel=function(){
-            window.open(CommonUtils.contextPathURL('/base/labor/exportLaborExcel' +
-                ' ?laborName=' + $scope.condition.laborName + '&orgId=' + $scope.condition.orgId + '&phone=' + $scope.condition.phone));
-
-        }
+        // 导出数据
+        $scope.exportData = function () {
+            if ($scope.pager.total < 1) {
+                AlertFactory.error('未获取到可以导出的数据!请先查询出数据!');
+                return;
+            }
+            var o = angular.extend({}, $scope.condition);
+            o.start = null;
+            o.limit = null;
+            window.open(CommonUtils.contextPathURL('/base/labor/exportLaborExcel ?' + encodeURI(encodeURI($.param(o)))));
+        };
 
         $scope.orgTree = OrgTree.pick(function (o) {
             $scope.condition.orgId = o.id;
@@ -46,6 +51,7 @@
                     var promise = LaborService.pageQuery(param, function(data){
                         param = null;
                         $scope.beans = data.data || {total: 0};
+                        console.dir( $scope.beans.data)
                         defer.resolve($scope.beans);
                     });
                     CommonUtils.loading(promise, 'Loading...');

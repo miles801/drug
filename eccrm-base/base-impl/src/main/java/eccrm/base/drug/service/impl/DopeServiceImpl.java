@@ -45,20 +45,16 @@ public class DopeServiceImpl implements DopeService, BeanWrapCallback<Dope, Dope
         Long total = dopeDao.getTotal(bo);
         vo.setTotal(total);
         if (total==null || total == 0) return vo;
-        List<Dope> dopeList = dopeDao.query(bo);
-        List<DopeVo> vos = BeanWrapBuilder.newInstance()
-            .setCallback(this)
-            .wrapList(dopeList,DopeVo.class);
-        vo.setData(vos);
+        List<DopeVo> dopeList = dopeDao.query(bo);
+        vo.setData(dopeList);
         return vo;
     }
 
 
     @Override
     public DopeVo findById(String id) {
-        Dope dope = dopeDao.findById(id);
-        return BeanWrapBuilder.newInstance()
-            .wrap(dope, DopeVo.class);
+        DopeVo dope = dopeDao.findById(id);
+        return dope;
     }
 
     @Override
@@ -71,15 +67,15 @@ public class DopeServiceImpl implements DopeService, BeanWrapCallback<Dope, Dope
 
     @Override
     public void doCallback(Dope dope, DopeVo vo) {
-        ParameterContainer container = ParameterContainer.getInstance();
-        vo.setSex(container.getBusinessName(BaseParameter.SEX, dope.getSex()));
-        vo.setNation(container.getBusinessName("BP_NATION", dope.getNation()));
-        vo.setDegree(container.getBusinessName("BP_XW", dope.getDegree()));
-        if(dope.getRecord().equals("1")){
-            vo.setRecord("否");
-        }
-        if(dope.getRecord().equals("2")){
-            vo.setRecord("是");
-        }
+//        ParameterContainer container = ParameterContainer.getInstance();
+//        vo.setSex(container.getBusinessName(BaseParameter.SEX, dope.getSex()));
+//        vo.setNation(container.getBusinessName("BP_NATION", dope.getNation()));
+//        vo.setDegree(container.getBusinessName("BP_XW", dope.getDegree()));
+//        if(dope.getRecord().equals("1")){
+//            vo.setRecord("否");
+//        }
+//        if(dope.getRecord().equals("2")){
+//            vo.setRecord("是");
+//        }
     }
 }

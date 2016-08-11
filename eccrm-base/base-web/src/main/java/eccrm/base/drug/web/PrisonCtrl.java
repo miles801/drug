@@ -13,10 +13,11 @@ import com.ycrl.base.common.JspAccessType;
 import com.ycrl.core.pager.PageVo;
 import com.ycrl.utils.gson.DateStringConverter;
 import com.ycrl.utils.gson.GsonUtils;
-import eccrm.base.drug.bo.LaborBo;
-import eccrm.base.drug.domain.Labor;
-import eccrm.base.drug.service.LaborService;
-import eccrm.base.drug.vo.LaborVo;
+import eccrm.base.drug.bo.DopeBo;
+import eccrm.base.drug.bo.PrisonBo;
+import eccrm.base.drug.domain.Prison;
+import eccrm.base.drug.service.PrisonService;
+import eccrm.base.drug.vo.PrisonVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,46 +28,45 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Rechried
  */
 @Controller
-@RequestMapping(value = {"/base/labor"})
-public class LaborCtrl extends BaseController {
+@RequestMapping(value = {"/base/prison"})
+public class PrisonCtrl extends BaseController {
     @Resource
-    private LaborService laborService;
+    private PrisonService prisonService;
     @RequestMapping(value = {""}, method=RequestMethod.GET )
     public String toList() {
-        return "drug/labor/list/labor_list";
+        return "drug/prison/list/prison_list";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String toAdd(HttpServletRequest request) {
         request.setAttribute(JspAccessType.PAGE_TYPE, JspAccessType.ADD);
-        return "drug/labor/edit/labor_edit";
+        return "drug/prison/edit/prison_edit";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
     public void save(HttpServletRequest request, HttpServletResponse response) {
-        Labor labor = GsonUtils.wrapDataToEntity(request, Labor.class);
-        laborService.save(labor);
+        Prison prison = GsonUtils.wrapDataToEntity(request, Prison.class);
+        prisonService.save(prison);
         GsonUtils.printSuccess(response);
     }
     @RequestMapping(value = "/modify", params = {"id"}, method = RequestMethod.GET)
     public String toModify(@RequestParam String id, HttpServletRequest request) {
         request.setAttribute(JspAccessType.PAGE_TYPE, JspAccessType.MODIFY);
         request.setAttribute("id", id);
-        return "drug/labor/edit/labor_edit";
+        return "drug/prison/edit/prison_edit";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public void update(HttpServletRequest request, HttpServletResponse response) {
-        Labor labor = GsonUtils.wrapDataToEntity(request, Labor.class);
-        laborService.update(labor);
+        Prison prison = GsonUtils.wrapDataToEntity(request, Prison.class);
+        prisonService.update(prison);
         GsonUtils.printSuccess(response);
     }
 
@@ -74,21 +74,21 @@ public class LaborCtrl extends BaseController {
     public String toDetail(@RequestParam String id, HttpServletRequest request) {
         request.setAttribute(JspAccessType.PAGE_TYPE, JspAccessType.DETAIL);
         request.setAttribute("id", id);
-        return "drug/labor/edit/labor_edit";
+        return "drug/prison/edit/prison_edit";
     }
 
     @ResponseBody
     @RequestMapping(value = "/get", params = {"id"}, method = RequestMethod.GET)
     public void findById(@RequestParam String id, HttpServletResponse response) {
-        LaborVo vo = laborService.findById(id);
+        PrisonVo vo = prisonService.findById(id);
         GsonUtils.printData(response, vo);
     }
 
     @ResponseBody
     @RequestMapping(value = "/pageQuery", method = RequestMethod.POST)
     public void pageQuery(HttpServletRequest request, HttpServletResponse response) {
-        LaborBo bo = GsonUtils.wrapDataToEntity(request, LaborBo.class);
-        PageVo pageVo = laborService.pageQuery(bo);
+        PrisonBo bo = GsonUtils.wrapDataToEntity(request, PrisonBo.class);
+        PageVo pageVo = prisonService.pageQuery(bo);
         GsonUtils.printData(response, pageVo);
     }
 
@@ -96,27 +96,29 @@ public class LaborCtrl extends BaseController {
     @RequestMapping(value = "/delete", params = {"ids"}, method = RequestMethod.DELETE)
     public void deleteByIds(@RequestParam String ids, HttpServletResponse response) {
         String[] idArr = ids.split(",");
-        laborService.deleteByIds(idArr);
+        prisonService.deleteByIds(idArr);
         GsonUtils.printSuccess(response);
     }
+
     /**
-     * 导出外出务工表信息
+     * 导出服刑人员表信息
      *
      * @param request
      * @param response
      */
     @ResponseBody
-    @RequestMapping(value = "/exportLaborExcel", method = RequestMethod.GET)
-    public void exportLaborExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final LaborBo bo = GsonUtils.wrapDataToEntity(request, LaborBo.class);
-        PageVo vo = laborService.pageQuery(bo);
+    @RequestMapping(value = "/exporPrisonExcel", method = RequestMethod.GET)
+    public void exporPrisonExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final PrisonBo bo = GsonUtils.wrapDataToEntity(request, PrisonBo.class);
+        PageVo vo = prisonService.pageQuery(bo);
+
         BatchData batchData = new BatchData();
         DataInjector dataInjector = new DataInjector() {
             @Override
             public JsonObject fetch(int start, int limit) {
                 Pager.setStart(start);
                 Pager.setLimit(limit);
-                PageVo vo = laborService.pageQuery(bo);
+                PageVo vo = prisonService.pageQuery(bo);
                 Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateStringConverter("yyyy-MM-dd HH:mm:ss"))
                         .create();
                 String json = gson.toJson(vo.getData());
@@ -135,13 +137,12 @@ public class LaborCtrl extends BaseController {
         ExportEngine exportEngine = new ExportEngine();
         String disposition = null;
         try {
-            disposition = "attachment;filename=" + URLEncoder.encode("export_labor_list.xlsx", "UTF-8");
+            disposition = "attachment;filename=" + URLEncoder.encode("export_prison_list.xlsx", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-disposition", disposition);
-        exportEngine.export(response.getOutputStream(), this.getClass().getClassLoader().getResourceAsStream("export_labor_list.xlsx"), batchData);
+        exportEngine.export(response.getOutputStream(), this.getClass().getClassLoader().getResourceAsStream("export_prison_list.xlsx"), batchData);
     }
-
-    }
+}

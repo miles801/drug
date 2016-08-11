@@ -12,14 +12,14 @@ import com.ycrl.core.hibernate.criteria.MatchModel;
 public class LaborBo implements BO{
     @Condition(matchMode = MatchModel.LIKE, likeMode = LikeModel.ANYWHERE)
     @ApiField(value = "姓名", desc = "like")
-    private String laborName;
+    private String name;
 
-    public String getLaborName() {
-        return laborName;
+    public String getName() {
+        return name;
     }
 
-    public void setLaborName(String laborName) {
-        this.laborName = laborName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {

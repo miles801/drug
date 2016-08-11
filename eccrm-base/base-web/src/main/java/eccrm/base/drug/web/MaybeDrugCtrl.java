@@ -108,17 +108,8 @@ public class MaybeDrugCtrl extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/exporMaybeDrugExcel", method = RequestMethod.GET)
     public void exporMaybeDrugExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String laborName = request.getParameter("name");
-        String orgId = request.getParameter("orgId");
-        final MaybeDrugBo bo = new MaybeDrugBo();
-        if (laborName != null && !laborName.equals("undefined")) {
-            bo.setName(laborName);
-        }
-        if (orgId != null && !orgId.equals("undefined")) {
-            bo.setOrgId(orgId);
-        }
+       final  MaybeDrugBo bo = GsonUtils.wrapDataToEntity(request, MaybeDrugBo.class);
         PageVo vo = maybeDrugService.pageQuery(bo);
-
         BatchData batchData = new BatchData();
         DataInjector dataInjector = new DataInjector() {
             @Override

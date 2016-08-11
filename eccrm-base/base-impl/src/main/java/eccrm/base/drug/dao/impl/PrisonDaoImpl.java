@@ -1,20 +1,24 @@
 package eccrm.base.drug.dao.impl;
 
 import com.michael.base.common.BaseParameter;
-import com.ycrl.core.HibernateDaoHelper;
-import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import com.ycrl.core.pager.Pager;
-import eccrm.base.drug.bo.DopeBo;
-import eccrm.base.drug.dao.DopeDao;
+import eccrm.base.drug.bo.PrisonBo;
 import eccrm.base.drug.domain.Dope;
-import eccrm.base.drug.domain.Labor;
+import eccrm.base.drug.domain.MaybeDrug;
+import eccrm.base.drug.domain.Prison;
+import eccrm.base.drug.dao.PrisonDao;
+import com.ycrl.core.HibernateDaoHelper;
 import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.DopeVo;
-import eccrm.base.drug.vo.LaborVo;
+import eccrm.base.drug.vo.MaybeDrugVo;
+import eccrm.base.drug.vo.PrisonVo;
 import eccrm.base.drug.vo.UserVo;
 import eccrm.base.parameter.service.ParameterContainer;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Example;
+import com.ycrl.core.hibernate.criteria.CriteriaUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -28,24 +32,24 @@ import java.util.List;
 /**
  * @author Rechried
  */
-@Repository("dopeDao")
-public class DopeDaoImpl extends HibernateDaoHelper implements DopeDao {
+@Repository("prisonDao")
+public class PrisonDaoImpl extends HibernateDaoHelper implements PrisonDao {
 
     @Override
-    public String save(Dope dope) {
-        return (String) getSession().save(dope);
+    public String save(Prison prison) {
+        return (String) getSession().save(prison);
     }
 
     @Override
-    public void update(Dope dope) {
-        getSession().update(dope);
+    public void update(Prison prison) {
+        getSession().update(prison);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<DopeVo> query(DopeBo bo) {
+    public List<PrisonVo> query(PrisonBo bo) {
         StringBuffer hql = new StringBuffer();
-        hql.append("from User u,Dope l where u.id=l.userId ");
+        hql.append("from User u,Prison l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
             hql.append(" and u.name like '%" + bo.getName() + "%'");
         }
@@ -59,29 +63,29 @@ public class DopeDaoImpl extends HibernateDaoHelper implements DopeDao {
             query.setMaxResults(Pager.getLimit());
         }
         List list = query.list();
-        List<DopeVo> lists = new ArrayList();
+        List<PrisonVo> lists = new ArrayList();
         Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             Object[] o = (Object[]) iterator.next();
             User u = (User) o[0];
             UserVo v=new UserVo();
             BeanUtils.copyProperties(u,v);
-            Dope l = (Dope) o[1];
-            DopeVo vo = new DopeVo();
+            Prison l = (Prison) o[1];
+            PrisonVo vo = new PrisonVo();
             ParameterContainer container = ParameterContainer.getInstance();
             v.setSex(container.getBusinessName(BaseParameter.SEX, u.getSex()));
             v.setNation(container.getBusinessName("BP_NATION", u.getNation()));
             vo.setUser(v);
-            vo.setDope(l);
+            vo.setPrison(l);
             lists.add(vo);
         }
         return lists;
     }
 
     @Override
-    public Long getTotal(DopeBo bo) {
+    public Long getTotal(PrisonBo bo) {
         StringBuffer hql = new StringBuffer();
-        hql.append("from User u,Dope l where u.id=l.userId ");
+        hql.append("from User u,Prison l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
             hql.append(" and u.name like '%" + bo.getName() + "%'");
         }
@@ -97,38 +101,38 @@ public class DopeDaoImpl extends HibernateDaoHelper implements DopeDao {
 
     @Override
     public void deleteById(String id) {
-        getSession().createQuery("delete from " + Dope.class.getName() + " e where e.id=?")
+        getSession().createQuery("delete from " + Prison.class.getName() + " e where e.id=?")
                 .setParameter(0, id)
                 .executeUpdate();
     }
 
     @Override
-    public void delete(Dope dope) {
-        Assert.notNull(dope, "要删除的对象不能为空!");
-        getSession().delete(dope);
+    public void delete(Prison prison) {
+        Assert.notNull(prison, "要删除的对象不能为空!");
+        getSession().delete(prison);
     }
 
     @Override
-    public DopeVo findById(String id) {
+    public PrisonVo findById(String id) {
         Assert.hasText(id, "ID不能为空!");
-        String hql="from User u,Dope l where u.id=l.userId and l.id=? ";
+        String hql="from User u,Prison l where u.id=l.userId and l.id=? ";
         Query query = getSession().createQuery(hql.toString()).setParameter(0,id);
         List list = query.list();
         Iterator iterator = list.iterator();
-        DopeVo vo=new DopeVo();
+        PrisonVo vo=new PrisonVo();
         while (iterator.hasNext()) {
             Object[] o = (Object[]) iterator.next();
             User u = (User) o[0];
             UserVo v=new UserVo();
             BeanUtils.copyProperties(u,v);
-            Dope l = (Dope) o[1];
+            Prison l = (Prison) o[1];
             vo.setUser(v);
-            vo.setDope(l);
+            vo.setPrison(l);
         }
         return vo;
     }
 
-    private void initCriteria(Criteria criteria, DopeBo bo) {
+    private void initCriteria(Criteria criteria, PrisonBo bo) {
         Assert.notNull(criteria, "criteria must not be null!");
         CriteriaUtils.addCondition(criteria, bo);
     }

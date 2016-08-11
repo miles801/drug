@@ -64,7 +64,7 @@
 
         // 更新
         $scope.update = function () {
-            var promise = MaybeDrugService.update($scope.beans, function (data) {
+            var promise = MaybeDrugService.update($scope.beans.maybe, function (data) {
                 AlertFactory.success('更新成功!');
                 $scope.form.$setValidity('committed', false);
                 CommonUtils.addTab('update');

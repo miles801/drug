@@ -17,14 +17,14 @@ public interface DopeDao {
     /**
      * 高级查询接口
      */
-    List<Dope> query(DopeBo bo);
+    List<DopeVo> query(DopeBo bo);
 
     /**
      * 查询总记录数
      */
     Long getTotal(DopeBo bo);
 
-    Dope findById(String id);
+    DopeVo findById(String id);
 
     void deleteById(String id);
 

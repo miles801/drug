@@ -108,15 +108,7 @@ public class DopeCtrl extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/exporDopeExcel", method = RequestMethod.GET)
     public void exporDopeExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String laborName = request.getParameter("name");
-        String orgId = request.getParameter("orgId");
-        final DopeBo bo = new DopeBo();
-        if (laborName != null && !laborName.equals("undefined")) {
-            bo.setName(laborName);
-        }
-        if (orgId != null && !orgId.equals("undefined")) {
-            bo.setOrgId(orgId);
-        }
+       final  DopeBo bo = GsonUtils.wrapDataToEntity(request, DopeBo.class);
         PageVo vo = dopeService.pageQuery(bo);
 
         BatchData batchData = new BatchData();

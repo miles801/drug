@@ -3,10 +3,10 @@
 <%
     String contextPath = request.getContextPath();
 %>
-<html lang="en">
-<head>
-    <title>外出务工人员</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+<html lang="en" >
+<head >
+    <title>人员管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/zTree/css/ztree.css">
@@ -19,11 +19,9 @@
     <script>
         window.angular.contextPathURL = '<%=contextPath%>';
     </script>
-</head>
-<body>
-
-</body>
-<div class="main condition-row-1" ng-app="drug.labor.list" ng-controller="Ctrl">
+</head >
+<body >
+<div class="main condition-row-1" ng-app="drug.user.list" ng-controller="Ctrl">
     <div class="list-condition">
         <div class="block">
             <div class="block-header">
@@ -53,10 +51,6 @@
                             <label>姓名:</label>
                         </div>
                         <input class="col-2-half" type="text" ng-model="condition.name"/>
-                        <div class="form-label col-1-half">
-                            <label>联系方式:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="condition.phone"/>
                     </div>
                 </div>
             </div>
@@ -67,18 +61,46 @@
             <div class="block-header">
                 <div class="header-text">
                     <span class="glyphicons list"></span>
-                    <span>外出务工人员</span>
+                    <span>人员管理</span>
                 </div>
                 <span class="header-button">
-                        <%--<a type="button" class="btn btn-green btn-min" ng-click="add();">
+                        <a type="button" class="btn btn-green btn-min" ng-click="add();">
                             <span class="glyphicons plus"></span> 新建
-                        </a>--%>
+                        </a>
                     <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
-                        <span class="glyphicons plus"></span> 务工人员导出
+                        <span class="glyphicons plus"></span> 村民档案导入
                     </a>
+                    <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
+                        <span class="glyphicons plus"></span> 村民档案导出
+                    </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(1);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 务工人员
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(2);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 可疑贩毒
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(3);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 可疑吸毒
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(4);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 服刑人员
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(5);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 刑满释放
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(6);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 吸毒人员
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(7);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 贩毒人员
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(8);" ng-disabled="!anyone" disabled="disabled">
+                            <span class="glyphicons plus"></span> 吸贩毒
+                        </a>
                         <a type="button" class="btn btn-green btn-min" ng-click="remove();" ng-disabled="!anyone" disabled="disabled">
                             <span class="glyphicons plus"></span> 删除
                         </a>
+
                 </span>
             </div>
             <div class="block-content">
@@ -95,31 +117,32 @@
                                 <td>所属地区</td>
                                 <td>性别</td>
                                 <td>民族</td>
-                                <td>是否涉毒登记人员</td>
+                                <td>身份证</td>
                                 <td>联系方式</td>
-                                <td>创建时间</td>
+                                <td>家庭住址</td>
+                                <td>是否是户主</td>
                                 <td>操作</td>
                             </tr>
                             </thead>
                             <tbody class="table-body">
                             <tr ng-show="!beans || !beans.total">
-                                <td colspan="8" class="text-center">没有查询到数据！</td>
+                                <td colspan="10" class="text-center">没有查询到数据！</td>
                             </tr>
                             <tr bindonce ng-repeat="foo in beans.data" ng-cloak>
                                 <td><input type="checkbox" ng-model="foo.isSelected"/></td>
                                 <td title="点击查询明细！" style="cursor: pointer;">
-                                    <a ng-click="view(foo.labor.id)" bo-text="foo.user.name"></a>
+                                    <a ng-click="view(foo.id)" bo-text="foo.name"></a>
                                 </td>
-                                <td bo-text="foo.user.orgName"></td>
-                                <td bo-text="foo.user.sex"></td>
-                                <td bo-text="foo.user.nation"></td>
-                                <td ng-if="foo.labor.isDrug==1">否</td>
-                                <td ng-if="foo.labor.isDrug==2">是</td>
-                                <td bo-text="foo.user.phone"></td>
-                                <td bo-text="foo.labor.createdDatetime|eccrmDate"></td>
+                                <td bo-text="foo.orgName"></td>
+                                <td bo-text="foo.sex"></td>
+                                <td bo-text="foo.nation"></td>
+                                <td bo-text="foo.idCard"></td>
+                                <td bo-text="foo.phone"></td>
+                                <td bo-text="foo.home"></td>
+                                <td bo-text="foo.isLeader"></td>
                                 <td>
-                                    <a class="btn-op blue" ng-click="modify(foo.labor.id);">编辑</a>
-                                    <a class="btn-op red" ng-click="remove(foo.labor.id);">删除</a>
+                                    <a class="btn-op blue" ng-click="modify(foo.id);">编辑</a>
+                                    <a class="btn-op red" ng-click="remove(foo.id);">删除</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -131,6 +154,7 @@
     </div>
     <div class="list-pagination" eccrm-page="pager"></div>
 </div>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/labor/labor.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/labor/list/labor_list.js"></script>
-</html>
+</body>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/user/user.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/user/list/user_list.js" ></script>
+</html >

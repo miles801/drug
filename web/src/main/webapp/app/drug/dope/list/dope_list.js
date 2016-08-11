@@ -13,10 +13,18 @@
     app.controller('Ctrl', function ($scope,OrgTree, CommonUtils, AlertFactory, ModalFactory, DopeService, DopeParam) {
         $scope.condition = { };
 
-        $scope.exporDopeExcel=function(){
-            window.open(CommonUtils.contextPathURL('/base/dope/exporDopeExcel' +
-                ' ?name=' + $scope.condition.name + '&orgId=' + $scope.condition.orgId ));
-        }
+
+        // 导出数据
+        $scope.exportData = function () {
+            if ($scope.pager.total < 1) {
+                AlertFactory.error('未获取到可以导出的数据!请先查询出数据!');
+                return;
+            }
+            var o = angular.extend({}, $scope.condition);
+            o.start = null;
+            o.limit = null;
+            window.open(CommonUtils.contextPathURL('/base/dope/exporDopeExcel ?' + encodeURI(encodeURI($.param(o)))));
+        };
 
         $scope.orgTree = OrgTree.pick(function (o) {
             $scope.condition.orgId = o.id;
@@ -77,7 +85,7 @@
         // 新增
         $scope.add = function () {
             CommonUtils.addTab({
-                title: '新增贩毒可疑人员管理',
+                title: '新增贩毒可疑人员',
                 url: '/base/dope/add',
                 onUpdate: $scope.query
             });
@@ -86,7 +94,7 @@
         // 更新
         $scope.modify = function (id) {
             CommonUtils.addTab({
-                title: '更新贩毒可疑人员管理',
+                title: '更新贩毒可疑人员',
                 url: '/base/dope/modify?id=' + id,
                 onUpdate: $scope.query
             });
@@ -95,7 +103,7 @@
         // 查看明细
         $scope.view = function (id) {
             CommonUtils.addTab({
-                title: '查看贩毒可疑人员管理',
+                title: '查看贩毒可疑人员',
                 url: '/base/dope/detail?id=' + id
             });
         }

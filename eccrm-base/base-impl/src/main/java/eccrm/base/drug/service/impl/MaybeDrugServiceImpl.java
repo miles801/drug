@@ -45,20 +45,16 @@ public class MaybeDrugServiceImpl implements MaybeDrugService, BeanWrapCallback<
         Long total = maybeDrugDao.getTotal(bo);
         vo.setTotal(total);
         if (total==null || total == 0) return vo;
-        List<MaybeDrug> maybeDrugList = maybeDrugDao.query(bo);
-        List<MaybeDrugVo> vos = BeanWrapBuilder.newInstance()
-            .setCallback(this)
-            .wrapList(maybeDrugList,MaybeDrugVo.class);
-        vo.setData(vos);
+        List<MaybeDrugVo> maybeDrugList = maybeDrugDao.query(bo);
+        vo.setData(maybeDrugList);
         return vo;
     }
 
 
     @Override
     public MaybeDrugVo findById(String id) {
-        MaybeDrug maybeDrug = maybeDrugDao.findById(id);
-        return BeanWrapBuilder.newInstance()
-            .wrap(maybeDrug, MaybeDrugVo.class);
+        MaybeDrugVo maybeDrug = maybeDrugDao.findById(id);
+        return maybeDrug;
     }
 
     @Override
@@ -71,15 +67,15 @@ public class MaybeDrugServiceImpl implements MaybeDrugService, BeanWrapCallback<
 
     @Override
     public void doCallback(MaybeDrug maybeDrug, MaybeDrugVo vo) {
-        ParameterContainer container = ParameterContainer.getInstance();
-        vo.setSex(container.getBusinessName(BaseParameter.SEX, maybeDrug.getSex()));
-        vo.setNation(container.getBusinessName("BP_NATION", maybeDrug.getNation()));
-        vo.setDegree(container.getBusinessName("BP_XW", maybeDrug.getDegree()));
-        if(maybeDrug.getRecord().equals("1")){
-            vo.setRecord("否");
-        }
-        if(maybeDrug.getRecord().equals("2")){
-            vo.setRecord("是");
-        }
+//        ParameterContainer container = ParameterContainer.getInstance();
+//        vo.setSex(container.getBusinessName(BaseParameter.SEX, maybeDrug.getSex()));
+//        vo.setNation(container.getBusinessName("BP_NATION", maybeDrug.getNation()));
+//        vo.setDegree(container.getBusinessName("BP_XW", maybeDrug.getDegree()));
+//        if(maybeDrug.getRecord().equals("1")){
+//            vo.setRecord("否");
+//        }
+//        if(maybeDrug.getRecord().equals("2")){
+//            vo.setRecord("是");
+//        }
     }
 }

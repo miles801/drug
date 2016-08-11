@@ -7,7 +7,7 @@
 <html lang="en">
 
 <head>
-    <title>编辑吸毒可疑人员管理</title>
+    <title>编辑服刑人员</title>
     <meta content="text/html" charset="utf-8">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">
@@ -18,12 +18,13 @@
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-strap-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/vendor/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/app/base/org/org.js"></script>
+
     <script type="text/javascript">
         window.angular.contextPathURL = "<%=contextPath%>";
     </script>
 </head>
 <body>
-<div class="main" ng-app="drug.maybeDrug.edit" ng-controller="Ctrl">
+<div class="main" ng-app="drug.prison.edit" ng-controller="Ctrl">
     <div class="block">
         <div class="block-header">
                 <span class="header-text">
@@ -60,11 +61,12 @@
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
-                        <input class="col-3-half" type="text" ng-model="beans.user.name"  ng-disabled="true" maxlength="10"/>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.name"
+                               maxlength="10" validate validate-required/>
                         <div class="form-label col-1-half">
                             <label>性别:</label>
                         </div>
-                        <select ng-model="beans.user.sex" class="col-3-half"  ng-disabled="true"
+                        <select ng-model="beans.user.sex" ng-disabled="true" class="col-3-half"
                                 ng-options="foo.value as foo.name for foo in sex">
                         </select>
                     </div>
@@ -72,74 +74,71 @@
                         <div class="form-label col-1-half">
                             <label>民族:</label>
                         </div>
-                        <select ng-model="beans.user.nation" class="col-3-half"  ng-disabled="true"
+                        <select ng-model="beans.user.nation" ng-disabled="true" class="col-3-half"
                                 ng-options="foo.value as foo.name for foo in nation">
                         </select>
                         <div class="form-label col-1-half">
                             <label>身份证号:</label>
                         </div>
-                        <input class="col-3-half"  ng-disabled="true" type="text" ng-model="beans.user.idCard" maxlength="18"/>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.idCard"
+                               maxlength="18"/>
                     </div>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>所属地区:</label>
                         </div>
                         <div class="col-3-half">
-                            <input class="col-12" type="text"  ng-disabled="true" ng-model="beans.user.orgName"
+                            <input class="col-12" type="text" ng-disabled="true" ng-model="beans.user.orgName"
                                    readonly ztree-single="orgTree"/>
                         </div>
+                        <div class="form-label col-1-half">
+                            <label>打击时间:</label>
+                        </div>
+                        <div class="col-3-half">
+                            <input type="text" class="col-12" ng-model="beans.prison.inStartTime" id="inStartTime"
+                                   eccrm-my97="{el:'inStartTime',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
+                                    readonly/>
+                            <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate();"
+                                                    title="清除"></i></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-1-half">
+                            <label>违法犯罪类型:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.prison.illegalType" maxlength="20"/>
+                        <div class="form-label col-1-half">
+                            <label>抓获地区</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.prison.area" maxlength="20"/>
+                    </div>
+                    <div class="row">
 
+                        <div class="form-label col-1-half">
+                            <label>判刑年限:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.prison.prisonDate" maxlength="50"/>
+                        <div class="form-label col-1-half">
+                            <label>服刑监管地点:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.prison.prisonDress" maxlength="100"/>
+
+                    </div>
+
+
+                    <div class="row">
                         <div class="form-label col-1-half">
                             <label>家庭详细地址:</label>
                         </div>
-                        <input class="col-3-half" type="text"  ng-disabled="true" ng-model="beans.user.home" maxlength="50"/>
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>文件程度:</label>
-                        </div>
-                        <select ng-model="beans.maybe.degree" class="col-3-half"
-                                ng-options="foo.value as foo.name for foo in degree">
-                        </select>
-                        <div class="form-label col-1-half">
-                            <label>主要经济来源:</label>
-                        </div>
-                        <input class="col-3-half" type="text" ng-model="beans.maybe.income" maxlength="50"/>
-
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>是否有前科:</label>
-                        </div>
-                        <select ng-model="beans.maybe.record" class="col-3-half">
-                            <option value="">请选择</option>
-                            <option value="1">否</option>
-                            <option value="2">是</option>
-                        </select>
-                        <div class="form-label col-1-half">
-                            <label>涉及罪名或违法行为:</label>
-                        </div>
-                        <input class="col-3-half" type="text" ng-model="beans.maybe.illegal" maxlength="50"/>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>主要活动区域:</label>
-                        </div>
-                        <input class="col-8-half" type="text" ng-model="beans.maybe.area" maxlength="50"/>
-
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>认定嫌疑理由:</label>
-                        </div>
-                        <textarea class="col-8-half" rows="3" ng-model="beans.maybe.reason" maxlength="255"></textarea>
+                        <input class="col-8-half" type="text" ng-disabled="true" ng-model="beans.user.home"
+                               maxlength="100"/>
                     </div>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>备注:</label>
                         </div>
-                        <textarea class="col-8-half" rows="3" ng-model="beans.maybe.context" maxlength="255"></textarea>
+                        <textarea class="col-8-half" rows="3" ng-model="beans.prison.context"
+                                  maxlength="255"></textarea>
                     </div>
 
                 </form>
@@ -148,6 +147,6 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/maybeDrug/maybeDrug.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/maybeDrug/edit/maybeDrug_edit.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/prison/prison.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/prison/edit/prison_edit.js"></script>
 </html>

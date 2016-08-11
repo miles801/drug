@@ -17,14 +17,14 @@ public interface MaybeDrugDao {
     /**
      * 高级查询接口
      */
-    List<MaybeDrug> query(MaybeDrugBo bo);
+    List<MaybeDrugVo> query(MaybeDrugBo bo);
 
     /**
      * 查询总记录数
      */
     Long getTotal(MaybeDrugBo bo);
 
-    MaybeDrug findById(String id);
+    MaybeDrugVo findById(String id);
 
     void deleteById(String id);
 

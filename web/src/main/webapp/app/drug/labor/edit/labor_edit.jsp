@@ -63,11 +63,12 @@
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
-                        <input class="col-2-half" type="text" ng-model="beans.laborName" maxlength="10" validate validate-required/>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.name"
+                               maxlength="10"/>
                         <div class="form-label col-1-half">
                             <label>性别:</label>
                         </div>
-                        <select ng-model="beans.sex" class="col-2-half"
+                        <select ng-model="beans.user.sex" class="col-3-half" ng-disabled="true"
                                 ng-options="foo.value as foo.name for foo in sex">
                         </select>
                     </div>
@@ -75,62 +76,66 @@
                         <div class="form-label col-1-half">
                             <label>民族:</label>
                         </div>
-                        <select ng-model="beans.nation" class="col-2-half"
+                        <select ng-model="beans.user.nation" class="col-3-half" ng-disabled="true"
                                 ng-options="foo.value as foo.name for foo in nation">
                         </select>
                         <div class="form-label col-1-half">
                             <label>身份证号:</label>
                         </div>
-                        <input class="col-2-half" type="text" ng-model="beans.idCard" maxlength="18" validate validate-required
-                               oninput="if(value.length>18)value=value.slice(0,18)" />
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>从事职业:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="beans.position" maxlength="15"/>
-                        <div class="form-label col-1-half">
-                            <label>是否涉毒登记人员:</label>
-                        </div>
-                        <select ng-model="beans.isDrug" class="col-2-half">
-                            <option value="">请选择</option>
-                            <option value="1">否</option>
-                            <option value="2">是</option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>联系方式:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="beans.phone" maxlength="11" validate validate-int validate-msg="手机号码格式不正确" />
-                        <div class="form-label col-1-half">
-                            <label>务工地:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="beans.workDress" maxlength="50"/>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.idCard"
+                               maxlength="18"
+                               oninput="if(value.length>18)value=value.slice(0,18)"/>
                     </div>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>所属地区:</label>
                         </div>
-                        <div class="col-2-half">
-                            <input class="col-12" type="text" ng-model="beans.orgName" validate validate-required
+                        <div class="col-3-half">
+                            <input class="col-12" type="text" ng-disabled="true" ng-model="beans.user.orgName"
                                    readonly ztree-single="orgTree"/>
-                            <span class="add-on"><i class="icons icon cp fork" ng-click="clearOrg();"
-                                                    title="清除"></i></span>
+                            <%--<span class="add-on"><i class="icons icon cp fork" ng-click="clearOrg();"--%>
+                            <%--title="清除"></i></span>--%>
                         </div>
-
                         <div class="form-label col-1-half">
                             <label>家庭详细地址:</label>
                         </div>
-                        <input class="col-2-half" type="text" ng-model="beans.home" maxlength="50" validate validate-required/>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.home"
+                               maxlength="50"/>
 
-                     </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-1-half">
+                            <label>联系方式:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.phone"
+                               maxlength="11" validate-msg="手机号码格式不正确"/>
+                        <div class="form-label col-1-half">
+                            <label>务工地:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.labor.workDress" maxlength="50"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-label col-1-half">
+                            <label>从事职业:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.labor.position" maxlength="15"/>
+                        <div class="form-label col-1-half">
+                            <label>是否涉毒登记人员:</label>
+                        </div>
+                        <select ng-model="beans.labor.isDrug" class="col-3-half">
+                            <option value="">请选择</option>
+                            <option value="1">否</option>
+                            <option value="2">是</option>
+                        </select>
+                    </div>
+
 
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>备注:</label>
                         </div>
-                        <textarea class="col-6-half" rows="3" ng-model="beans.context" maxlength="255"></textarea>
+                        <textarea class="col-8-half" rows="3" ng-model="beans.labor.context" maxlength="255"></textarea>
                     </div>
 
                 </form>

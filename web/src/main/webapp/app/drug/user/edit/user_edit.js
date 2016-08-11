@@ -1,16 +1,16 @@
 /**
- * 贩毒可疑人员管理编辑
+ * 人员管理编辑
  */
 (function (window, angular, $) {
-    var app = angular.module('drug.dope.edit', [
-        'drug.dope',
+    var app = angular.module('drug.user.edit', [
+        'drug.user',
         'eccrm.angular',
         'eccrm.angularstrap',
         'eccrm.angular.ztree',
         'base.org'
     ]);
 
-    app.controller('Ctrl', function ($scope,ParameterLoader, OrgTree,CommonUtils, AlertFactory, ModalFactory, DopeService, DopeParam) {
+    app.controller('Ctrl', function ($scope,OrgTree,ParameterLoader, CommonUtils, AlertFactory, ModalFactory, UserService, UserParam) {
 
         var pageType = $('#pageType').val();
         var id = $('#id').val();
@@ -38,18 +38,12 @@
         ParameterLoader.loadBusinessParam('BP_SEX', function (data) {
             $scope.sex.push.apply($scope.sex, data)
         });
-        // 学历
-        $scope.degree = [{name: '请选择...'}];
-        ParameterLoader.loadBusinessParam('BP_XW', function (data) {
-            $scope.degree.push.apply($scope.degree, data)
-        });
-
-
+        
         $scope.back = CommonUtils.back;
 
         // 保存
         $scope.save = function (createNew) {
-            var promise = DopeService.save($scope.beans, function (data) {
+            var promise = UserService.save($scope.beans, function (data) {
                 AlertFactory.success('保存成功!');
                 CommonUtils.addTab('update');
                 if (createNew === true) {
@@ -65,8 +59,7 @@
 
         // 更新
         $scope.update = function () {
-            console.dir($scope.beans.dope)
-            var promise = DopeService.update($scope.beans.dope, function (data) {
+            var promise = UserService.update($scope.beans, function (data) {
                 AlertFactory.success('更新成功!');
                 $scope.form.$setValidity('committed', false);
                 CommonUtils.addTab('update');
@@ -77,7 +70,7 @@
 
         // 加载数据
         $scope.load = function (id) {
-            var promise = DopeService.get({id: id}, function (data) {
+            var promise = UserService.get({id: id}, function (data) {
                 $scope.beans = data.data || {};
             });
             CommonUtils.loading(promise, 'Loading...');

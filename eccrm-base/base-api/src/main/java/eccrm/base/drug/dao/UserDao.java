@@ -1,30 +1,30 @@
 package eccrm.base.drug.dao;
 
-import eccrm.base.drug.bo.LaborBo;
-import eccrm.base.drug.domain.Labor;
-import eccrm.base.drug.vo.LaborVo;
+import eccrm.base.drug.bo.UserBo;
+import eccrm.base.drug.domain.User;
+import eccrm.base.drug.vo.UserVo;
 import java.util.List;
 
 /**
  * @author Rechried
  */
-public interface LaborDao {
+public interface UserDao {
 
-    String save(Labor labor);
+    String save(User user);
 
-    void update(Labor labor);
+    void update(User user);
 
     /**
      * 高级查询接口
      */
-    List<LaborVo> query(LaborBo bo);
+    List<User> query(UserBo bo);
 
     /**
      * 查询总记录数
      */
-    Long getTotal(LaborBo bo);
+    Long getTotal(UserBo bo);
 
-    LaborVo findById(String id);
+    User findById(String id);
 
     void deleteById(String id);
 
@@ -32,5 +32,5 @@ public interface LaborDao {
      * 根据实体对象删除
      * 必须保证该实体是存在的（一般是get或者load得到的对象）
      */
-    void delete(Labor labor);
+    void delete(User user);
 }

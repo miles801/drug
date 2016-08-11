@@ -16,15 +16,15 @@
         var id = $('#id').val();
 
         $scope.orgTree = OrgTree.pick(function (o) {
-            $scope.beans.orgId = o.id;
-            $scope.beans.orgName = o.name;
+            $scope.beans.user.orgId = o.id;
+            $scope.beans.user.orgName = o.name;
         });
         /**
          * 清除机构信息
          */
         $scope.clearOrg = function () {
-            $scope.beans.orgId = null;
-            $scope.beans.orgName = null;
+            $scope.beans.user.orgId = null;
+            $scope.beans.user.orgName = null;
         };
 
         $scope.back = CommonUtils.back;
@@ -59,7 +59,7 @@
 
         // 更新
         $scope.update = function () {
-            var promise = LaborService.update($scope.beans, function (data) {
+            var promise = LaborService.update($scope.beans.labor, function (data) {
                 AlertFactory.success('更新成功!');
                 $scope.form.$setValidity('committed', false);
                 CommonUtils.addTab('update');
@@ -72,6 +72,7 @@
         $scope.load = function (id) {
             var promise = LaborService.get({id: id}, function (data) {
                 $scope.beans = data.data || {};
+                console.dir(data);
             });
             CommonUtils.loading(promise, 'Loading...');
         };

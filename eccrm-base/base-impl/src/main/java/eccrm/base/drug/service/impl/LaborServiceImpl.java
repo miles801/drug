@@ -45,20 +45,16 @@ public class LaborServiceImpl implements LaborService, BeanWrapCallback<Labor, L
         Long total = laborDao.getTotal(bo);
         vo.setTotal(total);
         if (total==null || total == 0) return vo;
-        List<Labor> laborList = laborDao.query(bo);
-        List<LaborVo> vos = BeanWrapBuilder.newInstance()
-            .setCallback(this)
-            .wrapList(laborList,LaborVo.class);
-        vo.setData(vos);
+        List<LaborVo> laborList = laborDao.query(bo);
+        vo.setData(laborList);
         return vo;
     }
 
 
     @Override
     public LaborVo findById(String id) {
-        Labor labor = laborDao.findById(id);
-        return BeanWrapBuilder.newInstance()
-            .wrap(labor, LaborVo.class);
+        LaborVo labor = laborDao.findById(id);
+        return labor;
     }
 
     @Override
@@ -71,14 +67,14 @@ public class LaborServiceImpl implements LaborService, BeanWrapCallback<Labor, L
 
     @Override
     public void doCallback(Labor labor, LaborVo vo) {
-        ParameterContainer container = ParameterContainer.getInstance();
-        vo.setSex(container.getBusinessName(BaseParameter.SEX, labor.getSex()));
-        vo.setNation(container.getBusinessName("BP_NATION", labor.getNation()));
-        if(labor.getIsDrug().equals("1")){
-            vo.setIsDrug("否");
-        }
-        if(labor.getIsDrug().equals("2")){
-            vo.setIsDrug("是");
-        }
+//        ParameterContainer container = ParameterContainer.getInstance();
+//        vo.setSex(container.getBusinessName(BaseParameter.SEX, labor.getSex()));
+//        vo.setNation(container.getBusinessName("BP_NATION", labor.getNation()));
+//        if(labor.getIsDrug().equals("1")){
+//            vo.setIsDrug("否");
+//        }
+//        if(labor.getIsDrug().equals("2")){
+//            vo.setIsDrug("是");
+//        }
     }
 }

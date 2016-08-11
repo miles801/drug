@@ -1,15 +1,28 @@
 package eccrm.base.drug.dao.impl;
 
+import com.michael.base.common.BaseParameter;
+import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.LaborBo;
 import eccrm.base.drug.domain.Labor;
 import eccrm.base.drug.dao.LaborDao;
 import com.ycrl.core.HibernateDaoHelper;
+import eccrm.base.drug.domain.User;
+import eccrm.base.drug.vo.LaborVo;
+import eccrm.base.drug.vo.UserVo;
+import eccrm.base.parameter.service.ParameterContainer;
+import eccrm.utils.codeutils.Page;
+import org.hibernate.Query;
 import org.hibernate.criterion.Example;
 import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -31,17 +44,61 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Labor> query(LaborBo bo) {
-        Criteria criteria = createCriteria(Labor.class);
-        initCriteria(criteria, bo);
-        return criteria.list();
+    public List<LaborVo> query(LaborBo bo) {
+        StringBuffer hql = new StringBuffer();
+        hql.append("from User u,Labor l where u.id=l.userId ");
+        if (!StringUtils.isEmpty(bo.getName())) {
+            hql.append(" and u.name like '%" + bo.getName() + "%'");
+        }
+        if (!StringUtils.isEmpty(bo.getOrgId())) {
+            hql.append(" and u.orgId='" + bo.getOrgId() + "'");
+        }
+        if (!StringUtils.isEmpty(bo.getPhone())) {
+            hql.append(" and u.phone='" + bo.getPhone() + "'");
+        }
+        hql.append(" order by l.createdDatetime desc");
+        Query query = getSession().createQuery(hql.toString());
+        if (!StringUtils.isEmpty(Pager.getStart())){
+            query.setFirstResult(Pager.getStart());
+            query.setMaxResults(Pager.getLimit());
+        }
+        List list = query.list();
+        List<LaborVo> lists = new ArrayList();
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Object[] o = (Object[]) iterator.next();
+            User u = (User) o[0];
+            UserVo v=new UserVo();
+            BeanUtils.copyProperties(u,v);
+            Labor l = (Labor) o[1];
+            LaborVo vo = new LaborVo();
+            ParameterContainer container = ParameterContainer.getInstance();
+            v.setSex(container.getBusinessName(BaseParameter.SEX, u.getSex()));
+            v.setNation(container.getBusinessName("BP_NATION", u.getNation()));
+            vo.setUser(v);
+            vo.setLabor(l);
+            lists.add(vo);
+        }
+
+        return lists;
     }
 
     @Override
     public Long getTotal(LaborBo bo) {
-        Criteria criteria = createRowCountsCriteria(Labor.class);
-        initCriteria(criteria, bo);
-        return (Long) criteria.uniqueResult();
+        StringBuffer hql = new StringBuffer();
+        hql.append("from User u,Labor l where u.id=l.userId ");
+        if (!StringUtils.isEmpty(bo.getName())) {
+            hql.append(" and u.name like '%" + bo.getName() + "%'");
+        }
+        if (!StringUtils.isEmpty(bo.getOrgId())) {
+            hql.append(" and u.orgId='" + bo.getOrgId() + "'");
+        }
+        if (!StringUtils.isEmpty(bo.getPhone())) {
+            hql.append(" and u.phone='" + bo.getPhone() + "'");
+        }
+        hql.append(" order by l.createdDatetime desc");
+        List lists = getSession().createQuery(hql.toString()).list();
+        return (long) (lists != null ? lists.size() : 0);
     }
 
 
@@ -59,9 +116,23 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
     }
 
     @Override
-    public Labor findById(String id) {
+    public LaborVo findById(String id) {
         Assert.hasText(id, "ID不能为空!");
-        return (Labor) getSession().get(Labor.class, id);
+        String hql="from User u,Labor l where u.id=l.userId and l.id=? ";
+        Query query = getSession().createQuery(hql.toString()).setParameter(0,id);
+        List list = query.list();
+        Iterator iterator = list.iterator();
+        LaborVo vo=new LaborVo();
+        while (iterator.hasNext()) {
+            Object[] o = (Object[]) iterator.next();
+            User u = (User) o[0];
+            UserVo v=new UserVo();
+            BeanUtils.copyProperties(u,v);
+            Labor l = (Labor) o[1];
+            vo.setUser(v);
+            vo.setLabor(l);
+        }
+        return vo;
     }
 
     private void initCriteria(Criteria criteria, LaborBo bo) {

@@ -16,33 +16,9 @@ import java.util.Date;
 @Api(value = "吸毒可疑人员信息")
 public class MaybeDrug extends CommonDomain {
 
-    @ApiField(value = "姓名")
-    @Column(length = 10)
-    private String name;
-
-    @ApiField(value = "性别")
-    @Column(length = 10)
-    private String sex;
-
-    @ApiField(value = "组织ID")
+    @ApiField(value = "村民ID")
     @Column(length = 40)
-    private String orgId;
-
-    @ApiField(value = "组织名称")
-    @Column(length = 10)
-    private String orgName;
-
-    @ApiField(value = "民族")
-    @Column(length = 10)
-    private String nation;
-
-    @ApiField(value = "身份证")
-    @Column(length = 18)
-    private String idCard;
-
-    @ApiField(value = "家庭详细地址姓名")
-    @Column
-    private String home;
+    private String userId;
 
     @ApiField(value = "是否有前科")
     @Column(length = 10)
@@ -72,61 +48,15 @@ public class MaybeDrug extends CommonDomain {
     @Column
     private String context;
 
-    public String getName() {
-        return name;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getSex() {
-        return sex;
-    }
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
-    }
-
-    public String getOrgName() {
-        return orgName;
-    }
-
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
-    }
-
-    public String getNation() {
-        return nation;
-    }
-
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
-
-    public String getHome() {
-        return home;
-    }
-
-    public void setHome(String home) {
-        this.home = home;
-    }
 
     public String getRecord() {
         return record;
