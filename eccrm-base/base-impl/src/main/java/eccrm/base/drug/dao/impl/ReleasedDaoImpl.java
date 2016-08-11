@@ -73,6 +73,8 @@ public class ReleasedDaoImpl extends HibernateDaoHelper implements ReleasedDao {
             ParameterContainer container = ParameterContainer.getInstance();
             v.setSex(container.getBusinessName(BaseParameter.SEX, u.getSex()));
             v.setNation(container.getBusinessName("BP_NATION", u.getNation()));
+            BeanUtils.copyProperties(l,vo);
+            BeanUtils.copyProperties(v,vo);
             vo.setUser(v);
             vo.setReleased(l);
             lists.add(vo);

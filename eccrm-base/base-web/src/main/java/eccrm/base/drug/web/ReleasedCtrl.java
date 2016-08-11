@@ -107,11 +107,10 @@ public class ReleasedCtrl extends BaseController {
      * @param response
      */
     @ResponseBody
-    @RequestMapping(value = "/exporReleasedExcel", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportReleasedExcel", method = RequestMethod.GET)
     public void exporReleasedExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final ReleasedBo bo = GsonUtils.wrapDataToEntity(request, ReleasedBo.class);
         PageVo vo = releasedService.pageQuery(bo);
-
         BatchData batchData = new BatchData();
         DataInjector dataInjector = new DataInjector() {
             @Override

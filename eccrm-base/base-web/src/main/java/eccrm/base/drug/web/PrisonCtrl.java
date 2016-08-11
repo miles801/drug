@@ -107,7 +107,7 @@ public class PrisonCtrl extends BaseController {
      * @param response
      */
     @ResponseBody
-    @RequestMapping(value = "/exporPrisonExcel", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportPrisonExcel", method = RequestMethod.GET)
     public void exporPrisonExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final PrisonBo bo = GsonUtils.wrapDataToEntity(request, PrisonBo.class);
         PageVo vo = prisonService.pageQuery(bo);

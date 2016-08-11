@@ -122,7 +122,7 @@ public class LaborCtrl extends BaseController {
                 String json = gson.toJson(vo.getData());
                 JsonElement element = gson.fromJson(json, JsonElement.class);
                 JsonObject o = new JsonObject();
-                o.add("c", element);
+                o.add("u", element);
                 return o;
             }
         };

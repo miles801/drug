@@ -73,6 +73,14 @@ public class MaybeDrugDaoImpl extends HibernateDaoHelper implements MaybeDrugDao
             ParameterContainer container = ParameterContainer.getInstance();
             v.setSex(container.getBusinessName(BaseParameter.SEX, u.getSex()));
             v.setNation(container.getBusinessName("BP_NATION", u.getNation()));
+            BeanUtils.copyProperties(l,vo);
+            if(vo.getRecord().equals("1")){
+                vo.setRecord("否");
+            }
+            if(vo.getRecord().equals("2")){
+                vo.setRecord("是");
+            }
+            BeanUtils.copyProperties(v,vo);
             vo.setUser(v);
             vo.setMaybe(l);
             lists.add(vo);

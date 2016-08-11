@@ -75,6 +75,8 @@ public class PrisonDaoImpl extends HibernateDaoHelper implements PrisonDao {
             ParameterContainer container = ParameterContainer.getInstance();
             v.setSex(container.getBusinessName(BaseParameter.SEX, u.getSex()));
             v.setNation(container.getBusinessName("BP_NATION", u.getNation()));
+            BeanUtils.copyProperties(l,vo);
+            BeanUtils.copyProperties(v,vo);
             vo.setUser(v);
             vo.setPrison(l);
             lists.add(vo);

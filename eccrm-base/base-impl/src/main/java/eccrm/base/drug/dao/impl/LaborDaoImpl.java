@@ -75,11 +75,18 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
             ParameterContainer container = ParameterContainer.getInstance();
             v.setSex(container.getBusinessName(BaseParameter.SEX, u.getSex()));
             v.setNation(container.getBusinessName("BP_NATION", u.getNation()));
+            BeanUtils.copyProperties(l,vo);
+            if(vo.getIsDrug().equals("1")){
+                vo.setIsDrug("否");
+            }
+            if(vo.getIsDrug().equals("2")){
+                vo.setIsDrug("是");
+            }
+            BeanUtils.copyProperties(v,vo);
             vo.setUser(v);
             vo.setLabor(l);
             lists.add(vo);
         }
-
         return lists;
     }
 
@@ -114,6 +121,7 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
         Assert.notNull(labor, "要删除的对象不能为空!");
         getSession().delete(labor);
     }
+
 
     @Override
     public LaborVo findById(String id) {
