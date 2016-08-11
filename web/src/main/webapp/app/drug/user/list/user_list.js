@@ -13,6 +13,30 @@
     app.controller('Ctrl', function ($scope,OrgTree, CommonUtils, AlertFactory, ModalFactory, UserService, UserParam) {
         $scope.condition = { };
 
+        // 导出花名册模板
+        $scope.exportExcel = function () {
+            window.open(CommonUtils.contextPathURL('/base/user/exportModel'));
+        }
+
+        // 导入花名册信息
+        $scope.importData = function () {
+            UserParam.setWidget({
+                scope: $scope
+            }, function (data) {
+                var excelId = data.modelCfg;
+                if (excelId == null) {
+                    AlertFactory.error("上传excel出错，请重新上传！！！");
+                    return false;
+                }
+                var promise = UserService.importExcel({ids: excelId}, function () {
+                    AlertFactory.success('恭喜您，成功导入数据!');
+                    $scope.query();
+                });
+                CommonUtils.loading(promise, 'Loading...');
+            });
+        }
+
+
         // 导出数据
         $scope.exportData = function () {
             if ($scope.pager.total < 1) {
@@ -22,7 +46,7 @@
             var o = angular.extend({}, $scope.condition);
             o.start = null;
             o.limit = null;
-            window.open(CommonUtils.contextPathURL('/base/prison/exportPrisonExcel ?' + encodeURI(encodeURI($.param(o)))));
+            window.open(CommonUtils.contextPathURL('/base/user/exportUserExcel ?' + encodeURI(encodeURI($.param(o)))));
         };
 
 

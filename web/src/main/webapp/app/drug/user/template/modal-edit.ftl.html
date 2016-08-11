@@ -1,0 +1,28 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="min-width: 800px;max-width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title">
+                    <span>上传附件</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="alertform" class="form-horizontal">
+                    <div class="row">
+                        <div eccrm-upload="uploadOptions" style="margin-right: 80px;" ng-cloak></div>
+                    </div>
+                    <div class="row" style="margin-left: 65px;"><span style="color: red;">温馨提示：导入时，只能读取exls文件中第一页签的数据!</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-cloak class="btn btn-default btn-primary" ng-click="confirm();"
+                        ng-disabled="fileName">确定
+                </button>
+                <button type="button" class="btn btn-default" ng-click="$hide()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+

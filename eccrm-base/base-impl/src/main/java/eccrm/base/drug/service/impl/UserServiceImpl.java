@@ -1,21 +1,32 @@
 package eccrm.base.drug.service.impl;
 
 import com.michael.base.common.BaseParameter;
+import com.michael.poi.adapter.AnnotationCfgAdapter;
+import com.michael.poi.core.Handler;
+import com.michael.poi.core.ImportEngine;
+import com.michael.poi.imp.cfg.Configuration;
+import com.ycrl.core.beans.BeanWrapBuilder;
+import com.ycrl.core.beans.BeanWrapCallback;
+import com.ycrl.core.context.SecurityContext;
+import com.ycrl.core.hibernate.validator.ValidatorUtils;
 import com.ycrl.core.pager.PageVo;
-import com.ycrl.base.common.CommonStatus;
+import eccrm.base.attachment.utils.AttachmentHolder;
 import eccrm.base.drug.bo.UserBo;
 import eccrm.base.drug.dao.*;
 import eccrm.base.drug.domain.*;
-import eccrm.base.drug.vo.UserVo;
 import eccrm.base.drug.service.UserService;
+import eccrm.base.drug.vo.UserVo;
 import eccrm.base.parameter.service.ParameterContainer;
+import eccrm.base.parameter.vo.BusinessParamItemVo;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import com.ycrl.core.beans.BeanWrapBuilder;
-import com.ycrl.core.beans.BeanWrapCallback;
-import com.ycrl.core.hibernate.validator.ValidatorUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,6 +44,10 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
     private MaybeDrugDao maybeDrugDao;
     @Resource
     private PrisonDao prisonDao;
+    @Resource
+    private ReleasedDao releasedDao;
+
+
 
     @Override
     public String save(User user) {
@@ -101,7 +116,9 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
                 prison.setUserId(id);
                 prisonDao.save(prison);
             }else if(flag.equals("5")){
-
+                Released released=new Released();
+                released.setUserId(id);
+                releasedDao.save(released);
             }else if(flag.equals("6")){
 
             }else if(flag.equals("7")){
@@ -110,6 +127,62 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
 
             }
         }
+    }
+
+    @Override
+    public void saveUserFromExcel(String id) {
+        Assert.hasText(id, "导入失败!未获取到数据文件!");
+        File file = AttachmentHolder.newInstance().getTempFile(id);
+        File destFile = new File(file.getAbsolutePath() + ".xlsx");
+        try {
+            FileUtils.copyFile(file, destFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Configuration config = new AnnotationCfgAdapter(UserDTO.class).parse();
+        config.setPath(destFile.getPath());
+        config.setHandler(new Handler<UserDTO>() {
+            @Override
+            public void execute(UserDTO dto) {
+                if(StringUtils.isEmpty(dto.getName())){
+                    return;
+                }
+                User users=userDao.findUserByCard(dto.getIdCard());
+                User u=new User();
+                if(StringUtils.isEmpty(users)){
+                    BeanUtils.copyProperties(dto,u);
+                    users=u;
+                }else{
+                    BeanUtils.copyProperties(dto,users);
+                }
+                users.setNation(getValueByType("BP_NATION",dto.getNation()));
+                users.setSex(getValueByType("BP_SEX",dto.getSex()));
+                users.setOrgId(SecurityContext.getOrgId());
+                users.setOrgName(SecurityContext.getOrgName());
+                userDao.saveOrUpdate(users);
+            }
+        });
+        ImportEngine engine = new ImportEngine(config);
+        engine.execute();
+        destFile.delete();
+    }
+
+    /**
+     * 通过业务参数的类型以及名称找到对应value
+     *
+     * @param type 业务参数
+     * @param name 中文名称
+     * @return 对应的值
+     */
+    private String getValueByType(String type, String name) {
+        ParameterContainer container = ParameterContainer.getInstance();
+        List<BusinessParamItemVo> items = container.getBusinessItems(type);
+        for (BusinessParamItemVo vo : items) {
+            if (vo.getName().equals(name)) {
+                return vo.getValue();
+            }
+        }
+        return null;
     }
 
     @Override

@@ -11,8 +11,11 @@ import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.util.List;
 
 
@@ -38,8 +41,10 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
         Criteria criteria = createCriteria(User.class);
         initCriteria(criteria, bo);
         criteria.addOrder(Order.asc("name"));
-        criteria.setFirstResult(Pager.getStart());
-        criteria.setMaxResults(Pager.getLimit());
+        if(!StringUtils.isEmpty(Pager.getStart())){
+            criteria.setFirstResult(Pager.getStart());
+            criteria.setMaxResults(Pager.getLimit());
+        }
         return criteria.list();
     }
 
@@ -62,6 +67,18 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
     public void delete(User user) {
         Assert.notNull(user, "要删除的对象不能为空!");
         getSession().delete(user);
+    }
+
+    @Override
+    public User findUserByCard(String idCard) {
+        Criteria criteria=getSession().createCriteria(User.class);
+        criteria.add(Restrictions.eq("idCard",idCard));
+        return (User) criteria.uniqueResult();
+    }
+
+    @Override
+    public void saveOrUpdate(User users) {
+        getSession().saveOrUpdate(users);
     }
 
     @Override

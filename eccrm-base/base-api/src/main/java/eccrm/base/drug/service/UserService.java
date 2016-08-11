@@ -37,4 +37,6 @@ public interface UserService {
     void deleteByIds(String[] ids);
 
     void addLog(String[] idArr, String flag);
+
+    void saveUserFromExcel(String ids);
 }

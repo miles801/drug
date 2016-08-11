@@ -63,7 +63,7 @@ public class SecurityContext {
      * @return 机构ID
      */
     public static String getOrgId() {
-        return get().getEmpName();
+        return get().getOrgId();
     }
 
     /**

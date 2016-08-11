@@ -114,7 +114,7 @@
                                 </span>
                             </c:if>
                             <c:if test="${sessionScope.get('OP_EMP_POSITION_MODIFY') eq null}">
-                                <input class="col-12" type="text" ng-model="beans.roleNames" validate validate-required
+                                <input class="col-12" type="text" ng-model="beans.roleNames"
                                        disabled/>
                             </c:if>
                         </div>

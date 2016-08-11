@@ -5,7 +5,7 @@
 %>
 <html lang="en" >
 <head >
-    <title>人员管理</title>
+    <title>刑满释放人员</title>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">
@@ -19,9 +19,10 @@
     <script>
         window.angular.contextPathURL = '<%=contextPath%>';
     </script>
-</head >
-<body >
-<div class="main condition-row-1" ng-app="drug.user.list" ng-controller="Ctrl">
+</head>
+<body>
+
+</body><div class="main condition-row-1" ng-app="drug.released.list" ng-controller="Ctrl">
     <div class="list-condition">
         <div class="block">
             <div class="block-header">
@@ -51,6 +52,7 @@
                             <label>姓名:</label>
                         </div>
                         <input class="col-2-half" type="text" ng-model="condition.name"/>
+
                     </div>
                 </div>
             </div>
@@ -61,43 +63,15 @@
             <div class="block-header">
                 <div class="header-text">
                     <span class="glyphicons list"></span>
-                    <span>人员管理</span>
+                    <span>刑满释放人员</span>
                 </div>
                 <span class="header-button">
-                        <a type="button" class="btn btn-green btn-min" ng-click="add();">
-                            <span class="glyphicons plus"></span> 新建
-                        </a>
-                    <a type="button" class="btn btn-green btn-min" ng-click="exportExcel();">
-                        <span class="glyphicons plus"></span> 下载导入模板
-                    </a>
-                    <a type="button" class="btn btn-green btn-min" ng-click="importData();">
-                        <span class="glyphicons plus"></span> 村民档案导入
-                    </a>
                     <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
-                        <span class="glyphicons plus"></span> 村民档案导出
+                        <span class="glyphicons plus"></span> 刑满释放人员导出
                     </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(1);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 务工人员
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(2);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 可疑贩毒
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(3);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 可疑吸毒
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(4);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 服刑人员
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(5);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 刑满释放
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(6);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 涉毒人员
-                        </a>
                         <a type="button" class="btn btn-green btn-min" ng-click="remove();" ng-disabled="!anyone" disabled="disabled">
                             <span class="glyphicons plus"></span> 删除
                         </a>
-
                 </span>
             </div>
             <div class="block-content">
@@ -111,35 +85,37 @@
                                          anyone-selected="anyone"></div>
                                 </td>
                                 <td>姓名</td>
-                                <td>所属地区</td>
+                                <td>所属机构</td>
                                 <td>性别</td>
                                 <td>民族</td>
-                                <td>身份证</td>
-                                <td>联系方式</td>
-                                <td>家庭住址</td>
-                                <td>是否是户主</td>
+                                <td>违法犯罪类型</td>
+                                <td>打击时间</td>
+                                <td>释放时间</td>
+                                <td>现从事职业</td>
+                                <td>创建时间</td>
                                 <td>操作</td>
                             </tr>
                             </thead>
                             <tbody class="table-body">
                             <tr ng-show="!beans || !beans.total">
-                                <td colspan="10" class="text-center">没有查询到数据！</td>
+                                <td colspan="11" class="text-center">没有查询到数据！</td>
                             </tr>
                             <tr bindonce ng-repeat="foo in beans.data" ng-cloak>
                                 <td><input type="checkbox" ng-model="foo.isSelected"/></td>
                                 <td title="点击查询明细！" style="cursor: pointer;">
-                                    <a ng-click="view(foo.id)" bo-text="foo.name"></a>
+                                    <a ng-click="view(foo.released.id)" bo-text="foo.user.name"></a>
                                 </td>
-                                <td bo-text="foo.orgName"></td>
-                                <td bo-text="foo.sex"></td>
-                                <td bo-text="foo.nation"></td>
-                                <td bo-text="foo.idCard"></td>
-                                <td bo-text="foo.phone"></td>
-                                <td bo-text="foo.home"></td>
-                                <td bo-text="foo.isLeader"></td>
+                                <td bo-text="foo.user.orgName"></td>
+                                <td bo-text="foo.user.sex"></td>
+                                <td bo-text="foo.user.nation"></td>
+                                <td bo-text="foo.released.illegalType"></td>
+                                <td bo-text="foo.released.inStartTime |eccrmDate"></td>
+                                <td bo-text="foo.released.releasedDate |eccrmDate"></td>
+                                <td bo-text="foo.released.nowWork"></td>
+                                <td bo-text="foo.released.createdDatetime |eccrmDate"></td>
                                 <td>
-                                    <a class="btn-op blue" ng-click="modify(foo.id);">编辑</a>
-                                    <a class="btn-op red" ng-click="remove(foo.id);">删除</a>
+                                    <a class="btn-op blue" ng-click="modify(foo.released.id);">编辑</a>
+                                    <a class="btn-op red" ng-click="remove(foo.released.id);">删除</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -151,7 +127,6 @@
     </div>
     <div class="list-pagination" eccrm-page="pager"></div>
 </div>
-</body>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/user/user.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/user/list/user_list.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/released/released.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/released/list/released_list.js" ></script>
 </html >

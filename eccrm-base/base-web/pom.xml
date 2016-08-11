@@ -11,16 +11,24 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>base-web</artifactId>
     <dependencies>
+        <!-- 2003 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <!-- 2007 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
         <dependency>
             <groupId>eccrm</groupId>
             <artifactId>base-impl</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.ycrl.thirdparty</groupId>
-            <artifactId>poi-utils</artifactId>
-            <version>1.1</version>
-        </dependency>
+
         <!-- 图片压缩 -->
         <dependency>
             <groupId>net.coobird</groupId>

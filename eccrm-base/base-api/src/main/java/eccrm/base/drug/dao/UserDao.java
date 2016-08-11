@@ -33,4 +33,8 @@ public interface UserDao {
      * 必须保证该实体是存在的（一般是get或者load得到的对象）
      */
     void delete(User user);
+
+    User findUserByCard(String idCard);
+
+    void saveOrUpdate(User users);
 }
