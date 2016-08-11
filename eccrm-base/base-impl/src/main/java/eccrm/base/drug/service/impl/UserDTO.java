@@ -19,11 +19,11 @@ public class UserDTO implements DTO {
     @Col(index = 4)
     private String idCard;
     @Col(index = 5)
-    private String home;
-    @Col(index = 6)
     private String isLeader;
-    @Col(index = 7)
+    @Col(index = 6)
     private String phone;
+    @Col(index = 7)
+    private String home;
     @Col(index = 8)
     private String context;
 
