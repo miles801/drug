@@ -10,7 +10,7 @@
         'base.org'
     ]);
 
-    app.controller('Ctrl', function ($scope, CommonUtils, AlertFactory, ModalFactory, ReleasedService, ReleasedParam) {
+    app.controller('Ctrl', function ($scope,ParameterLoader, CommonUtils, AlertFactory, ModalFactory, ReleasedService, ReleasedParam) {
 
         var pageType = $('#pageType').val();
         var id = $('#id').val();
@@ -24,6 +24,17 @@
             }
 
         }
+        // 民族参数
+        $scope.nation = [{name: '请选择...'}];
+        ParameterLoader.loadBusinessParam("BP_NATION", function (data) {
+            $scope.nation.push.apply($scope.nation, data);
+        });
+
+        // 性别
+        $scope.sex = [{name: '请选择...'}];
+        ParameterLoader.loadBusinessParam('BP_SEX', function (data) {
+            $scope.sex.push.apply($scope.sex, data)
+        });
 
         $scope.back = CommonUtils.back;
 

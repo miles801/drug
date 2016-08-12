@@ -1,0 +1,69 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content" style="width: 580px;">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title">
+                    <span>设置帮教信息</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="alertform" class="form-horizontal" onSubmit="return checkForm(this)">
+                    <div class="row">
+                        <div class="form-label col-3">
+                            <label>姓名:</label>
+                        </div>
+                        <input class="col-8-half" type="text" ng-model="modelCfg.helpName" maxlength="40" validate
+                               validate-required/>
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-3">
+                            <label>单位名称:</label>
+                        </div>
+                        <input class="col-8-half" type="text" ng-model="modelCfg.helpCopmany" maxlength="40" />
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-3">
+                            <label>职务:</label>
+                        </div>
+                        <input class="col-8-half" type="text" ng-model="modelCfg.helpPosition" maxlength="40" />
+                    </div>
+
+                    <div class="row">
+                        <div class="form-label col-3">
+                            <label>联系方式:</label>
+                        </div>
+                        <input class="col-8-half" type="text"  ng-model="modelCfg.helpPhone" maxlength="11"
+                               validate validate-int validate-msg="手机号码格式不正确"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-label col-3">
+                            <label>帮教时间:</label>
+                        </div>
+                        <div class="col-8-half">
+                            <input type="text" class="col-12" ng-model="modelCfg.helpDate" id="helpDate"
+                                   eccrm-my97="{el:'helpDate',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
+                                   readonly/>
+                            <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate(0);"
+                                                    title="清除"></i></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-3">
+                            <label>帮教情况:</label>
+                        </div>
+                        <textarea class="col-8-half" rows="3" ng-model="modelCfg.helpStatus" maxlength="255"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-cloak class="btn btn-default btn-primary" ng-click="confirm();"
+                        ng-disabled="alertform.$invalid">确定
+                </button>
+                <button type="button" class="btn btn-default" ng-click="$hide()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+

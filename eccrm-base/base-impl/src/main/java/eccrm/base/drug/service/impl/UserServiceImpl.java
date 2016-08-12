@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
     private PrisonDao prisonDao;
     @Resource
     private ReleasedDao releasedDao;
+    @Resource
+    private DrugDao drugDao;
 
 
 
@@ -119,12 +121,10 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
                 Released released=new Released();
                 released.setUserId(id);
                 releasedDao.save(released);
-            }else if(flag.equals("6")){
-
-            }else if(flag.equals("7")){
-
-            }else{
-
+            }else {
+                Drug drug=new Drug();
+                drug.setUserId(id);
+                drugDao.save(drug);
             }
         }
     }
