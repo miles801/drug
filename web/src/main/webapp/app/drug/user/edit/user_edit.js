@@ -33,6 +33,12 @@
             $scope.nation.push.apply($scope.nation, data);
         });
 
+        // 学历
+        $scope.degrees = [{name: '请选择...'}];
+        ParameterLoader.loadBusinessParam("BP_EDU", function (data) {
+            $scope.degrees.push.apply($scope.degrees, data);
+        });
+
         // 性别
         $scope.sex = [{name: '请选择...'}];
         ParameterLoader.loadBusinessParam('BP_SEX', function (data) {

@@ -48,12 +48,85 @@ public class User extends CommonDomain {
     private String isLeader;
 
     @ApiField(value = "联系方式")
-    @Column
+    @Column(length = 11)
     private String phone;
+
+    @ApiField(value = "文化程度")
+    @Column(length = 11)
+    private String degrees;
+
+    @ApiField(value = "务工状况")
+    @Column(length = 40)
+    private String workStatus;
+
+    @ApiField(value = "务工地点")
+    @Column(length = 11)
+    private String workAdress;
+
+    @ApiField(value = "是否涉毒")
+    @Column(length = 11)
+    private String isDrugs;
+
+    @ApiField(value = "与户主关系")
+    @Column(length = 11)
+    private String relation;
+
 
     @ApiField(value = " 备注")
     @Column
     private String context;
+
+    @ApiField(value = "父节点")
+    @Column
+    private String isParent;
+
+    public String getIsParent() {
+        return isParent;
+    }
+
+    public void setIsParent(String isParent) {
+        this.isParent = isParent;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public String getDegrees() {
+        return degrees;
+    }
+
+    public void setDegrees(String degrees) {
+        this.degrees = degrees;
+    }
+
+    public String getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(String workStatus) {
+        this.workStatus = workStatus;
+    }
+
+    public String getWorkAdress() {
+        return workAdress;
+    }
+
+    public void setWorkAdress(String workAdress) {
+        this.workAdress = workAdress;
+    }
+
+    public String getIsDrugs() {
+        return isDrugs;
+    }
+
+    public void setIsDrugs(String isDrugs) {
+        this.isDrugs = isDrugs;
+    }
 
     public String getContext() {
         return context;

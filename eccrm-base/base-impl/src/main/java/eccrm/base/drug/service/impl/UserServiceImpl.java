@@ -167,6 +167,51 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
         destFile.delete();
     }
 
+    @Override
+    public void saveRelation(User user) {
+        User u=userDao.findById(user.getId());
+        u.setIsParent(user.getIsParent());
+        u.setRelation(user.getRelation());
+        userDao.update(u);
+    }
+
+    @Override
+    public PageVo pageQueryRelation(UserBo bo) {
+        PageVo vo = new PageVo();
+        Long total = userDao.getRelationTotal(bo);
+        vo.setTotal(total);
+        if (total==null || total == 0) return vo;
+        List<User> userList = userDao.queryRelation(bo);
+        List<UserVo> vos = BeanWrapBuilder.newInstance()
+                .setCallback(this)
+                .wrapList(userList,UserVo.class);
+        vo.setData(vos);
+        return vo;
+    }
+
+    @Override
+    public PageVo pageQueryParent(UserBo bo) {
+        PageVo vo = new PageVo();
+        Long total = userDao.getParentTotal(bo);
+        vo.setTotal(total);
+        if (total==null || total == 0) return vo;
+        List<User> userList = userDao.pageQueryParent(bo);
+        List<UserVo> vos = BeanWrapBuilder.newInstance()
+                .setCallback(this)
+                .wrapList(userList,UserVo.class);
+        vo.setData(vos);
+        return vo;
+    }
+
+    @Override
+    public void resetRelation(String idArr) {
+        User user=userDao.findById(idArr);
+        Assert.notNull(user,"该村民信息已经不存在了，请刷新页面！");
+        user.setIsParent(null);
+        user.setRelation(null);
+        userDao.update(user);
+    }
+
     /**
      * 通过业务参数的类型以及名称找到对应value
      *

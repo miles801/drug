@@ -138,6 +138,7 @@
                                 <td bo-text="foo.home"></td>
                                 <td bo-text="foo.isLeader"></td>
                                 <td>
+                                    <a ng-disabled="foo.isLeader!='是'" class="btn-op green" ng-click="foo.isLeader!='是'||setRelation(foo.id);">设置人员关系</a>
                                     <a class="btn-op blue" ng-click="modify(foo.id);">编辑</a>
                                     <a class="btn-op red" ng-click="remove(foo.id);">删除</a>
                                 </td>

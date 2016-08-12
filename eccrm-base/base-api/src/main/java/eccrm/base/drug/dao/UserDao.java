@@ -37,4 +37,12 @@ public interface UserDao {
     User findUserByCard(String idCard);
 
     void saveOrUpdate(User users);
+
+    List<User> queryRelation(UserBo bo);
+
+    Long getRelationTotal(UserBo bo);
+
+    List<User> pageQueryParent(UserBo bo);
+
+    Long getParentTotal(UserBo bo);
 }

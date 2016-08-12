@@ -39,4 +39,12 @@ public interface UserService {
     void addLog(String[] idArr, String flag);
 
     void saveUserFromExcel(String ids);
+
+    void saveRelation(User user);
+
+    PageVo pageQueryRelation(UserBo bo);
+
+    PageVo pageQueryParent(UserBo bo);
+
+    void resetRelation(String idArr);
 }

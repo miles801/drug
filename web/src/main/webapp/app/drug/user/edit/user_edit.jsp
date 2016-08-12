@@ -58,14 +58,11 @@
                         <input type="hidden" id="id" value="${id}"/>
                     </div>
                     <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
                         <input class="col-3-half" type="text" ng-model="beans.name" maxlength="10" validate validate-required/>
-                        &nbsp;<a style="color: red">*</a>
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>性别:</label>
                         </div>
                         <select ng-model="beans.sex" class="col-3-half"
@@ -73,29 +70,35 @@
                         </select>
                     </div>
                     <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>民族:</label>
                         </div>
                         <select ng-model="beans.nation" class="col-3-half"
                                 ng-options="foo.value as foo.name for foo in nation">
                         </select>
-
+                        <div class="form-label col-1-half">
+                            <label>文化程度:</label>
+                        </div>
+                        <select ng-model="beans.degrees" class="col-3-half"
+                                ng-options="foo.value as foo.name for foo in degrees">
+                        </select>
                     </div>
                     <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>身份证号:</label>
                         </div>
                         <input class="col-3-half" type="text" ng-model="beans.idCard" maxlength="18"
                                oninput="if(value.length>18)value=value.slice(0,18)" />
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>联系方式:</label>
                         </div>
                         <input class="col-3-half" type="text" ng-model="beans.phone" maxlength="11" validate validate-int validate-msg="手机号码格式不正确" />
+
                     </div>
+
+
                     <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>所属地区:</label>
                         </div>
                         <div class="col-3-half">
@@ -104,10 +107,7 @@
                             <span class="add-on"><i class="icons icon cp fork" ng-click="clearOrg();"
                                                     title="清除"></i></span>
                         </div>
-                        &nbsp;<a style="color: red">*</a>
-                    </div>
-                    <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
                             <label>是否是户主:</label>
                         </div>
                         <select class="col-3-half" ng-model="beans.isLeader" validate validate-required>
@@ -119,16 +119,27 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-label col-2-half">
-                            <label>家庭详细地址:</label>
+                        <div class="form-label col-1-half">
+                            <label>务工情况:</label>
                         </div>
-                        <input class="col-3-half" type="text" ng-model="beans.home" maxlength="100" />
+                        <input class="col-3-half" type="text" ng-model="beans.workStatus" maxlength="18" />
+                        <div class="form-label col-1-half">
+                            <label>务工地址:</label>
+                        </div>
+                        <input class="col-3-half" type="text" ng-model="beans.workAdress" maxlength="40" />
+
                     </div>
                     <div class="row">
-                        <div class="form-label col-2-half">
+                        <div class="form-label col-1-half">
+                            <label>家庭详细地址:</label>
+                        </div>
+                        <input class="col-8-half" type="text" ng-model="beans.home" maxlength="100" />
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-1-half">
                             <label>备注:</label>
                         </div>
-                        <textarea class="col-3-half" rows="3" ng-model="beans.context" maxlength="255"></textarea>
+                        <textarea class="col-8-half" rows="3" ng-model="beans.context" maxlength="255"></textarea>
                     </div>
 
 

@@ -13,10 +13,21 @@ public class UserBo implements BO{
     @Condition
     @ApiField(value = "所属组织")
     private String orgId;
+    @Condition
+    @ApiField()
+    private String id;
 
     @Condition(matchMode = MatchModel.LIKE, likeMode = LikeModel.ANYWHERE)
     @ApiField(value = "姓名", desc = "like")
     private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getOrgId() {
         return orgId;

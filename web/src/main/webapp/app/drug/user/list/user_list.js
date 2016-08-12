@@ -35,6 +35,15 @@
                 CommonUtils.loading(promise, 'Loading...');
             });
         }
+        // 设置村民关系
+        
+        $scope.setRelation=function (id) {
+            CommonUtils.addTab({
+                title: '设置村民关系',
+                url: '/base/user/setRelation?id=' + id,
+                onUpdate: $scope.query
+            });
+        }
 
 
         // 导出数据

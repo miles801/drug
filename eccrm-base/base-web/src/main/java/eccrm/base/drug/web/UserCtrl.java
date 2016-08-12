@@ -57,11 +57,29 @@ public class UserCtrl extends BaseController {
         userService.save(user);
         GsonUtils.printSuccess(response);
     }
+
+    /**
+     * 设置关系
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/saveRelation", method = RequestMethod.POST)
+    @ResponseBody
+    public void saveRelation(HttpServletRequest request, HttpServletResponse response) {
+        User user = GsonUtils.wrapDataToEntity(request, User.class);
+        userService.saveRelation(user);
+        GsonUtils.printSuccess(response);
+    }
     @RequestMapping(value = "/modify", params = {"id"}, method = RequestMethod.GET)
     public String toModify(@RequestParam String id, HttpServletRequest request) {
         request.setAttribute(JspAccessType.PAGE_TYPE, JspAccessType.MODIFY);
         request.setAttribute("id", id);
         return "drug/user/edit/user_edit";
+    }
+    @RequestMapping(value = "/setRelation", params = {"id"}, method = RequestMethod.GET)
+    public String setRelation(@RequestParam String id, HttpServletRequest request) {
+        request.setAttribute("id", id);
+        return "drug/relation/list/relation_list";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -93,12 +111,33 @@ public class UserCtrl extends BaseController {
         PageVo pageVo = userService.pageQuery(bo);
         GsonUtils.printData(response, pageVo);
     }
+    @ResponseBody
+    @RequestMapping(value = "/pageQueryParent", method = RequestMethod.POST)
+    public void pageQueryParent(HttpServletRequest request, HttpServletResponse response) {
+        UserBo bo = GsonUtils.wrapDataToEntity(request, UserBo.class);
+        PageVo pageVo = userService.pageQueryParent(bo);
+        GsonUtils.printData(response, pageVo);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pageQueryRelation", method = RequestMethod.POST)
+    public void pageQueryRelation(HttpServletRequest request, HttpServletResponse response) {
+        UserBo bo = GsonUtils.wrapDataToEntity(request, UserBo.class);
+        PageVo pageVo = userService.pageQueryRelation(bo);
+        GsonUtils.printData(response, pageVo);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/delete", params = {"ids"}, method = RequestMethod.DELETE)
     public void deleteByIds(@RequestParam String ids, HttpServletResponse response) {
         String[] idArr = ids.split(",");
         userService.deleteByIds(idArr);
+        GsonUtils.printSuccess(response);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/resetRelation", params = {"ids"}, method = RequestMethod.GET)
+    public void resetRelation(@RequestParam String ids, HttpServletResponse response) {
+        userService.resetRelation(ids);
         GsonUtils.printSuccess(response);
     }
 
