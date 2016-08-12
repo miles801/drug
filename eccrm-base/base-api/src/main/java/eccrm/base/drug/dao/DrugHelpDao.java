@@ -7,4 +7,10 @@ import eccrm.base.drug.domain.DrugHelp;
  */
 public interface DrugHelpDao {
     void saveOrUpdate(DrugHelp drugHelp);
+
+    void delete(String id);
+
+    void save(DrugHelp a);
+
+    void update(DrugHelp a);
 }

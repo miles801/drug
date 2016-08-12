@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.ycrl.core.beans.BeanWrapBuilder;
 import com.ycrl.core.beans.BeanWrapCallback;
 import com.ycrl.core.hibernate.validator.ValidatorUtils;
+import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,9 +38,17 @@ public class DrugServiceImpl implements DrugService, BeanWrapCallback<Drug, Drug
     }
 
     @Override
-    public void update(Drug drug) {
+    public void update(Drug drug,List<DrugHelp> list) {
         ValidatorUtils.validate(drug);
         drugDao.update(drug);
+        drugHelpDao.delete(drug.getId());
+        if (!StringUtils.isEmpty(list)){
+            for (int i=0;i<list.size();i++) {
+                DrugHelp a = list.get(i);
+                a.setId(null);
+                drugHelpDao.save(a);
+            }
+        }
     }
 
     @Override

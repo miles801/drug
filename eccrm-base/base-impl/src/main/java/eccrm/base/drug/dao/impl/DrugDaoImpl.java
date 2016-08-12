@@ -7,6 +7,7 @@ import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.DrugBo;
 import eccrm.base.drug.dao.DrugDao;
 import eccrm.base.drug.domain.Drug;
+import eccrm.base.drug.domain.DrugHelp;
 import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.DrugVo;
 import eccrm.base.drug.vo.UserVo;
@@ -137,6 +138,17 @@ public class DrugDaoImpl extends HibernateDaoHelper implements DrugDao {
             vo.setUser(v);
             vo.setDrug(l);
         }
+        String sql="from Drug d,DrugHelp p where d.id=p.userId and d.id=?";
+        Query query2 = getSession().createQuery(sql.toString()).setParameter(0,id);
+        List list2 = query2.list();
+        List<DrugHelp> vos=new ArrayList<>();
+        Iterator iterator2 = list2.iterator();
+        while (iterator2.hasNext()) {
+            Object[] o = (Object[]) iterator2.next();
+            DrugHelp l = (DrugHelp) o[1];
+            vos.add(l);
+        }
+        vo.setDrugs(vos);
         return vo;
     }
 

@@ -1,6 +1,9 @@
 package eccrm.base.drug.vo;
 
 import eccrm.base.drug.domain.Drug;
+import eccrm.base.drug.domain.DrugHelp;
+
+import java.util.List;
 
 /**
  * @author Rechried
@@ -8,6 +11,8 @@ import eccrm.base.drug.domain.Drug;
 public class DrugVo extends Drug {
     private UserVo user;
     private Drug drug;
+    private List<DrugHelp> drugs;
+    private DrugHelp drugHelp;
     private String name;
     private String sex;
     private String orgId;
@@ -20,6 +25,22 @@ public class DrugVo extends Drug {
     private String drugSortss;
     private String controlXTypes;
     private String controlFTypes;
+
+    public List<DrugHelp> getDrugs() {
+        return drugs;
+    }
+
+    public void setDrugs(List<DrugHelp> drugs) {
+        this.drugs = drugs;
+    }
+
+    public DrugHelp getDrugHelp() {
+        return drugHelp;
+    }
+
+    public void setDrugHelp(DrugHelp drugHelp) {
+        this.drugHelp = drugHelp;
+    }
 
     public String getDrugTypes() {
         return drugTypes;

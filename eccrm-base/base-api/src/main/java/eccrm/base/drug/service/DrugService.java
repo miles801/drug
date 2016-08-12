@@ -6,6 +6,8 @@ import eccrm.base.drug.domain.Drug;
 import eccrm.base.drug.domain.DrugHelp;
 import eccrm.base.drug.vo.DrugVo;
 
+import java.util.List;
+
 /**
  * @author Rechried
  * 
@@ -20,7 +22,7 @@ public interface DrugService {
     /**
      * 更新
      */
-    void update(Drug drug);
+    void update(Drug drug,List<DrugHelp> list);
 
     /**
      * 分页查询

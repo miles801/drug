@@ -292,7 +292,7 @@
                                         <td>{{foo.helpPosition}}</td>
                                         <td>{{foo.helpPhone}}</td>
                                         <td>
-                                            <a class="btn-op blue" ng-click="modify($index);">编辑</a>
+                                          <%--  <a class="btn-op blue" ng-click="modify($index);">编辑</a>--%>
                                             <a class="btn-op red" ng-click="remove($index);">删除</a>
                                         </td>
                                     </tr>
@@ -305,7 +305,7 @@
                         <div class="form-label col-1-half">
                             <label>帮扶情况:</label>
                         </div>
-                        <textarea disabled class="col-8-half" rows="3" ng-model="beans.drug.helpStatus" maxlength="255"></textarea>
+                        <textarea disabled class="col-8-half" rows="3" ng-model="helpStatus" maxlength="255"></textarea>
                     </div>
                     <br>
                 </form>

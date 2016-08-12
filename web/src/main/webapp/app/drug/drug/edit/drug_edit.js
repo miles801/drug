@@ -13,10 +13,13 @@
         var pageType = $('#pageType').val();
         var id = $('#id').val();
         $scope.drugHelp = [];
+        $scope.helpStatus="";
         $scope.pickEmp=function () {
             DrugParam.setWidget({
             }, function (data) {
                 var d=data.modelCfg;
+                     d.userId=id;
+                $scope.helpStatus+=d.helpStatus+";";
                 $scope.drugHelp.push(d);
             });
         }
@@ -28,6 +31,7 @@
                 modelCfg: $.extend({}, da)
             }, function (data) {
                 var a = data.modelCfg;
+                     a.userId=id;
                  $scope.drugHelp[index] = a;
             })
         };
@@ -39,7 +43,13 @@
             CommonUtils.loading(promise, '保存中...');
         }
         $scope.remove=function (a) {
-            $scope.drugHelp.splice(a,1);
+            ModalFactory.confirm({
+                scope: $scope,
+                content: '<span class="text-danger">数据一旦删除将不可恢复，请确认!</span>',
+                callback: function () {
+                    $scope.drugHelp.splice(a,1);
+                }
+            });
         }
 
         $scope.back = CommonUtils.back;
@@ -105,7 +115,10 @@
 
         // 更新
         $scope.update = function () {
-            var promise = DrugService.update($scope.beans.drug, function (data) {
+            var promise = DrugService.update({
+                     drug: $scope.beans.drug,
+                     drugs: $scope.drugHelp
+            }, function (data) {
                 AlertFactory.success('更新成功!');
                 $scope.form.$setValidity('committed', false);
                 CommonUtils.addTab('update');
@@ -118,6 +131,10 @@
         $scope.load = function (id) {
             var promise = DrugService.get({id: id}, function (data) {
                 $scope.beans = data.data || {};
+                $scope.drugHelp=$scope.beans.drugs;
+                for(var i=0;i< $scope.drugHelp.length;i++){
+                    $scope.helpStatus+=$scope.drugHelp[i].helpStatus+";";
+                }
             });
             CommonUtils.loading(promise, 'Loading...');
         };

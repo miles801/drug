@@ -41,10 +41,6 @@
                 $scope.options = options;
                 $scope.modelCfg=options.modelCfg;
                 $scope.confirm = function () {
-                    // var promise = DrugService.addDrugHelp($scope.modelCfg, function (data) {
-                    //     AlertFactory.success('保存成功!');
-                    //     CommonUtils.loading(promise, '保存中...');
-                    // });
                     callback({
                         isConfirm: true,
                         modelCfg: $scope.modelCfg,
