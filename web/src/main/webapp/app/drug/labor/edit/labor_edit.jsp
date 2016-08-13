@@ -60,6 +60,17 @@
                         <input type="hidden" id="id" value="${id}"/>
                     </div>
                     <div class="row">
+                        <div class="col-7">
+                            <div class="block-header" style="background-color: transparent;border-width: 0px;">
+                                <span class="header-text">
+                                     <span class="glyphicons info-sign"> </span>
+                                     <span>基本信息</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
@@ -109,11 +120,49 @@
                         </div>
                         <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.phone"
                                maxlength="11" validate-msg="手机号码格式不正确"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="block-header" style="background-color: transparent;border-width: 0px;">
+                                <span class="header-text">
+                                     <span class="glyphicons info-sign"> </span>
+                                     <span>外出务工信息</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-label col-1-half">
+                            <label>选择工作区域:</label>
+                        </div>
+                        <div class="col-3-half">
+                            <input type="radio" name="area" class="area" value="0" checked/>外出省外
+                            <input type="radio"  name="area" class="area" value="1"/>外出州外省内
+                        </div>
                         <div class="form-label col-1-half">
                             <label>务工地:</label>
                         </div>
-                        <input class="col-3-half" type="text" ng-model="beans.labor.workDress" maxlength="50"/>
+                        <select ng-model="beans.labor.workDress" class="col-3-half"  id="sheng"
+                                ng-options="foo.value as foo.name for foo in sheng">
+                        </select>
+                        <select ng-model="beans.labor.workDress" class="col-3-half"  id="zhou" hidden
+                                ng-options="foo.value as foo.name for foo in zhou">
+                        </select>
                     </div>
+
+                    <script type="text/javascript">
+                        $(".area").change(function() {
+                            var area = $("input[name='area']:checked").val();
+                            if(area==0){
+                                $("#sheng").show();
+                                $("#zhou").hide();
+                            }else if(area==1){
+                                $("#sheng").hide();
+                                $("#zhou").show();
+                            }
+                        });
+                    </script>
 
                     <div class="row">
                         <div class="form-label col-1-half">

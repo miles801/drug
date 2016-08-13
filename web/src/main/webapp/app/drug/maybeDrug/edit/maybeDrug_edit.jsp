@@ -57,6 +57,17 @@
                         <input type="hidden" id="id" value="${id}"/>
                     </div>
                     <div class="row">
+                        <div class="col-7">
+                            <div class="block-header" style="background-color: transparent;border-width: 0px;">
+                                <span class="header-text">
+                                     <span class="glyphicons info-sign"> </span>
+                                     <span>基本信息</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
@@ -94,6 +105,17 @@
                         </div>
                         <input class="col-3-half" type="text"  ng-disabled="true" ng-model="beans.user.home" maxlength="50"/>
                     </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="block-header" style="background-color: transparent;border-width: 0px;">
+                                <span class="header-text">
+                                     <span class="glyphicons info-sign"> </span>
+                                     <span>其他信息</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>文件程度:</label>

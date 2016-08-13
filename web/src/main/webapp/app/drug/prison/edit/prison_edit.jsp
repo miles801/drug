@@ -58,6 +58,17 @@
                         <input type="hidden" id="id" value="${id}"/>
                     </div>
                     <div class="row">
+                        <div class="col-7">
+                            <div class="block-header" style="background-color: transparent;border-width: 0px;">
+                                <span class="header-text">
+                                     <span class="glyphicons info-sign"> </span>
+                                     <span>基本信息</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
                         </div>
@@ -92,16 +103,23 @@
                                    readonly ztree-single="orgTree"/>
                         </div>
                         <div class="form-label col-1-half">
-                            <label>打击时间:</label>
+                            <label>家庭详细地址:</label>
                         </div>
-                        <div class="col-3-half">
-                            <input type="text" class="col-12" ng-model="beans.prison.inStartTime" id="inStartTime"
-                                   eccrm-my97="{el:'inStartTime',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
-                                    readonly/>
-                            <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate();"
-                                                    title="清除"></i></span>
+                        <input class="col-3-half" type="text" ng-disabled="true" ng-model="beans.user.home"
+                               maxlength="100"/>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="block-header" style="background-color: transparent;border-width: 0px;">
+                                <span class="header-text">
+                                     <span class="glyphicons info-sign"> </span>
+                                     <span>其他信息</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>违法犯罪类型:</label>
@@ -128,10 +146,15 @@
 
                     <div class="row">
                         <div class="form-label col-1-half">
-                            <label>家庭详细地址:</label>
+                            <label>打击时间:</label>
                         </div>
-                        <input class="col-8-half" type="text" ng-disabled="true" ng-model="beans.user.home"
-                               maxlength="100"/>
+                        <div class="col-3-half">
+                            <input type="text" class="col-12" ng-model="beans.prison.inStartTime" id="inStartTime"
+                                   eccrm-my97="{el:'inStartTime',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
+                                   readonly/>
+                            <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate();"
+                                                    title="清除"></i></span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-label col-1-half">

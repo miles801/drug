@@ -19,6 +19,7 @@
             $scope.beans.user.orgId = o.id;
             $scope.beans.user.orgName = o.name;
         });
+
         /**
          * 清除机构信息
          */
@@ -28,6 +29,18 @@
         };
 
         $scope.back = CommonUtils.back;
+
+        // 省份
+        $scope.sheng = [{name: '请选择...'}];
+        ParameterLoader.loadBusinessParam("SHENG", function (data) {
+            $scope.sheng.push.apply($scope.sheng, data);
+        });
+
+        // 州市
+        $scope.zhou  = [{name: '请选择...'}];
+        ParameterLoader.loadBusinessParam("ZHOU", function (data) {
+            $scope.zhou.push.apply($scope.zhou, data);
+        });
 
         // 民族参数
         $scope.nation = [{name: '请选择...'}];
@@ -72,7 +85,6 @@
         $scope.load = function (id) {
             var promise = LaborService.get({id: id}, function (data) {
                 $scope.beans = data.data || {};
-                console.dir(data);
             });
             CommonUtils.loading(promise, 'Loading...');
         };
