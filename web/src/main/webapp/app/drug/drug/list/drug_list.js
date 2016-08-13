@@ -74,7 +74,7 @@
             if (!id) {
                 var ids = [];
                 angular.forEach($scope.items, function (o) {
-                    ids.push(o.id);
+                    ids.push(o.drug.id);
                 });
                 id = ids.join(',');
             }

@@ -4,7 +4,10 @@ import com.michael.base.common.BaseParameter;
 import com.ycrl.core.pager.PageVo;
 import com.ycrl.base.common.CommonStatus;
 import eccrm.base.drug.bo.MaybeDrugBo;
+import eccrm.base.drug.dao.UserDao;
 import eccrm.base.drug.domain.MaybeDrug;
+import eccrm.base.drug.domain.User;
+import eccrm.base.drug.vo.DrugVo;
 import eccrm.base.drug.vo.MaybeDrugVo;
 import eccrm.base.drug.dao.MaybeDrugDao;
 import eccrm.base.drug.service.MaybeDrugService;
@@ -25,6 +28,8 @@ import java.util.List;
 public class MaybeDrugServiceImpl implements MaybeDrugService, BeanWrapCallback<MaybeDrug, MaybeDrugVo> {
     @Resource
     private MaybeDrugDao maybeDrugDao;
+    @Resource
+    private UserDao userDao;
 
     @Override
     public String save(MaybeDrug maybeDrug) {
@@ -61,6 +66,10 @@ public class MaybeDrugServiceImpl implements MaybeDrugService, BeanWrapCallback<
     public void deleteByIds(String[] ids) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
+            MaybeDrugVo vo=maybeDrugDao.findById(id);
+            User user=userDao.findById(vo.getUser().getId());
+            user.setIsXDrug("否");
+            userDao.update(user);
             maybeDrugDao.deleteById(id);
         }
     }

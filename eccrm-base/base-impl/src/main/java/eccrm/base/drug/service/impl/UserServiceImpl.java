@@ -52,9 +52,15 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
 
 
     @Override
-    public String save(User user) {
-        ValidatorUtils.validate(user);
-        String id = userDao.save(user);
+    public String save(User users) {
+        ValidatorUtils.validate(users);
+        users.setIsDrugs("否");
+        users.setIsLabor("否");
+        users.setIsReleased("否");
+        users.setIsPrison("否");
+        users.setIsFDrug("否");
+        users.setIsXDrug("否");
+        String id = userDao.save(users);
         return id;
     }
 
@@ -98,34 +104,43 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
     public void addLog(String[] ids, String flag) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
+            User user=userDao.findById(id);
+            Assert.notNull(user,"改村民信息已不存在，请刷新页面！");
             if(flag.equals("1")){
                 Labor labor=new Labor();
                 labor.setUserId(id);
                 labor.setIsDrug("1");
+                user.setIsLabor("是");
                 laborDao.save(labor);
             }else if(flag.equals("2")){
                 Dope dope=new Dope();
                 dope.setUserId(id);
                 dope.setRecord("1");
+                user.setIsFDrug("是");
                 dopeDao.save(dope);
             }else if(flag.equals("3")){
                 MaybeDrug drug=new MaybeDrug();
                 drug.setUserId(id);
                 drug.setRecord("1");
+                user.setIsXDrug("是");
                 maybeDrugDao.save(drug);
             }else if(flag.equals("4")){
                 Prison prison=new Prison();
                 prison.setUserId(id);
+                user.setIsPrison("是");
                 prisonDao.save(prison);
             }else if(flag.equals("5")){
                 Released released=new Released();
                 released.setUserId(id);
+                user.setIsReleased("是");
                 releasedDao.save(released);
             }else {
                 Drug drug=new Drug();
                 drug.setUserId(id);
+                user.setIsDrugs("是");
                 drugDao.save(drug);
             }
+            userDao.update(user);
         }
     }
 
@@ -159,6 +174,12 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
                 users.setSex(getValueByType("BP_SEX",dto.getSex()));
                 users.setOrgId(SecurityContext.getOrgId());
                 users.setOrgName(SecurityContext.getOrgName());
+                users.setIsDrugs("否");
+                users.setIsLabor("否");
+                users.setIsReleased("否");
+                users.setIsPrison("否");
+                users.setIsFDrug("否");
+                users.setIsXDrug("否");
                 userDao.saveOrUpdate(users);
             }
         });

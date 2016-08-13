@@ -14,6 +14,46 @@
 
         var pageType = $('#pageType').val();
         var id = $('#id').val();
+        // 头像
+        $scope.uploadOptions = {
+            // 最大上传文件数
+            labelText: '头像',
+            maxFile: 1,
+            showTable: false,
+            bid: id,
+            swfOption: {
+                // 文件的被允许的大小，单位KB
+                buttonText: '选择头像',
+                fileSizeLimit: 2048,
+                fileTypeExts: '*.png;*.jpg;*.gif'
+            },
+            onSuccess: function (attr) {
+                var remove = $('<i class="icons icon fork" ></i>');
+                var $imageId = $('#imageId');
+                remove.on('click', function () {
+                    $imageId.html('');
+                    $scope.uploadOptions.removeAll();
+                });
+                $scope.attrs=attr.id;
+                $("#showImage").hide();
+                $imageId.append('<img style="height: 150px;width: 150px;margin-left: 150px" src="' + CommonUtils.contextPathURL('/attachment/download?id=' + attr.id) + '"/>');
+                $imageId.append(remove);
+            }
+        };
+        $scope.deleteImage = function () {
+            $("#showImage").hide();
+            $('#imageId').html('');
+            $scope.uploadOptions.removeAll();
+        };
+
+        // 获取附件的id
+        var wrapAttachment = function () {
+            var obj = angular.extend({}, $scope.result);
+            obj.icon = $scope.uploadOptions.getAttachment()[0];
+            obj.attachmentIds = obj.icon;
+            // 取最后一个
+            return obj;
+        };
 
         $scope.orgTree = OrgTree.pick(function (o) {
             $scope.beans.orgId = o.id;
@@ -49,6 +89,8 @@
 
         // 保存
         $scope.save = function (createNew) {
+            var obj = wrapAttachment();
+            $scope.beans.icon = obj.attachmentIds;
             var promise = UserService.save($scope.beans, function (data) {
                 AlertFactory.success('保存成功!');
                 CommonUtils.addTab('update');
@@ -65,6 +107,10 @@
 
         // 更新
         $scope.update = function () {
+            var obj = wrapAttachment();
+            if (obj.attachmentIds != null) {
+                $scope.beans.icon = obj.attachmentIds;
+            }
             var promise = UserService.update($scope.beans, function (data) {
                 AlertFactory.success('更新成功!');
                 $scope.form.$setValidity('committed', false);
@@ -85,10 +131,14 @@
 
         if (pageType == 'add') {
             $scope.beans = {};
+            $scope.canedit = true;
         } else if (pageType == 'modify') {
             $scope.load(id);
+            $scope.canedit = true;
         } else if (pageType == 'detail') {
             $scope.load(id);
+            $scope.uploadOptions.readonly=true;
+            $scope.canedit = false;
             $('input,textarea,select').attr('disabled', 'disabled');
         } else {
             AlertFactory.error($scope, '错误的页面类型');

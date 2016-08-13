@@ -16,6 +16,7 @@
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-ztree-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-strap-all.js"></script>
+    <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-upload.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/vendor/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/app/base/org/org.js"></script>
 
@@ -57,6 +58,20 @@
                         <input type="hidden" id="pageType" value="${pageType}"/>
                         <input type="hidden" id="id" value="${id}"/>
                     </div>
+                        <div class="row">
+                            <div eccrm-upload="uploadOptions" ng-cloak></div>
+                        </div>
+                        <div id="imageId" class="row" >
+                            <div id="showImage">
+                                <img style="height: 150px;width: 150px;margin-left:150px" ng-if="${id==null}"
+                                     ng-src="/app/drug/user/img/demo.gif "/>
+                                <div ng-if="${id!=null}">
+                                    <img style="height: 150px;width: 150px;margin-left:150px"
+                                         ng-src="/attachment/download?id={{beans.icon}} "/>
+                                    <i class="icons icon fork" ng-click="deleteImage()" ng-hide="!canedit"></i>
+                                </div>
+                            </div>
+                        </div>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>姓名:</label>

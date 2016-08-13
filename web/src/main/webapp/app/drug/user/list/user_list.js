@@ -101,6 +101,21 @@
                 ids.push(o.id);
             });
             id = ids.join(',');
+            var url="";
+            if(flag==1){
+                url="/base/labor";
+            }else if(flag==2){
+                url="/base/dope";
+            }else if(flag==3){
+                url="/base/maybeDrug";
+            }else if(flag==4){
+                url="/base/prison";
+            }else if(flag==5){
+                url="/base/released";
+            }else if(flag==6){
+                url="/base/drug";
+            }
+
             ModalFactory.confirm({
                 scope: $scope,
                 content: '<span class="text-danger">您确认在此标记中加入相关人员的记录？</span>',
@@ -110,8 +125,16 @@
                         $scope.query();
                     });
                     CommonUtils.loading((promise));
+                    ModalFactory.confirm({
+                        scope: $scope,
+                        content: '<span class="text-danger">您是否想现在去完善刚才选择人员的信息？</span>',
+                        callback: function () {
+                            window.location.href = CommonUtils.contextPathURL(url);
+                        }
+                    });
                 }
-            });
+
+        });
         };
         // 删除或批量删除
         $scope.remove = function (id) {

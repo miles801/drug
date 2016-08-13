@@ -4,7 +4,9 @@ import com.michael.base.common.BaseParameter;
 import com.ycrl.core.pager.PageVo;
 import com.ycrl.base.common.CommonStatus;
 import eccrm.base.drug.bo.LaborBo;
+import eccrm.base.drug.dao.UserDao;
 import eccrm.base.drug.domain.Labor;
+import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.LaborVo;
 import eccrm.base.drug.dao.LaborDao;
 import eccrm.base.drug.service.LaborService;
@@ -25,6 +27,8 @@ import java.util.List;
 public class LaborServiceImpl implements LaborService, BeanWrapCallback<Labor, LaborVo> {
     @Resource
     private LaborDao laborDao;
+    @Resource
+    private UserDao userDao;
 
     @Override
     public String save(Labor labor) {
@@ -61,7 +65,11 @@ public class LaborServiceImpl implements LaborService, BeanWrapCallback<Labor, L
     public void deleteByIds(String[] ids) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
-            laborDao.deleteById(id);
+            LaborVo labor=laborDao.findById(id);
+            User u=userDao.findById(labor.getUser().getId());
+            u.setIsLabor("否");
+            userDao.update(u);
+            laborDao.delete(labor.getLabor());
         }
     }
 

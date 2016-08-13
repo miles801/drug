@@ -112,11 +112,12 @@
                                 </td>
                                 <td>姓名</td>
                                 <td>所属地区</td>
-                                <td>性别</td>
-                                <td>民族</td>
-                                <td>身份证</td>
-                                <td>联系方式</td>
-                                <td>家庭住址</td>
+                                <td>是否外出务工</td>
+                                <td>是否涉毒</td>
+                                <td>是否可疑吸毒</td>
+                                <td>是否可疑贩毒</td>
+                                <td>是否正在服刑</td>
+                                <td>是否刑满释放</td>
                                 <td>是否是户主</td>
                                 <td>操作</td>
                             </tr>
@@ -131,14 +132,17 @@
                                     <a ng-click="view(foo.id)" bo-text="foo.name"></a>
                                 </td>
                                 <td bo-text="foo.orgName"></td>
-                                <td bo-text="foo.sex"></td>
-                                <td bo-text="foo.nation"></td>
-                                <td bo-text="foo.idCard"></td>
-                                <td bo-text="foo.phone"></td>
-                                <td bo-text="foo.home"></td>
+                                <td bo-text="foo.isLabor">
+                                </td>
+                                <td bo-text="foo.isDrugs"></td>
+                                <td bo-text="foo.isXDrug"></td>
+                                <td bo-text="foo.isFDrug"></td>
+                                <td bo-text="foo.isPrison"></td>
+                                <td bo-text="foo.isReleased"></td>
                                 <td bo-text="foo.isLeader"></td>
                                 <td>
-                                    <a ng-disabled="foo.isLeader!='是'" class="btn-op green" ng-click="foo.isLeader!='是'||setRelation(foo.id);">设置人员关系</a>
+                                    <a ng-disabled="foo.isLeader!='是'" class="btn-op green"
+                                       ng-click="foo.isLeader!='是'||setRelation(foo.id);">设置家庭关系</a>
                                     <a class="btn-op blue" ng-click="modify(foo.id);">编辑</a>
                                     <a class="btn-op red" ng-click="remove(foo.id);">删除</a>
                                 </td>

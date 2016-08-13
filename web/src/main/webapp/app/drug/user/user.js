@@ -13,10 +13,10 @@
     app.service('UserService', function (CommonUtils, $resource) {
         return $resource(CommonUtils.contextPathURL('/base/user/:method'), {}, {
             // 保存
-            save: {method: 'POST', params: {method: 'save'}, isArray: false},
+            save: {method: 'POST', params: {method: 'save', attachmentIds: '@icon'}, isArray: false},
 
             // 更新
-            update: {method: 'POST', params: {method: 'update'}, isArray: false},
+            update: {method: 'POST', params: {method: 'update', attachmentIds: '@icon'}, isArray: false},
 
             // 根据id查询信息
             get: {method: 'GET', params: {method: 'get', id: '@id'}, isArray: false},

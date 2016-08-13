@@ -3,7 +3,10 @@ package eccrm.base.drug.service.impl;
 import com.ycrl.core.pager.PageVo;
 import com.ycrl.base.common.CommonStatus;
 import eccrm.base.drug.bo.ReleasedBo;
+import eccrm.base.drug.dao.UserDao;
 import eccrm.base.drug.domain.Released;
+import eccrm.base.drug.domain.User;
+import eccrm.base.drug.vo.PrisonVo;
 import eccrm.base.drug.vo.ReleasedVo;
 import eccrm.base.drug.dao.ReleasedDao;
 import eccrm.base.drug.service.ReleasedService;
@@ -23,6 +26,8 @@ import java.util.List;
 public class ReleasedServiceImpl implements ReleasedService, BeanWrapCallback<Released, ReleasedVo> {
     @Resource
     private ReleasedDao releasedDao;
+    @Resource
+    private UserDao userDao;
 
     @Override
     public String save(Released released) {
@@ -59,6 +64,10 @@ public class ReleasedServiceImpl implements ReleasedService, BeanWrapCallback<Re
     public void deleteByIds(String[] ids) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
+            ReleasedVo vo=releasedDao.findById(id);
+            User user=userDao.findById(vo.getUser().getId());
+            user.setIsReleased("否");
+            userDao.update(user);
             releasedDao.deleteById(id);
         }
     }

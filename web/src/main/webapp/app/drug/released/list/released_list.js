@@ -50,7 +50,8 @@
             if (!id) {
                 var ids = [];
                 angular.forEach($scope.items, function (o) {
-                    ids.push(o.id);
+                    console.log(o)
+                    ids.push(o.released.id);
                 });
                 id = ids.join(',');
             }

@@ -51,7 +51,6 @@
                     var promise = LaborService.pageQuery(param, function(data){
                         param = null;
                         $scope.beans = data.data || {total: 0};
-                        console.dir( $scope.beans.data)
                         defer.resolve($scope.beans);
                     });
                     CommonUtils.loading(promise, 'Loading...');
@@ -67,7 +66,7 @@
             if (!id) {
                 var ids = [];
                 angular.forEach($scope.items, function (o) {
-                    ids.push(o.id);
+                    ids.push(o.labor.id);
                 });
                 id = ids.join(',');
             }

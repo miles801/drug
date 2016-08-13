@@ -4,8 +4,11 @@ import com.ycrl.core.pager.PageVo;
 import com.ycrl.base.common.CommonStatus;
 import eccrm.base.drug.bo.DrugBo;
 import eccrm.base.drug.dao.DrugHelpDao;
+import eccrm.base.drug.dao.UserDao;
 import eccrm.base.drug.domain.Drug;
 import eccrm.base.drug.domain.DrugHelp;
+import eccrm.base.drug.domain.User;
+import eccrm.base.drug.vo.DopeVo;
 import eccrm.base.drug.vo.DrugVo;
 import eccrm.base.drug.dao.DrugDao;
 import eccrm.base.drug.service.DrugService;
@@ -29,6 +32,8 @@ public class DrugServiceImpl implements DrugService, BeanWrapCallback<Drug, Drug
     private DrugDao drugDao;
     @Resource
     private DrugHelpDao drugHelpDao;
+    @Resource
+    private UserDao userDao;
 
     @Override
     public String save(Drug drug) {
@@ -73,6 +78,10 @@ public class DrugServiceImpl implements DrugService, BeanWrapCallback<Drug, Drug
     public void deleteByIds(String[] ids) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
+            DrugVo vo=drugDao.findById(id);
+            User user=userDao.findById(vo.getUser().getId());
+            user.setIsDrugs("否");
+            userDao.update(user);
             drugDao.deleteById(id);
         }
     }

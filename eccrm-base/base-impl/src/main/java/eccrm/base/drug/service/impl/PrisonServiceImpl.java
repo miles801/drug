@@ -3,7 +3,10 @@ package eccrm.base.drug.service.impl;
 import com.ycrl.core.pager.PageVo;
 import com.ycrl.base.common.CommonStatus;
 import eccrm.base.drug.bo.PrisonBo;
+import eccrm.base.drug.dao.UserDao;
 import eccrm.base.drug.domain.Prison;
+import eccrm.base.drug.domain.User;
+import eccrm.base.drug.vo.MaybeDrugVo;
 import eccrm.base.drug.vo.PrisonVo;
 import eccrm.base.drug.dao.PrisonDao;
 import eccrm.base.drug.service.PrisonService;
@@ -23,6 +26,8 @@ import java.util.List;
 public class PrisonServiceImpl implements PrisonService, BeanWrapCallback<Prison, PrisonVo> {
     @Resource
     private PrisonDao prisonDao;
+    @Resource
+    private UserDao userDao;
 
     @Override
     public String save(Prison prison) {
@@ -59,6 +64,10 @@ public class PrisonServiceImpl implements PrisonService, BeanWrapCallback<Prison
     public void deleteByIds(String[] ids) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
+            PrisonVo vo=prisonDao.findById(id);
+            User user=userDao.findById(vo.getUser().getId());
+            user.setIsPrison("否");
+            userDao.update(user);
             prisonDao.deleteById(id);
         }
     }

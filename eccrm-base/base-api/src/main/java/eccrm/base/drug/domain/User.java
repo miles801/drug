@@ -3,6 +3,7 @@ package eccrm.base.drug.domain;
 import com.michael.docs.annotations.Api;
 import com.michael.docs.annotations.ApiField;
 import com.ycrl.base.common.CommonDomain;
+import eccrm.base.attachment.AttachmentSymbol;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
@@ -14,10 +15,13 @@ import java.util.Date;
 @Entity
 @Table(name = "drug_user")
 @Api(value = "村民基础数据")
-public class User extends CommonDomain {
+public class User extends CommonDomain implements AttachmentSymbol {
     @ApiField(value = "姓名")
     @Column(length = 10)
     private String name;
+    @ApiField(value = "头像")
+    @Column
+    private String icon;
 
     @ApiField(value = "性别")
     @Column(length = 10)
@@ -46,6 +50,25 @@ public class User extends CommonDomain {
     @ApiField(value = "是否是户主")
     @Column
     private String isLeader;
+
+    @ApiField(value = "是否外出务工")
+    @Column
+    private String isLabor;
+
+    @ApiField(value = "是否吸毒可疑")
+    @Column
+    private String isXDrug;
+
+    @ApiField(value = "是否贩毒可疑")
+    @Column
+    private String isFDrug;
+
+    @ApiField(value = "是否服刑")
+    @Column
+    private String isPrison;
+    @ApiField(value = "是否刑满释放")
+    @Column
+    private String isReleased;
 
     @ApiField(value = "联系方式")
     @Column(length = 11)
@@ -79,6 +102,54 @@ public class User extends CommonDomain {
     @ApiField(value = "父节点")
     @Column
     private String isParent;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIsLabor() {
+        return isLabor;
+    }
+
+    public void setIsLabor(String isLabor) {
+        this.isLabor = isLabor;
+    }
+
+    public String getIsXDrug() {
+        return isXDrug;
+    }
+
+    public void setIsXDrug(String isXDrug) {
+        this.isXDrug = isXDrug;
+    }
+
+    public String getIsFDrug() {
+        return isFDrug;
+    }
+
+    public void setIsFDrug(String isFDrug) {
+        this.isFDrug = isFDrug;
+    }
+
+    public String getIsPrison() {
+        return isPrison;
+    }
+
+    public void setIsPrison(String isPrison) {
+        this.isPrison = isPrison;
+    }
+
+    public String getIsReleased() {
+        return isReleased;
+    }
+
+    public void setIsReleased(String isReleased) {
+        this.isReleased = isReleased;
+    }
 
     public String getIsParent() {
         return isParent;
@@ -206,5 +277,10 @@ public class User extends CommonDomain {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String businessId() {
+        return getId();
     }
 }

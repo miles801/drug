@@ -4,7 +4,9 @@ import com.michael.base.common.BaseParameter;
 import com.ycrl.core.pager.PageVo;
 import com.ycrl.base.common.CommonStatus;
 import eccrm.base.drug.bo.DopeBo;
+import eccrm.base.drug.dao.UserDao;
 import eccrm.base.drug.domain.Dope;
+import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.DopeVo;
 import eccrm.base.drug.dao.DopeDao;
 import eccrm.base.drug.service.DopeService;
@@ -25,6 +27,8 @@ import java.util.List;
 public class DopeServiceImpl implements DopeService, BeanWrapCallback<Dope, DopeVo> {
     @Resource
     private DopeDao dopeDao;
+    @Resource
+    private UserDao userDao;
 
     @Override
     public String save(Dope dope) {
@@ -61,6 +65,10 @@ public class DopeServiceImpl implements DopeService, BeanWrapCallback<Dope, Dope
     public void deleteByIds(String[] ids) {
         if (ids == null || ids.length == 0) return;
         for (String id : ids) {
+            DopeVo vo=dopeDao.findById(id);
+            User user=userDao.findById(vo.getUser().getId());
+            user.setIsFDrug("否");
+            userDao.update(user);
             dopeDao.deleteById(id);
         }
     }
