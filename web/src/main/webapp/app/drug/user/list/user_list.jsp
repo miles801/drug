@@ -21,7 +21,7 @@
     </script>
 </head >
 <body >
-<div class="main condition-row-1" ng-app="drug.user.list" ng-controller="Ctrl">
+<div class="main condition-row-3" ng-app="drug.user.list" ng-controller="Ctrl">
     <div class="list-condition">
         <div class="block">
             <div class="block-header">
@@ -51,6 +51,66 @@
                             <label>姓名:</label>
                         </div>
                         <input class="col-2-half" type="text" ng-model="condition.name"/>
+                        <div class="form-label col-1-half">
+                            <label>是否是户主:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isLeader">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-1-half">
+                            <label>是否外出务工:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isLabor">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
+                        <div class="form-label col-1-half">
+                            <label>是否涉毒:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isDrugs">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
+                        <div class="form-label col-1-half">
+                            <label>是否贩毒可疑:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isFDrug">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="form-label col-1-half">
+                            <label>是否吸毒可疑:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isXDrug">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
+                        <div class="form-label col-1-half">
+                            <label>是否正在服刑:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isPrison">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
+                        <div class="form-label col-1-half">
+                            <label>是否刑满释放:</label>
+                        </div>
+                        <select class="col-2-half"  ng-model="condition.isReleased">
+                            <option value="">全部</option>
+                            <option value="否">否</option>
+                            <option value="是">是</option>
+                        </select>
                     </div>
                 </div>
             </div>
