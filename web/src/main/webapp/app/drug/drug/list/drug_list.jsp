@@ -72,6 +72,9 @@
                     <span>涉毒人员</span>
                 </div>
                 <span class="header-button">
+                     <a type="button" class="btn btn-green btn-min" ng-click="print();">
+                            <span class="glyphicons plus"></span> 打印
+                        </a>
                     <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
                         <span class="glyphicons plus"></span> 涉毒人员导出
                     </a>

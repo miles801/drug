@@ -23,63 +23,12 @@
 <body>
 
 </body>
-<div class="main condition-row-1" ng-app="drug.labor.list" ng-controller="Ctrl">
-    <div class="list-condition">
-        <div class="block">
-            <div class="block-header">
-                <span class="header-text">
-                    <span class="glyphicons search"></span>
-                </span>
-                <span class="header-button">
-                        <a type="button" class="btn btn-green btn-min" ng-click="query();">
-                                <span class="glyphicons search"></span>
-                                查询
-                        </a>
-                </span>
-            </div>
-            <div class="block-content">
-                <div class="content-wrap">
-                    <div class="row">
-                        <div class="form-label col-1-half">
-                            <label>所属地区:</label>
-                        </div>
-                        <div class="col-2-half">
-                            <input class="col-12" type="text" ng-model="condition.orgName"
-                                   readonly ztree-single="orgTree"/>
-                            <span class="add-on"><i class="icons icon cp fork" ng-click="clearOrg();"
-                                                    title="清除"></i></span>
-                        </div>
-                        <div class="form-label col-1-half">
-                            <label>姓名:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="condition.name"/>
-                        <div class="form-label col-1-half">
-                            <label>联系方式:</label>
-                        </div>
-                        <input class="col-2-half" type="text" ng-model="condition.phone"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="list-result ">
+<div class="main" ng-app="drug.labor.list" ng-controller="Ctrl">
+    <div style="height: 100%;position: relative;overflow: hidden;">
         <div class="block">
             <div class="block-header">
                 <div class="header-text">
-                    <span class="glyphicons list"></span>
-                    <span>外出务工人员</span>
                 </div>
-                <span class="header-button">
-                    <a type="button" class="btn btn-green btn-min" ng-click="print();">
-                            <span class="glyphicons plus"></span> 打印
-                    </a>
-                    <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
-                        <span class="glyphicons plus"></span> 务工人员导出
-                    </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="remove();" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 删除
-                        </a>
-                </span>
             </div>
             <div class="block-content">
                 <div class="content-wrap">
@@ -87,10 +36,6 @@
                         <table class="table table-striped table-hover">
                             <thead class="table-header">
                             <tr>
-                                <td class="width-min">
-                                    <div select-all-checkbox checkboxes="beans.data" selected-items="items"
-                                         anyone-selected="anyone"></div>
-                                </td>
                                 <td>姓名</td>
                                 <td>所属地区</td>
                                 <td>性别</td>
@@ -98,15 +43,13 @@
                                 <td>是否涉毒登记人员</td>
                                 <td>联系方式</td>
                                 <td>创建时间</td>
-                                <td>操作</td>
                             </tr>
                             </thead>
                             <tbody class="table-body">
                             <tr ng-show="!beans || !beans.total">
-                                <td colspan="9" class="text-center">没有查询到数据！</td>
+                                <td colspan="7" class="text-center">没有查询到数据！</td>
                             </tr>
                             <tr bindonce ng-repeat="foo in beans.data" ng-cloak>
-                                <td><input type="checkbox" ng-model="foo.isSelected"/></td>
                                 <td title="点击查询明细！" style="cursor: pointer;">
                                     <a ng-click="view(foo.labor.id)" bo-text="foo.user.name"></a>
                                 </td>
@@ -117,10 +60,6 @@
                                 <td ng-if="foo.labor.isDrug==2">是</td>
                                 <td bo-text="foo.user.phone"></td>
                                 <td bo-text="foo.labor.createdDatetime|eccrmDate"></td>
-                                <td>
-                                    <a class="btn-op blue" ng-click="modify(foo.labor.id);">编辑</a>
-                                    <a class="btn-op red" ng-click="remove(foo.labor.id);">删除</a>
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -129,7 +68,7 @@
             </div>
         </div>
     </div>
-    <div class="list-pagination" eccrm-page="pager"></div>
+    <div class="list-pagination" eccrm-page="pager" ng-show="false"></div>
 </div>
 <script type="text/javascript" src="<%=contextPath%>/app/drug/labor/labor.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/app/drug/labor/list/labor_list.js"></script>

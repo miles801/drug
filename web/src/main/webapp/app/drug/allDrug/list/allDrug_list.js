@@ -1,17 +1,20 @@
 /**
-* 贩毒可疑人员管理列表
-* Created by Rechired on 2016-08-10 16:39:07.
+* 禁毒重点整治排查汇总列表
+* Created by Rechired on 2016-08-14 09:54:35.
 */
 (function (window, angular, $) {
-    var app = angular.module('drug.dope.list', [
+    var app = angular.module('drug.allDrug.list', [
         'eccrm.angular',
         'eccrm.angularstrap',
-        'drug.dope',
-        'eccrm.angular.ztree',
-        'base.org',
+        'drug.allDrug'
     ]);
-    app.controller('Ctrl', function ($scope,OrgTree, CommonUtils, AlertFactory, ModalFactory, DopeService, DopeParam) {
+    app.controller('Ctrl', function ($scope, CommonUtils, AlertFactory, ModalFactory, AllDrugService, AllDrugParam) {
         $scope.condition = { };
+
+        //查询数据
+        $scope.query = function() {
+            $scope.pager.query();
+        };
 
         // 打印
         $scope.print=function () {
@@ -22,43 +25,16 @@
             var o = angular.extend({}, $scope.condition);
             o.start = null;
             o.limit = null;
-            window.open(CommonUtils.contextPathURL('/base/dope/print?' + encodeURI(encodeURI($.param(o)))));
+            window.open(CommonUtils.contextPathURL('/base/user/allDrug/print?' + encodeURI(encodeURI($.param(o)))));
         }
 
-        // 导出数据
-        $scope.exportData = function () {
-            if ($scope.pager.total < 1) {
-                AlertFactory.error('未获取到可以导出的数据!请先查询出数据!');
-                return;
-            }
-            var o = angular.extend({}, $scope.condition);
-            o.start = null;
-            o.limit = null;
-            window.open(CommonUtils.contextPathURL('/base/dope/exporDopeExcel ?' + encodeURI(encodeURI($.param(o)))));
-        };
-
-        $scope.orgTree = OrgTree.pick(function (o) {
-            $scope.condition.orgId = o.id;
-            $scope.condition.orgName = o.name;
-        });
-        /**
-         * 清除机构信息
-         */
-        $scope.clearOrg = function () {
-            $scope.condition.orgId = null;
-            $scope.condition.orgName = null;
-        };
-        //查询数据
-        $scope.query = function() {
-            $scope.pager.query();
-        };
 
         $scope.pager = {
             fetch: function () {
                 var param = angular.extend({}, {start: this.start, limit: this.limit}, $scope.condition);
                 $scope.beans = [];
                 return CommonUtils.promise(function(defer){
-                    var promise = DopeService.pageQuery(param, function(data){
+                    var promise = AllDrugService.pageQuery(param, function(data){
                         param = null;
                         $scope.beans = data.data || {total: 0};
                         defer.resolve($scope.beans);
@@ -73,18 +49,11 @@
 
         // 删除或批量删除
         $scope.remove = function (id) {
-            if (!id) {
-                var ids = [];
-                angular.forEach($scope.items, function (o) {
-                    ids.push(o.dope.id);
-                });
-                id = ids.join(',');
-            }
             ModalFactory.confirm({
                 scope: $scope,
                 content: '<span class="text-danger">数据一旦删除将不可恢复，请确认!</span>',
                 callback: function () {
-                    var promise = DopeService.deleteByIds({ids: id}, function(){
+                    var promise = AllDrugService.deleteByIds({ids: id}, function(){
                         AlertFactory.success('删除成功!');
                         $scope.query();
                     });
@@ -96,8 +65,8 @@
         // 新增
         $scope.add = function () {
             CommonUtils.addTab({
-                title: '新增贩毒可疑人员',
-                url: '/base/dope/add',
+                title: '新增禁毒重点整治排查汇总',
+                url: '/drug/allDrug/add',
                 onUpdate: $scope.query
             });
         };
@@ -105,8 +74,8 @@
         // 更新
         $scope.modify = function (id) {
             CommonUtils.addTab({
-                title: '更新贩毒可疑人员',
-                url: '/base/dope/modify?id=' + id,
+                title: '更新禁毒重点整治排查汇总',
+                url: '/drug/allDrug/modify?id=' + id,
                 onUpdate: $scope.query
             });
         };
@@ -114,8 +83,8 @@
         // 查看明细
         $scope.view = function (id) {
             CommonUtils.addTab({
-                title: '查看贩毒可疑人员',
-                url: '/base/dope/detail?id=' + id
+                title: '查看禁毒重点整治排查汇总',
+                url: '/drug/allDrug/detail?id=' + id
             });
         }
     });

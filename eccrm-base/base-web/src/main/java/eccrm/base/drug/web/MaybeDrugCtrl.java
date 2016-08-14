@@ -7,23 +7,26 @@ import com.google.gson.JsonObject;
 import com.michael.poi.exp.BatchData;
 import com.michael.poi.exp.DataInjector;
 import com.michael.poi.exp.ExportEngine;
-import com.ycrl.core.pager.Pager;
-import com.ycrl.core.web.BaseController;
 import com.ycrl.base.common.JspAccessType;
 import com.ycrl.core.pager.PageVo;
+import com.ycrl.core.pager.Pager;
+import com.ycrl.core.web.BaseController;
 import com.ycrl.utils.gson.DateStringConverter;
 import com.ycrl.utils.gson.GsonUtils;
-import eccrm.base.drug.bo.LaborBo;
 import eccrm.base.drug.bo.MaybeDrugBo;
 import eccrm.base.drug.domain.MaybeDrug;
 import eccrm.base.drug.service.MaybeDrugService;
 import eccrm.base.drug.vo.MaybeDrugVo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -37,9 +40,20 @@ import java.util.Date;
 public class MaybeDrugCtrl extends BaseController {
     @Resource
     private MaybeDrugService maybeDrugService;
+
     @RequestMapping(value = {""}, method=RequestMethod.GET )
-    public String toList() {
+    public String toList(HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        session.setAttribute("bo",null);
         return "drug/maybeDrug/list/maybeDrug_list";
+    }
+
+    @RequestMapping(value = "/print", method=RequestMethod.GET )
+    public String print(HttpServletRequest request) {
+        MaybeDrugBo bo = GsonUtils.wrapDataToEntity(request, MaybeDrugBo.class);
+        HttpSession session=request.getSession();
+        session.setAttribute("bo",bo);
+        return "drug/maybeDrug/list/print";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -88,6 +102,12 @@ public class MaybeDrugCtrl extends BaseController {
     @RequestMapping(value = "/pageQuery", method = RequestMethod.POST)
     public void pageQuery(HttpServletRequest request, HttpServletResponse response) {
         MaybeDrugBo bo = GsonUtils.wrapDataToEntity(request, MaybeDrugBo.class);
+        HttpSession session=request.getSession();
+        MaybeDrugBo b = (MaybeDrugBo) session.getAttribute("bo");
+        if(b!=null){
+            bo=b;
+            Pager.setLimit(1000);
+        }
         PageVo pageVo = maybeDrugService.pageQuery(bo);
         GsonUtils.printData(response, pageVo);
     }

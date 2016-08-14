@@ -2,7 +2,8 @@ package eccrm.base.drug.dao;
 
 import eccrm.base.drug.bo.UserBo;
 import eccrm.base.drug.domain.User;
-import eccrm.base.drug.vo.UserVo;
+import eccrm.base.drug.vo.AllDrugVo;
+
 import java.util.List;
 
 /**
@@ -45,4 +46,8 @@ public interface UserDao {
     List<User> pageQueryParent(UserBo bo);
 
     Long getParentTotal(UserBo bo);
+
+    Long getAllTotal(UserBo bo);
+
+    List<AllDrugVo> allPageQuery(UserBo bo);
 }

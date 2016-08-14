@@ -7,10 +7,10 @@ import com.google.gson.JsonObject;
 import com.michael.poi.exp.BatchData;
 import com.michael.poi.exp.DataInjector;
 import com.michael.poi.exp.ExportEngine;
-import com.ycrl.core.pager.Pager;
-import com.ycrl.core.web.BaseController;
 import com.ycrl.base.common.JspAccessType;
 import com.ycrl.core.pager.PageVo;
+import com.ycrl.core.pager.Pager;
+import com.ycrl.core.web.BaseController;
 import com.ycrl.utils.gson.DateStringConverter;
 import com.ycrl.utils.gson.GsonUtils;
 import eccrm.base.drug.bo.LaborBo;
@@ -18,16 +18,19 @@ import eccrm.base.drug.domain.Labor;
 import eccrm.base.drug.service.LaborService;
 import eccrm.base.drug.vo.LaborVo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Rechried
@@ -38,8 +41,18 @@ public class LaborCtrl extends BaseController {
     @Resource
     private LaborService laborService;
     @RequestMapping(value = {""}, method=RequestMethod.GET )
-    public String toList() {
+    public String toList(HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        session.setAttribute("bo",null);
         return "drug/labor/list/labor_list";
+    }
+
+    @RequestMapping(value = "/print", method=RequestMethod.GET )
+    public String print(HttpServletRequest request) {
+        LaborBo bo = GsonUtils.wrapDataToEntity(request, LaborBo.class);
+        HttpSession session=request.getSession();
+        session.setAttribute("bo",bo);
+        return "drug/labor/list/print";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -88,6 +101,12 @@ public class LaborCtrl extends BaseController {
     @RequestMapping(value = "/pageQuery", method = RequestMethod.POST)
     public void pageQuery(HttpServletRequest request, HttpServletResponse response) {
         LaborBo bo = GsonUtils.wrapDataToEntity(request, LaborBo.class);
+        HttpSession session=request.getSession();
+        LaborBo b = (LaborBo) session.getAttribute("bo");
+        if(b!=null){
+            bo=b;
+            Pager.setLimit(1000);
+        }
         PageVo pageVo = laborService.pageQuery(bo);
         GsonUtils.printData(response, pageVo);
     }

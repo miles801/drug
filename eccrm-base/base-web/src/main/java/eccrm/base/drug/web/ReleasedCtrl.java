@@ -7,23 +7,26 @@ import com.google.gson.JsonObject;
 import com.michael.poi.exp.BatchData;
 import com.michael.poi.exp.DataInjector;
 import com.michael.poi.exp.ExportEngine;
-import com.ycrl.core.pager.Pager;
-import com.ycrl.core.web.BaseController;
 import com.ycrl.base.common.JspAccessType;
 import com.ycrl.core.pager.PageVo;
+import com.ycrl.core.pager.Pager;
+import com.ycrl.core.web.BaseController;
 import com.ycrl.utils.gson.DateStringConverter;
 import com.ycrl.utils.gson.GsonUtils;
-import eccrm.base.drug.bo.PrisonBo;
 import eccrm.base.drug.bo.ReleasedBo;
 import eccrm.base.drug.domain.Released;
 import eccrm.base.drug.service.ReleasedService;
 import eccrm.base.drug.vo.ReleasedVo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -38,8 +41,18 @@ public class ReleasedCtrl extends BaseController {
     @Resource
     private ReleasedService releasedService;
     @RequestMapping(value = {""}, method=RequestMethod.GET )
-    public String toList() {
+    public String toList(HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        session.setAttribute("bo",null);
         return "drug/released/list/released_list";
+    }
+
+    @RequestMapping(value = "/print", method=RequestMethod.GET )
+    public String print(HttpServletRequest request, HttpServletResponse response) {
+        ReleasedBo bo = GsonUtils.wrapDataToEntity(request, ReleasedBo.class);
+        HttpSession session=request.getSession();
+        session.setAttribute("bo",bo);
+        return "drug/released/list/print";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -86,8 +99,15 @@ public class ReleasedCtrl extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/pageQuery", method = RequestMethod.POST)
-    public void pageQuery(HttpServletRequest request, HttpServletResponse response) {
+    public void pageQuery(HttpServletRequest request, HttpServletResponse response,HttpSession session) {
+
         ReleasedBo bo = GsonUtils.wrapDataToEntity(request, ReleasedBo.class);
+        ReleasedBo b = (ReleasedBo) session.getAttribute("bo");
+        if(b!=null){
+            bo=b;
+            Pager.setLimit(1000);
+            session.setAttribute("bo",null);
+        }
         PageVo pageVo = releasedService.pageQuery(bo);
         GsonUtils.printData(response, pageVo);
     }

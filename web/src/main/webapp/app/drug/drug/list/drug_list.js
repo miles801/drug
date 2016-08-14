@@ -50,6 +50,17 @@
         $scope.query = function() {
             $scope.pager.query();
         };
+        // 打印
+        $scope.print=function () {
+            if ($scope.pager.total < 1) {
+                AlertFactory.error('未获取到可以打印的数据!请先查询出数据!');
+                return;
+            }
+            var o = angular.extend({}, $scope.condition);
+            o.start = null;
+            o.limit = null;
+            window.open(CommonUtils.contextPathURL('/base/drug/print?' + encodeURI(encodeURI($.param(o)))));
+        }
 
         $scope.pager = {
             fetch: function () {

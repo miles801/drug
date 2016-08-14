@@ -6,10 +6,35 @@
     var app = angular.module('drug.released.list', [
         'eccrm.angular',
         'eccrm.angularstrap',
+        'eccrm.angular.ztree',
+        'base.org',
         'drug.released'
     ]);
-    app.controller('Ctrl', function ($scope, CommonUtils, AlertFactory, ModalFactory, ReleasedService, ReleasedParam) {
+    app.controller('Ctrl', function ($scope, CommonUtils, OrgTree,AlertFactory, ModalFactory, ReleasedService, ReleasedParam) {
         $scope.condition = { };
+
+        $scope.orgTree = OrgTree.pick(function (o) {
+            $scope.condition.orgId = o.id;
+            $scope.condition.orgName = o.name;
+        });
+        /**
+         * 清除机构信息
+         */
+        $scope.clearOrg = function () {
+            $scope.condition.orgId = null;
+            $scope.condition.orgName = null;
+        };
+        // 打印
+        $scope.print=function () {
+            if ($scope.pager.total < 1) {
+                AlertFactory.error('未获取到可以打印的数据!请先查询出数据!');
+                return;
+            }
+            var o = angular.extend({}, $scope.condition);
+            o.start = null;
+            o.limit = null;
+            window.open(CommonUtils.contextPathURL('/base/released/print?' + encodeURI(encodeURI($.param(o)))));
+        }
 
         // 导出数据
         $scope.exportData = function () {

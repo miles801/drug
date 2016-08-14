@@ -44,6 +44,20 @@ public class UserCtrl extends BaseController {
         return "drug/user/list/user_list";
     }
 
+    @RequestMapping(value = "/allDrug", method=RequestMethod.GET )
+    public String allDrug() {
+        return "drug/allDrug/list/allDrug_list";
+    }
+
+    /**
+     * 打印
+     * @return
+     */
+    @RequestMapping(value = "/allDrug/print", method=RequestMethod.GET )
+    public String print() {
+        return "drug/allDrug/list/print";
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String toAdd(HttpServletRequest request) {
         request.setAttribute(JspAccessType.PAGE_TYPE, JspAccessType.ADD);
@@ -116,6 +130,19 @@ public class UserCtrl extends BaseController {
     public void pageQueryParent(HttpServletRequest request, HttpServletResponse response) {
         UserBo bo = GsonUtils.wrapDataToEntity(request, UserBo.class);
         PageVo pageVo = userService.pageQueryParent(bo);
+        GsonUtils.printData(response, pageVo);
+    }
+
+    /**
+     * 汇总数据
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/allDrug/pageQuery", method = RequestMethod.POST)
+    public void allPageQuery(HttpServletRequest request, HttpServletResponse response) {
+        UserBo bo = GsonUtils.wrapDataToEntity(request, UserBo.class);
+        PageVo pageVo = userService.allPageQuery(bo);
         GsonUtils.printData(response, pageVo);
     }
 

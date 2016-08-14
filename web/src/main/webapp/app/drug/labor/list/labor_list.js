@@ -26,6 +26,18 @@
             window.open(CommonUtils.contextPathURL('/base/labor/exportLaborExcel ?' + encodeURI(encodeURI($.param(o)))));
         };
 
+        // 打印
+        $scope.print=function () {
+            if ($scope.pager.total < 1) {
+                AlertFactory.error('未获取到可以打印的数据!请先查询出数据!');
+                return;
+            }
+            var o = angular.extend({}, $scope.condition);
+            o.start = null;
+            o.limit = null;
+            window.open(CommonUtils.contextPathURL('/base/labor/print?' + encodeURI(encodeURI($.param(o)))));
+        }
+
         $scope.orgTree = OrgTree.pick(function (o) {
             $scope.condition.orgId = o.id;
             $scope.condition.orgName = o.name;

@@ -47,4 +47,6 @@ public interface UserService {
     PageVo pageQueryParent(UserBo bo);
 
     void resetRelation(String idArr);
+
+    PageVo allPageQuery(UserBo bo);
 }

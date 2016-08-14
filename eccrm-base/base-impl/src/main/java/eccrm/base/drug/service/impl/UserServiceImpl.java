@@ -15,6 +15,7 @@ import eccrm.base.drug.bo.UserBo;
 import eccrm.base.drug.dao.*;
 import eccrm.base.drug.domain.*;
 import eccrm.base.drug.service.UserService;
+import eccrm.base.drug.vo.AllDrugVo;
 import eccrm.base.drug.vo.UserVo;
 import eccrm.base.parameter.service.ParameterContainer;
 import eccrm.base.parameter.vo.BusinessParamItemVo;
@@ -231,6 +232,17 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
         user.setIsParent(null);
         user.setRelation(null);
         userDao.update(user);
+    }
+
+    @Override
+    public PageVo allPageQuery(UserBo bo) {
+        PageVo vo = new PageVo();
+        Long total = userDao.getAllTotal(bo);
+        vo.setTotal(total);
+        if (total==null || total == 0) return vo;
+        List<AllDrugVo> userList = userDao.allPageQuery(bo);
+        vo.setData(userList);
+        return vo;
     }
 
     /**
