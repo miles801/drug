@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<%=contextPath%>/app/main/css/main.css"/>
 
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/jquery-all.js"></script>
+    <script type="text/javascript" src="vendor/jquery-v1.8.3/jquery.md5.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-strap-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/app/base/emp/emp.js"></script>
@@ -24,26 +25,32 @@
         }
     </style>
 </head>
+
 <body id="ng-app" ng-app="eccrm.main">
 <div id="container" ng-controller="MainController">
     <input type="hidden" id="contextPath" value="<%=contextPath%>/"/>
     <div id="header">
         <div class="top">
-            <div class="logo"></div>
-            <span style=" color: #fff; font-size: 26px; margin-left: 145px; height: 60px; display: inline-block; line-height: 60px; ">
-            </span>
-            <div class="tool" style="width: 100px;">
-                <a href="<%=contextPath%>/logout">
-                    <img src="<%=contextPath%>/app/main/images/icon/h13.png" width="24" height="24" title="退出">
-                </a>
-                <a ng-click="updatePwd();">
-                    <img src="<%=contextPath%>/app/main/images/icon/h7.png" width="24" height="24" title="更改密码">
-                </a>
+            <div class="logo" style="top:-2px;"></div>
+            <div class="tool" style="padding: 5px 10px;;">
+                <c:if test="${sessionScope.get('employeeId') ne null}">
+                    <a href="<%=contextPath%>/logout">
+                        <img src="<%=contextPath%>/app/main/images/icon/h13.png" width="24" height="24" title="退出">
+                    </a>
+                    <a ng-click="updatePwd();">
+                        <img src="<%=contextPath%>/app/main/images/icon/h7.png" width="24" height="24" title="更改密码">
+                    </a>
+                </c:if>
+                <c:if test="${sessionScope.get('employeeId') eq null}">
+                    <a ng-click="login();">
+                        <img src="<%=contextPath%>/app/main/images/icon/h9.png" width="24" height="24" title="登录">
+                    </a>
+                </c:if>
             </div>
-            <span style="font-size: 30px; position: absolute; left: 50px; color: #fff; top: 8px;">禁毒工作管理平台</span>
+            <span style="font-size: 30px; position: absolute; left: 100px; color: #fff; top: 8px;">沙巴超自然旅游有限公司管理系统</span>
         </div>
     </div>
-    <div id="main">
+    <div id="main" style="margin-bottom: 0;padding-bottom: 0;">
         <div class="leftbar">
             <div class="LB_container">
                 <a title="首页" ng-click="showHome();" class="current">
@@ -112,21 +119,6 @@
                 <iframe id="iframe" style="display: none;" name="iframe" frameborder="0"></iframe>
                 <div id="tab" style="height: 100%;width: 100%;overflow: hidden;display: none;"></div>
             </div>
-        </div>
-    </div>
-    <div class="footer" id="footer">
-        <div class="left">
-            <span><i class="icons user" title="当前用户"
-                     style="top:3px;"></i><span>${sessionScope.employeeName}</span></span>
-            <span style="margin-left: 15px;font-weight: 700;" ng-cloak eccrm-previlege="PMD">消息：</span>
-        </div>
-
-        <div class="center">
-            <marquee direction="left" onmouseover="this.stop()" onmouseout="this.start()">
-                *** 内部资料,注意保密! ***
-            </marquee>
-        </div>
-        <div class="right" style="width: 100px;">
         </div>
     </div>
 </div>

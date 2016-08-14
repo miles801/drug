@@ -12,15 +12,6 @@
         $scope.subMenus = [];// 子菜单
 
 
-        // 收缩
-        $scope.$on('collapse', function () {
-
-        });
-
-        // 折叠
-        $scope.$on('expand', function () {
-
-        });
         var $iframe = $('#iframe');
         var $tab = $('#tab');
         $scope.addTab = function (title, url, data, currentId) {
@@ -77,6 +68,7 @@
         var speed = 250;
         // 收起
         $scope.fold = function () {
+            $('.content-iframe').css({'padding-left': 0, 'margin-left': 0});
             $menu.animate({width: 0}, speed, function () {
                 $menu.hide();
             });
@@ -86,6 +78,7 @@
 
         // 展开
         $scope.expand = function () {
+            $('.content-iframe').css({'padding-left': 160, 'margin-left': -160});
             if ($colbar.is(":hidden")) {
                 $colbar.show();
             }
@@ -108,6 +101,7 @@
 
         // 显示首页：隐藏tab
         $scope.showHome = function () {
+            $scope.fold();
             $menu.hide();
             $colbar.hide();
             $iframe.attr('src', CommonUtils.contextPathURL('/app/home/panel/panel.jsp')).show();
@@ -122,21 +116,22 @@
                 $scope.expand();
             }
         };
-        // 便签
-        $scope.showNote = function () {
-
-            hideColbar();
-            // 显示便签
-            $('#iframe').show().attr('src', 'tools/note')
-        };
 
 
+        // 更改密码
         $scope.updatePwd = function () {
             EmpModal.updatePwd(function () {
                 AlertFactory.success('密码更新成功!请重新登录!');
                 CommonUtils.delay(function () {
                     window.location.href = CommonUtils.contextPathURL("/logout");
                 }, 2000);
+            });
+        };
+        // 登录
+        $scope.login = function () {
+            EmpModal.login(function () {
+                AlertFactory.success('登录成功');
+                window.top.location.reload();
             });
         };
 
@@ -171,8 +166,6 @@
                 obj.addClass("current")
             });
 
-            // 渲染完毕后再触发一次窗口大小改变事件
-            $(document).trigger('resize');
         });
     });
 
@@ -228,17 +221,3 @@
     }]);
 
 })(angular, $, window);
-
-// 页面关闭/刷新时进行提示
-window.onbeforeunload = function () {
-    if ($.browser.msie) {// ie关闭
-        // 第一个条件：点击右上角的关闭按钮
-        // 第二个条件：点击页签的关闭按钮
-        // 第三个条件：按下了ALT键等导致页面跳转的都视为关闭
-        if (event.screenY - 20 < 0 || event.screenX > 440 || event.altKey) {// alt按键
-            event.returnValue = "确定退出系统?"
-        }
-    } else if ($.browser.chrome) {
-        event.returnValue = "确定退出系统?"
-    }
-};
