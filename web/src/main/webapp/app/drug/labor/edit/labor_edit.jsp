@@ -137,16 +137,21 @@
                             <label>选择工作区域:</label>
                         </div>
                         <div class="col-3-half">
-                            <input type="radio" name="area" class="area" value="0" checked/>外出省外
-                            <input type="radio"  name="area" class="area" value="1"/>外出州外省内
+                            <input type="radio" name="area" ng-model="beans.labor.workArea" class="area" value="0" ng-checked="true"/>外出省外
+                            <input type="radio"  name="area" ng-model="beans.labor.workArea" class="area" value="1"/>外出州外省内
                         </div>
+                        </div>
+                    <div class="row">
                         <div class="form-label col-1-half">
                             <label>务工地:</label>
                         </div>
-                        <select ng-model="beans.labor.workDress" class="col-3-half"  id="sheng"
+                        <select ng-model="beans.labor.workDress" class="col-3-half"  id="sheng" ng-disabled="beans.labor.workArea==1"
                                 ng-options="foo.value as foo.name for foo in sheng">
                         </select>
-                        <select ng-model="beans.labor.workDress" class="col-3-half"  id="zhou" hidden
+                        <div class="form-label col-1-half">
+                            <label>务工地:</label>
+                        </div>
+                        <select ng-model="beans.labor.workDress" class="col-3-half"  id="zhou" ng-disabled="beans.labor.workArea==0"
                                 ng-options="foo.value as foo.name for foo in zhou">
                         </select>
                     </div>
@@ -155,11 +160,9 @@
                         $(".area").change(function() {
                             var area = $("input[name='area']:checked").val();
                             if(area==0){
-                                $("#sheng").show();
-                                $("#zhou").hide();
+                                $("#zhou").val("");
                             }else if(area==1){
-                                $("#sheng").hide();
-                                $("#zhou").show();
+                                $("#sheng").val("");
                             }
                         });
                     </script>

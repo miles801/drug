@@ -18,6 +18,8 @@ public class Labor extends CommonDomain {
     @Column(length = 40)
     private String userId;
     @Column
+    private String workArea;// 工作区域
+    @Column
     private String workDress;// 务工地
     @Column(length = 20)
     private String position;// 从事职业
@@ -25,6 +27,14 @@ public class Labor extends CommonDomain {
     private String isDrug;// 是否涉毒等级人员
     @Column
     private String context;// 备注
+
+    public String getWorkArea() {
+        return workArea;
+    }
+
+    public void setWorkArea(String workArea) {
+        this.workArea = workArea;
+    }
 
     public String getUserId() {
         return userId;

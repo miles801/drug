@@ -151,6 +151,11 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
             String sql11 = "select count(r.id) from drug_drug r ,drug_user u ,sys_org o where r.userId=u.id and o.id=u.orgId and u.orgId='"+orgId+"' and r.controlXType=2" ;
             String sql12 =  "select count(r.id) from drug_drug r ,drug_user u ,sys_org o where r.userId=u.id and o.id=u.orgId and u.orgId='"+orgId+"' and r.controlXType=5" ;
             String sql13=  "select count(r.id) from drug_drug r ,drug_user u ,sys_org o where r.userId=u.id and o.id=u.orgId and u.orgId='"+orgId+"' and r.controlXType=7" ;
+            String sql16=  "select count(r.id) from drug_drug r ,drug_user u ,sys_org o where r.userId=u.id and o.id=u.orgId and u.orgId='"+orgId+"' and r.controlXType=8" ;
+            String sql14=  "select count(r.id) from drug_labor r ,drug_user u ,sys_org o where r.userId=u.id and o.id=u.orgId and u.orgId='"+orgId+"' and r.workArea=0" ;
+            String sql15=  "select count(r.id) from drug_labor r ,drug_user u ,sys_org o where r.userId=u.id and o.id=u.orgId and u.orgId='"+orgId+"' and r.workArea=1" ;
+
+
             List<Object> o=  getSession().createSQLQuery(sql).list();
             List<Object> o2=  getSession().createSQLQuery(sql2).list();
             List<Object> o3=  getSession().createSQLQuery(sql3).list();
@@ -164,6 +169,9 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
             List<Object> o11=  getSession().createSQLQuery(sql11).list();
             List<Object> o12=  getSession().createSQLQuery(sql12).list();
             List<Object> o13=  getSession().createSQLQuery(sql13).list();
+            List<Object> o14=  getSession().createSQLQuery(sql14).list();
+            List<Object> o15=  getSession().createSQLQuery(sql15).list();
+            List<Object> o16=  getSession().createSQLQuery(sql16).list();
             AllDrugVo vos=new AllDrugVo() ;
             vo.setCountPeople(o2.get(0)+"");
             vo.setCoutParent(o.get(0)+"");
@@ -178,6 +186,9 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
             vo.setShequjiedu(o11.get(0)+"");
             vo.setShequkangfu(o12.get(0)+"");
             vo.setOutOfControl(o13.get(0)+"");
+            vo.setOutOfSheng(o14.get(0)+"");
+            vo.setInOfSheng(o15.get(0)+"");
+            vo.setDied(o16.get(0)+"");
             voList.add(vo);
         }
         return voList;

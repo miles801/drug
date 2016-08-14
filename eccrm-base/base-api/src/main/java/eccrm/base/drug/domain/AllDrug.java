@@ -19,6 +19,11 @@ public class AllDrug extends CommonDomain{
     @Column
     private String countPeople;// 已入户
     @Column
+    private String outOfSheng;//
+    @Column
+    private String inOfSheng;//
+
+    @Column
     private String outSheng;//
     @Column
     private String inSheng;
@@ -26,6 +31,8 @@ public class AllDrug extends CommonDomain{
     private String inZhou;
     @Column
     private String inXian;
+
+
     @Column
     private String fDrug;
     @Column
@@ -50,6 +57,32 @@ public class AllDrug extends CommonDomain{
     private String shequkangfu;
     @Column
     private String outOfControl;
+    @Column
+    private String died;
+
+    public String getDied() {
+        return died;
+    }
+
+    public void setDied(String died) {
+        this.died = died;
+    }
+
+    public String getOutOfSheng() {
+        return outOfSheng;
+    }
+
+    public void setOutOfSheng(String outOfSheng) {
+        this.outOfSheng = outOfSheng;
+    }
+
+    public String getInOfSheng() {
+        return inOfSheng;
+    }
+
+    public void setInOfSheng(String inOfSheng) {
+        this.inOfSheng = inOfSheng;
+    }
 
     public String getOrgName() {
         return orgName;
