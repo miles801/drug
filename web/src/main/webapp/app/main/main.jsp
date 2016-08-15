@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>禁毒工作管理平台</title>
+    <title>东乡县乡镇禁毒工作管理平台</title>
     <link rel="stylesheet" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css"/>
     <link rel="stylesheet" href="<%=contextPath%>/app/main/css/main.css"/>
@@ -47,10 +47,10 @@
                     </a>
                 </c:if>
             </div>
-            <span style="font-size: 30px; position: absolute; left: 100px; color: #fff; top: 8px;">沙巴超自然旅游有限公司管理系统</span>
+            <span style="font-size: 30px; position: absolute; left: 100px; color: #fff; top: 8px;">东乡县乡镇禁毒工作管理平台</span>
         </div>
     </div>
-    <div id="main" style="margin-bottom: 0;padding-bottom: 0;">
+    <div id="main">
         <div class="leftbar">
             <div class="LB_container">
                 <a title="首页" ng-click="showHome();" class="current">
@@ -119,6 +119,22 @@
                 <iframe id="iframe" style="display: none;" name="iframe" frameborder="0"></iframe>
                 <div id="tab" style="height: 100%;width: 100%;overflow: hidden;display: none;"></div>
             </div>
+        </div>
+    </div>
+    <div class="footer" id="footer">
+        <div class="left">
+            <span><i class="icons user" title="当前用户"
+                     style="top:3px;"></i><span>${sessionScope.employeeName}</span></span>
+            <span style="margin-left: 15px;font-weight: 700;" ng-cloak eccrm-previlege="PMD">消息：</span>
+        </div>
+
+        <div class="center">
+            <marquee direction="left" onmouseover="this.stop()" onmouseout="this.start()">
+                *** 内部资料,注意保密! ***
+            </marquee>
+        </div>
+        <div class="right" style="width: 300px;">
+            <span>软件开发： 兰州倍特信息技术有限公司</span>
         </div>
     </div>
 </div>
