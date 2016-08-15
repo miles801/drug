@@ -4,11 +4,11 @@
     String contextPath = request.getContextPath();
 %>
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
-<head >
+<head>
     <title>编辑涉毒人员</title>
-    <meta content="text/html" charset="utf-8" >
+    <meta content="text/html" charset="utf-8">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/zTree/css/ztree.css">
@@ -156,12 +156,23 @@
                         <select ng-model="beans.drug.drugType" class="col-3-half"
                                 ng-options="foo.value as foo.name for foo in drugType">
                         </select>
+
+
+                        <%--<select ng-model="beans.drug.drugSorts" class="col-3-half"--%>
+                        <%--ng-options="foo.value as foo.name for foo in checkboxData">--%>
+                        <%--</select>--%>
+                    </div>
+                    <div class="row">
                         <div class="form-label col-1-half">
                             <label>涉毒种类:</label>
                         </div>
-                        <select ng-model="beans.drug.drugSorts" class="col-3-half"
-                                ng-options="foo.value as foo.name for foo in checkboxData">
-                        </select>
+                        <div class="col-8-half">
+                            <span ng-repeat="tag in checkboxData">
+                                    <input type="checkbox" id={{tag.value}} name="checkId" value="{{tag.value}}"
+                                           ng-checked="isSelected(tag.value)" ng-click="updateSelection($event,tag.value)"/>
+                                    <span style="font-size: 10px;">{{ tag.name }}</span>&nbsp;
+                            </span>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -222,7 +233,8 @@
                         <div class="form-label col-1-half">
                             <label>违法事实:</label>
                         </div>
-                        <textarea class="col-8-half" rows="3" ng-model="beans.drug.illegalFacts" maxlength="255"></textarea>
+                        <textarea class="col-8-half" rows="3" ng-model="beans.drug.illegalFacts"
+                                  maxlength="255"></textarea>
                     </div>
 
                     <div class="row">
@@ -292,7 +304,7 @@
                                         <td>{{foo.helpPosition}}</td>
                                         <td>{{foo.helpPhone}}</td>
                                         <td>
-                                          <%--  <a class="btn-op blue" ng-click="modify($index);">编辑</a>--%>
+                                            <%--  <a class="btn-op blue" ng-click="modify($index);">编辑</a>--%>
                                             <a class="btn-op red" ng-click="remove($index);">删除</a>
                                         </td>
                                     </tr>
@@ -314,6 +326,6 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/drug/drug.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/drug/edit/drug_edit.js" ></script>
-</html >
+<script type="text/javascript" src="<%=contextPath%>/app/drug/drug/drug.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/drug/edit/drug_edit.js"></script>
+</html>
