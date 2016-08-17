@@ -57,7 +57,7 @@
 
         $scope.orgTree = OrgTree.pick(function (o) {
             $scope.beans.orgId = o.id;
-            $scope.beans.orgName = o.name;
+            $scope.beans.orgName = o.longName;
         });
         /**
          * 清除机构信息

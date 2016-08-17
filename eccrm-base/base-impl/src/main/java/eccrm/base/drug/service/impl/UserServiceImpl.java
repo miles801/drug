@@ -108,6 +108,10 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
             User user=userDao.findById(id);
             Assert.notNull(user,"改村民信息已不存在，请刷新页面！");
             if(flag.equals("1")){
+                User labors=laborDao.findLaborByUserId(id);
+                if(labors!=null){
+                    Assert.isNull(labors,""+labors.getName()+"已在外出务工列表中，请重新选择！");
+                }
                 Labor labor=new Labor();
                 labor.setUserId(id);
                 labor.setIsDrug("1");

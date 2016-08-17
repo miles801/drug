@@ -105,7 +105,7 @@
         // 新增
         $scope.add = function () {
             CommonUtils.addTab({
-                title: '新增刑满释放人员',
+                title: '新增涉毒人员基本信息',
                 url: '/base/drug/add',
                 onUpdate: $scope.query
             });
@@ -114,7 +114,7 @@
         // 更新
         $scope.modify = function (id) {
             CommonUtils.addTab({
-                title: '更新刑满释放人员',
+                title: '更新涉毒人员基本信息',
                 url: '/base/drug/modify?id=' + id,
                 onUpdate: $scope.query
             });
@@ -123,7 +123,7 @@
         // 查看明细
         $scope.view = function (id) {
             CommonUtils.addTab({
-                title: '查看刑满释放人员',
+                title: '查看涉毒人员基本信息',
                 url: '/base/drug/detail?id=' + id
             });
         }

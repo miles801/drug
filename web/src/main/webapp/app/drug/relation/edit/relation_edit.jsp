@@ -7,7 +7,7 @@
 <html lang="en" >
 
 <head >
-    <title>编辑村民人员关系</title>
+    <title>编辑家庭成员关系</title>
     <meta content="text/html" charset="utf-8" >
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">

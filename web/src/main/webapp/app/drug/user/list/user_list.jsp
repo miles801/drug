@@ -3,10 +3,10 @@
 <%
     String contextPath = request.getContextPath();
 %>
-<html lang="en" >
-<head >
+<html lang="en">
+<head>
     <title>人员管理</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/vendor/zTree/css/ztree.css">
@@ -19,8 +19,8 @@
     <script>
         window.angular.contextPathURL = '<%=contextPath%>';
     </script>
-</head >
-<body >
+</head>
+<body>
 <div class="main condition-row-3" ng-app="drug.user.list" ng-controller="Ctrl">
     <div class="list-condition">
         <div class="block">
@@ -54,7 +54,7 @@
                         <div class="form-label col-1-half">
                             <label>是否是户主:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isLeader">
+                        <select class="col-2-half" ng-model="condition.isLeader">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -64,7 +64,7 @@
                         <div class="form-label col-1-half">
                             <label>是否外出务工:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isLabor">
+                        <select class="col-2-half" ng-model="condition.isLabor">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -72,7 +72,7 @@
                         <div class="form-label col-1-half">
                             <label>是否涉毒:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isDrugs">
+                        <select class="col-2-half" ng-model="condition.isDrugs">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -80,7 +80,7 @@
                         <div class="form-label col-1-half">
                             <label>是否贩毒可疑:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isFDrug">
+                        <select class="col-2-half" ng-model="condition.isFDrug">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -90,7 +90,7 @@
                         <div class="form-label col-1-half">
                             <label>是否吸毒可疑:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isXDrug">
+                        <select class="col-2-half" ng-model="condition.isXDrug">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -98,7 +98,7 @@
                         <div class="form-label col-1-half">
                             <label>是否正在服刑:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isPrison">
+                        <select class="col-2-half" ng-model="condition.isPrison">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -106,7 +106,7 @@
                         <div class="form-label col-1-half">
                             <label>是否刑满释放:</label>
                         </div>
-                        <select class="col-2-half"  ng-model="condition.isReleased">
+                        <select class="col-2-half" ng-model="condition.isReleased">
                             <option value="">全部</option>
                             <option value="否">否</option>
                             <option value="是">是</option>
@@ -136,25 +136,33 @@
                     <a type="button" class="btn btn-green btn-min" ng-click="exportData();">
                         <span class="glyphicons plus"></span> 村民档案导出
                     </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(1);" ng-disabled="!anyone" disabled="disabled">
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(1);" ng-disabled="!anyone"
+                           disabled="disabled">
                             <span class="glyphicons plus"></span> 务工人员
                         </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(2);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 可疑贩毒
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(3);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 可疑吸毒
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(4);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 服刑人员
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(5);" ng-disabled="!anyone" disabled="disabled">
-                            <span class="glyphicons plus"></span> 刑满释放
-                        </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(6);" ng-disabled="!anyone" disabled="disabled">
+                         <a type="button" class="btn btn-green btn-min" ng-click="addLog(6);" ng-disabled="!anyone"
+                             disabled="disabled">
                             <span class="glyphicons plus"></span> 涉毒人员
                         </a>
-                        <a type="button" class="btn btn-green btn-min" ng-click="remove();" ng-disabled="!anyone" disabled="disabled">
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(2);" ng-disabled="!anyone"
+                           disabled="disabled">
+                            <span class="glyphicons plus"></span> 可疑贩毒
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(3);" ng-disabled="!anyone"
+                           disabled="disabled">
+                            <span class="glyphicons plus"></span> 可疑吸毒
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(4);" ng-disabled="!anyone"
+                           disabled="disabled">
+                            <span class="glyphicons plus"></span> 服刑人员
+                        </a>
+                        <a type="button" class="btn btn-green btn-min" ng-click="addLog(5);" ng-disabled="!anyone"
+                           disabled="disabled">
+                            <span class="glyphicons plus"></span> 刑满释放
+                        </a>
+
+                        <a type="button" class="btn btn-green btn-min" ng-click="remove();" ng-disabled="!anyone"
+                           disabled="disabled">
                             <span class="glyphicons plus"></span> 删除
                         </a>
 
@@ -217,6 +225,6 @@
     <div class="list-pagination" eccrm-page="pager"></div>
 </div>
 </body>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/user/user.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/app/drug/user/list/user_list.js" ></script>
-</html >
+<script type="text/javascript" src="<%=contextPath%>/app/drug/user/user.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/app/drug/user/list/user_list.js"></script>
+</html>

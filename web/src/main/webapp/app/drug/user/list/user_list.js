@@ -39,7 +39,7 @@
         
         $scope.setRelation=function (id) {
             CommonUtils.addTab({
-                title: '设置村民关系',
+                title: '设置家庭成员关系',
                 url: '/base/user/setRelation?id=' + id,
                 onUpdate: $scope.query
             });
@@ -123,15 +123,15 @@
                     var promise = UserService.addLog({ids: id,flag:flag}, function(){
                         AlertFactory.success('记录新增成功!');
                         $scope.query();
+                        ModalFactory.confirm({
+                            scope: $scope,
+                            content: '<span class="text-danger">您是否想现在去完善刚才选择人员的信息？</span>',
+                            callback: function () {
+                                window.location.href = CommonUtils.contextPathURL(url);
+                            }
+                        });
                     });
                     CommonUtils.loading((promise));
-                    ModalFactory.confirm({
-                        scope: $scope,
-                        content: '<span class="text-danger">您是否想现在去完善刚才选择人员的信息？</span>',
-                        callback: function () {
-                            window.location.href = CommonUtils.contextPathURL(url);
-                        }
-                    });
                 }
 
         });

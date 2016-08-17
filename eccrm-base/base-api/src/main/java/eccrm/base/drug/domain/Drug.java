@@ -26,7 +26,7 @@ public class Drug extends CommonDomain {
 
     @ApiField(value = "出生日期")
     @Column
-    private Date brithDate;
+    private String brithDate;
 
     @ApiField(value = "人员现状")
     @Column(length = 40)
@@ -46,7 +46,7 @@ public class Drug extends CommonDomain {
 
     @ApiField(value = "初次查获时间")
     @Column
-    private Date firstTime;
+    private String firstTime;
 
     @ApiField(value = "查获地区")
     @Column(length = 50)
@@ -62,7 +62,7 @@ public class Drug extends CommonDomain {
 
     @ApiField(value = "处置时间")
     @Column
-    private Date dealDate;
+    private String dealDate;
 
     @ApiField(value = "查获地址")
     @Column(length = 50)
@@ -104,11 +104,11 @@ public class Drug extends CommonDomain {
         this.userName = userName;
     }
 
-    public Date getBrithDate() {
+    public String getBrithDate() {
         return brithDate;
     }
 
-    public void setBrithDate(Date brithDate) {
+    public void setBrithDate(String brithDate) {
         this.brithDate = brithDate;
     }
 
@@ -144,11 +144,11 @@ public class Drug extends CommonDomain {
         this.drugSorts = drugSorts;
     }
 
-    public Date getFirstTime() {
+    public String getFirstTime() {
         return firstTime;
     }
 
-    public void setFirstTime(Date firstTime) {
+    public void setFirstTime(String firstTime) {
         this.firstTime = firstTime;
     }
 
@@ -176,11 +176,11 @@ public class Drug extends CommonDomain {
         this.deal = deal;
     }
 
-    public Date getDealDate() {
+    public String getDealDate() {
         return dealDate;
     }
 
-    public void setDealDate(Date dealDate) {
+    public void setDealDate(String dealDate) {
         this.dealDate = dealDate;
     }
 

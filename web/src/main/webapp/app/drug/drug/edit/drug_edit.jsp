@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-3-half">
                             <input type="text" class="col-12" ng-model="beans.drug.brithDate" id="brithDate"
-                                   eccrm-my97="{el:'brithDate',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
+                                   eccrm-my97="{el:'brithDate',dateFmt:'yyyy年MM月dd日'}"
                                    readonly/>
                             <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate(0);"
                                                     title="清除"></i></span>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="col-3-half">
                             <input type="text" class="col-12" ng-model="beans.drug.firstTime" id="firstTime"
-                                   eccrm-my97="{el:'firstTime',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
+                                   eccrm-my97="{el:'firstTime',dateFmt:'yyyy年MM月dd日'}"
                                    readonly/>
                             <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate(1);"
                                                     title="清除"></i></span>
@@ -206,8 +206,10 @@
                         <div class="form-label col-1-half">
                             <label>查获地址:</label>
                         </div>
-                        <input class="col-3-half" type="text" ng-model="beans.drug.drugAdress" maxlength="50"/>
-
+                        <%--<input class="col-3-half" type="text" ng-model="beans.drug.drugAdress" maxlength="50"/>--%>
+                        <select ng-model="beans.drug.drugAdress" class="col-3-half"
+                                ng-options="foo.value as foo.name for foo in sheng">
+                        </select>
                         <div class="form-label col-1-half">
                             <label>查获单位:</label>
                         </div>
@@ -219,7 +221,7 @@
                         </div>
                         <div class="col-3-half">
                             <input type="text" class="col-12" ng-model="beans.drug.dealDate" id="dealDate"
-                                   eccrm-my97="{el:'dealDate',dateFmt:'yyyy-MM-dd HH:mm:ss'}"
+                                   eccrm-my97="{el:'dealDate',dateFmt:'yyyy年MM月dd日'}"
                                    readonly/>
                             <span class="add-on"><i class="icons icon cp fork" ng-click="clearDate(2);"
                                                     title="清除"></i></span>

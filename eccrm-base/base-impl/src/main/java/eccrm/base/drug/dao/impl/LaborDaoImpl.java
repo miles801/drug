@@ -12,10 +12,9 @@ import eccrm.base.drug.vo.UserVo;
 import eccrm.base.parameter.service.ParameterContainer;
 import eccrm.utils.codeutils.Page;
 import org.hibernate.Query;
-import org.hibernate.criterion.Example;
+import org.hibernate.criterion.*;
 import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.MatchMode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -120,6 +119,16 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
     public void delete(Labor labor) {
         Assert.notNull(labor, "要删除的对象不能为空!");
         getSession().delete(labor);
+    }
+
+    @Override
+    public User findLaborByUserId(String id) {
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Labor.class);
+        detachedCriteria.setProjection(Projections.property("userId"));
+        detachedCriteria.add(Restrictions.eq("userId",id));
+        Criteria criteria=createCriteria(User.class);
+        criteria.add(Property.forName("id").in(detachedCriteria));
+        return (User) criteria.uniqueResult();
     }
 
 

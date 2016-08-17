@@ -2,6 +2,7 @@ package eccrm.base.drug.dao;
 
 import eccrm.base.drug.bo.LaborBo;
 import eccrm.base.drug.domain.Labor;
+import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.LaborVo;
 import java.util.List;
 
@@ -34,4 +35,5 @@ public interface LaborDao {
      */
     void delete(Labor labor);
 
+    User findLaborByUserId(String id);
 }

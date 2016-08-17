@@ -58,6 +58,7 @@
                         <input type="hidden" id="pageType" value="${pageType}"/>
                         <input type="hidden" id="id" value="${id}"/>
                     </div>
+                    <div>
                         <div class="row">
                             <div eccrm-upload="uploadOptions" ng-cloak></div>
                         </div>
@@ -72,6 +73,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>姓名:</label>
@@ -133,7 +135,7 @@
                         &nbsp;<a style="color: red">*</a>
                     </div>
 
-                    <div class="row">
+                   <%-- <div class="row">
                         <div class="form-label col-1-half">
                             <label>务工情况:</label>
                         </div>
@@ -143,7 +145,7 @@
                         </div>
                         <input class="col-3-half" type="text" ng-model="beans.workAdress" maxlength="40" />
 
-                    </div>
+                    </div>--%>
                     <div class="row">
                         <div class="form-label col-1-half">
                             <label>家庭详细地址:</label>

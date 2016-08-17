@@ -74,7 +74,7 @@
         // 新增
         $scope.add = function () {
             CommonUtils.addTab({
-                title: '新增村民人员关系',
+                title: '新增家庭成员关系',
                 url: '/drug/relation/add',
                 onUpdate: $scope.query
             });
@@ -83,7 +83,7 @@
         // 更新
         $scope.modify = function (id) {
             CommonUtils.addTab({
-                title: '更新村民人员关系',
+                title: '更新家庭成员关系',
                 url: '/drug/relation/modify?id=' + id,
                 onUpdate: $scope.query
             });
@@ -92,7 +92,7 @@
         // 查看明细
         $scope.view = function (id) {
             CommonUtils.addTab({
-                title: '查看村民人员关系',
+                title: '查看家庭成员关系',
                 url: '/drug/relation/detail?id=' + id
             });
         }

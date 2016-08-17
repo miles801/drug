@@ -51,7 +51,11 @@
                 }
             });
         }
-
+        // 省份
+        $scope.sheng = [{name: '请选择...'}];
+        ParameterLoader.loadBusinessParam("SHENG", function (data) {
+            $scope.sheng.push.apply($scope.sheng, data);
+        });
         $scope.back = CommonUtils.back;
         // 民族参数
         $scope.nation = [{name: '请选择...'}];

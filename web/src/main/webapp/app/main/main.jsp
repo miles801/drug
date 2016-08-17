@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>东乡县乡镇禁毒工作管理平台</title>
+    <title>东乡县赵家乡禁毒工作管理平台</title>
     <link rel="stylesheet" href="<%=contextPath%>/vendor/bootstrap-v3.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="<%=contextPath%>/style/standard/css/eccrm-common-new.css"/>
     <link rel="stylesheet" href="<%=contextPath%>/app/main/css/main.css"/>
@@ -47,7 +47,7 @@
                     </a>
                 </c:if>
             </div>
-            <span style="font-size: 30px; position: absolute; left: 100px; color: #fff; top: 8px;">东乡县乡镇禁毒工作管理平台</span>
+            <span style="font-size: 30px; position: absolute; left: 100px; color: #fff; top: 8px;">东乡县赵家乡禁毒工作管理平台</span>
         </div>
     </div>
     <div id="main">
