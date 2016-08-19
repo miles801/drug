@@ -67,7 +67,17 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
 
     @Override
     public Long getTotal(UserBo bo) {
+        String orgId=SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> list=  getSession().createSQLQuery(ad).list();
         Criteria criteria = createRowCountsCriteria(User.class);
+        if(list!=null&&list.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            criteria.add(Property.forName("orgId").in(o));
+        }
         initCriteria(criteria, bo);
         return (Long) criteria.uniqueResult();
     }
