@@ -1,6 +1,7 @@
 package eccrm.base.drug.service;
 
 import com.ycrl.core.pager.PageVo;
+import eccrm.base.attachment.HasAttachment;
 import eccrm.base.drug.bo.UserBo;
 import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.UserVo;
@@ -49,4 +50,6 @@ public interface UserService {
     void resetRelation(String idArr);
 
     PageVo allPageQuery(UserBo bo);
+    @HasAttachment
+    String updateUserImg(String id,String ds);
 }

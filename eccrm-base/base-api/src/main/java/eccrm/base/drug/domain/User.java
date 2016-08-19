@@ -103,6 +103,18 @@ public class User extends CommonDomain implements AttachmentSymbol {
     @Column
     private String isParent;
 
+    @ApiField(value = "父节点")
+    @Column
+    private String userImg;
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
+    }
+
     public String getIcon() {
         return icon;
     }

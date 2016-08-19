@@ -14,6 +14,7 @@
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-strap-all.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-ztree-all.js"></script>
+    <script type="text/javascript" src="<%=contextPath%>/static/ycrl/javascript/angular-upload.js"></script>
     <script>
         window.angular.contextPathURL = '<%=contextPath%>';
     </script>
@@ -32,6 +33,9 @@
                         <a type="button" class="btn btn-green btn-min" ng-click="addEntering();">
                             <span class="glyphicons plus"></span> 新建
                         </a>
+                         <a type="button" class="btn btn-green btn-min" ng-click="openImgUploadWindow();">
+                            <span class="glyphicons plus"></span> 家庭照片
+                        </a>
                 </span>
             </div>
             <div class="block-content">
@@ -40,7 +44,7 @@
                         <table class="table table-striped table-hover">
                             <thead class="table-header">
                             <tr>
-                                <td>头像</td>
+                                <%--<td>头像</td>--%>
                                 <td>姓名</td>
                                 <td>性别</td>
                                 <td>身份证号</td>
@@ -54,12 +58,12 @@
                             </thead>
                             <tbody class="table-body">
                             <tr ng-show="!beans || !beans.total">
-                                <td colspan="10" class="text-center">没有查询到数据！</td>
+                                <td colspan="9" class="text-center">没有查询到数据！</td>
                             </tr>
                             <tr bindonce ng-repeat="foo in beans.data" ng-cloak>
-                                <td>
-                                    <img style="width: 50px;height: 50px;" ng-src="/attachment/download?id={{foo.icon}}">
-                                </td>
+                                <%--<td>--%>
+                                    <%--<img style="width: 50px;height: 50px;" ng-src="/attachment/download?id={{foo.icon}}">--%>
+                                <%--</td>--%>
                                 <td title="点击查询明细！" style="cursor: pointer;">
                                     <a ng-click="view(foo.id)" bo-text="foo.name"></a>
                                 </td>

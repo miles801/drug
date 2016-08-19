@@ -1,0 +1,27 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width: 1000px;">
+        <div class="modal-content" style="width: 1000px;">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" style="text-align: center;">
+                    <span>{{title}}</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="headIconWindowForm" class="form-horizontal" style="height:250px;">
+                    <div eccrm-upload="uploadOptions" ng-cloak></div>
+                    <div class="row-1">
+                        <div class="col-1-half">&nbsp;</div>
+                        <div class="col-10">最多只能上传{{limit}}张图片</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="headIconWindowFormSub" type="button" ng-cloak class="btn btn-default btn-primary"
+                        ng-click="sub();" ng-disabled="imgIds.length==0">确定
+                </button>
+                <button type="button" class="btn btn-default btn-primary" ng-click="$hide()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

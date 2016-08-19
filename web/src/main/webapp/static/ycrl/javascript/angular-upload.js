@@ -210,200 +210,196 @@ SWFOption.prototype = {
 // 需要注意的问题
 // 当页面的session失效后，sessionId就会获取不到，从而会导致该插件出现302错误
     app.directive('eccrmUpload', ['CommonUtils', '$http', '$timeout', 'ModalFactory', function (CommonUtils, $http, $timeout, ModalFactory) {
-        var uploadifyJsPath = CommonUtils.contextPathURL('/vendor/uploadify/jquery.uploadify.js');
-        var uploadifyCssPath = CommonUtils.contextPathURL('/vendor/uploadify/uploadify.css');
-        var uploadifySwfPath = CommonUtils.contextPathURL('/vendor/uploadify/uploadify.swf');
-        // 加载上传附件的js
-        var loadJs = function () {
-            var context = this;
-            if (envPrepared == true) {
-                context.resolve();
-                return true;
-            }
-            var timer = $timeout(function () {
-                context.reject('请求超时:' + uploadifyJsPath);
-            }, 5000);
-            $.getScript(uploadifyJsPath, function () {
-                $timeout.cancel(timer);
-                context.resolve();
-            });
-        };
+            var uploadifyJsPath = CommonUtils.contextPathURL('/vendor/uploadify/jquery.uploadify.js');
+            var uploadifyCssPath = CommonUtils.contextPathURL('/vendor/uploadify/uploadify.css');
+            var uploadifySwfPath = CommonUtils.contextPathURL('/vendor/uploadify/uploadify.swf');
+            // 加载上传附件的js
+            var loadJs = function () {
+                var context = this;
+                if (envPrepared == true) {
+                    context.resolve();
+                    return true;
+                }
+                var timer = $timeout(function () {
+                    context.reject('请求超时:' + uploadifyJsPath);
+                }, 5000);
+                $.getScript(uploadifyJsPath, function () {
+                    $timeout.cancel(timer);
+                    context.resolve();
+                });
+            };
 
-        // 加载附件上传的css
-        var loadCss = function () {
-            var context = this;
-            if (envPrepared == true) {
-                context.resolve();
-                return true;
-            }
-            var head = document.getElementsByTagName('head')[0];
-            var link = document.createElement('link');
-            link.href = uploadifyCssPath;
-            link.rel = 'stylesheet';
-            link.type = 'text/css';
-            head.appendChild(link);
-            this.resolve();
-        };
+            // 加载附件上传的css
+            var loadCss = function () {
+                var context = this;
+                if (envPrepared == true) {
+                    context.resolve();
+                    return true;
+                }
+                var head = document.getElementsByTagName('head')[0];
+                var link = document.createElement('link');
+                link.href = uploadifyCssPath;
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                head.appendChild(link);
+                this.resolve();
+            };
 
-        return {
-            restrict: 'A',
-            templateUrl: CommonUtils.contextPathURL('/static/ycrl/javascript/template/upload.html'),
-            scope: {
-                options: '=eccrmUpload'
-            },
-            link: function (scope, elem) {
-                var options;
-                var fileupload;
-                scope.attachments = [];
+            return {
+                restrict: 'A',
+                templateUrl: CommonUtils.contextPathURL('/static/ycrl/javascript/template/upload.html'),
+                scope: {
+                    options: '=eccrmUpload'
+                },
+                link: function (scope, elem) {
+                    var options;
+                    var fileupload;
+                    scope.attachments = [];
 
-                /**
-                 * 下载附件
-                 * @param id
-                 */
-                scope.download = function (id) {
-                    window.open(CommonUtils.contextPathURL('/attachment/download?id=' + id), "_blank");
-                };
+                    /**
+                     * 下载附件
+                     * @param id
+                     */
+                    scope.download = function (id) {
+                        window.open(CommonUtils.contextPathURL('/attachment/download?id=' + id), "_blank");
+                    };
 
-                /**
-                 * 删除附件
-                 * @param index 索引
-                 * @param id 附件ID
-                 */
-                scope.deleteAttachment = function (index, id) {
-                    scope.content = '附件删除后,将不可恢复,请确认删除!';
-                    ModalFactory.remove(scope, function () {
-                        $http.get(CommonUtils.contextPathURL('/attachment/delete?ids=' + id))
-                            .success(function (data) {
-                                if (data && data.success) {
-                                    // 通知删除
-                                    if (angular.isFunction(options.onDelete)) {
-                                        options.onDelete(id);
-                                    }
-                                    scope.attachments.splice(index, 1);
-
-                                }
-                            })
-                    });
-                };
-
-                scope.showImage = function (id, name) {
-                    art.dialog({
-                        lock: true,
-                        title: name,
-                        width: 600,
-                        height: 400,
-                        opacity: 0.87,	// 透明度
-                        content: '<img style="height: 100%;width: 100%;" src="' + CommonUtils.contextPathURL('/attachment/download?id=' + id) + '" alt="' + name + '"/>',
-                        cancel: true
-                    });
-                };
-
-                // 初始化插件
-                var init = function () {
-                    // 修改标识位，表示已经初始化过一次
-                    envPrepared = true;
-
-                    // 获取自定义配置 & 初始化uploadify参数
-                    var promise = CommonUtils.parseToPromise(scope.options)
-                        .then(function (cfg) {
-                            fileupload = elem.find('input[type="file"]');
-                            var swfContext;    // 运行时对象
-                            var id = CommonUtils.randomID(6);
-                            fileupload.attr('id', id);
-                            options = angular.extend(new UploadOption(), cfg);
-                            if (options.readonly === true) {
-                                options.canDelete = false;
-                            }
-
-                            /**
-                             * 获取所有的附件ID
-                             */
-                            options.getAttachment = function () {
-                                var ids = [];
-                                angular.forEach(scope.attachments || [], function (o) {
-                                    ids.push(o.id);
-                                });
-                                return ids;
-                            };
-
-                            /**
-                             * 清空所有上传的附件
-                             */
-                            options.removeAll = function () {
-                                var attachments = scope.attachments;
-                                if (attachments.length > 0) {
-                                    var url = CommonUtils.contextPathURL('/attachment/delete?ids=' + this.getAttachment().join(','));
-                                    $http.get(url).success(function () {
-                                        //fileupload.uploadify('cancel', '*');
-                                        attachments.length = 0;
-                                    }).error(function () {
-                                        alert('附件清除失败!');
-                                    });
-                                }
-
-                            };
-
-                            /**
-                             * 移除指定的附件列表
-                             * @param ids 附件ID集合
-                             * @param callback
-                             */
-                            options.remove = function (ids, callback) {
-                                ids = (typeof ids === 'string' ? [ids] : ids);
-                                var attachments = this.getAttachment();
-                                if ($.isArray(ids) && attachments.length > 0) {
-                                    var url = CommonUtils.contextPathURL('/attachment/delete?ids=' + ids.join(','));
-                                    $http.get(url).success(function () {
-                                        angular.forEach(function (ids, id) {
-                                            //fileupload.uploadify('cancel', id, true);
-                                            scope.attachments.splice($.inArray(id, attachments), 1);
-                                        });
-                                        angular.isFunction(callback) && callback();
-                                    }).error(function () {
-                                        alert('附件清除失败!');
-                                    });
-                                }
-                            };
-
-                            // 回显
-                            var bid = options.bid;
-                            var btype = options.btype || '';
-                            if (options.bid) {
-                                var url = CommonUtils.contextPathURL('/attachment/query?bid=' + options.bid);
-                                if (options.btype) {
-                                    url = url + '&btype=' + btype;
-                                }
-                                $http.get(url).success(function (data) {
-                                    data = data.data || [];
-                                    angular.forEach(data, function (o) {
-                                        var end = o.fileName.substr(o.fileName.lastIndexOf('.') + 1);
-                                        if ("jpg|JPG|png|PNG|jpeg|gif|bmp".indexOf(end) > -1) {
-                                            o.isImage = true;
+                    /**
+                     * 删除附件
+                     * @param index 索引
+                     * @param id 附件ID
+                     */
+                    scope.deleteAttachment = function (index, id) {
+                        scope.content = '附件删除后,将不可恢复,请确认删除!';
+                        ModalFactory.remove(scope, function () {
+                            $http.get(CommonUtils.contextPathURL('/attachment/delete?ids=' + id))
+                                .success(function (data) {
+                                    if (data && data.success) {
+                                        // 通知删除
+                                        if (angular.isFunction(options.onDelete)) {
+                                            options.onDelete(id);
                                         }
-                                        scope.attachments.push(o);
+                                        scope.attachments.splice(index, 1);
+                                    }
+                                })
+                        });
+                    };
+
+                    scope.showImage = function (id, name) {
+                        art.dialog({
+                            lock: true,
+                            title: name,
+                            width: 600,
+                            height: 400,
+                            opacity: 0.87,	// 透明度
+                            content: '<img style="height: 100%;width: 100%;" src="' + CommonUtils.contextPathURL('/attachment/download?id=' + id) + '" alt="' + name + '"/>',
+                            cancel: true
+                        });
+                    };
+
+                    // 初始化插件
+                    var init = function () {
+                        // 修改标识位，表示已经初始化过一次
+                        envPrepared = true;
+
+                        // 获取自定义配置 & 初始化uploadify参数
+                        var promise = CommonUtils.parseToPromise(scope.options)
+                            .then(function (cfg) {
+                                fileupload = elem.find('input[type="file"]');
+                                var swfContext;    // 运行时对象
+                                var id = CommonUtils.randomID(6);
+                                fileupload.attr('id', id);
+                                options = angular.extend(new UploadOption(), cfg);
+                                if (options.readonly === true) {
+                                    options.canDelete = false;
+                                }
+
+                                /**
+                                 * 获取所有的附件ID
+                                 */
+                                options.getAttachment = function () {
+                                    var ids = [];
+                                    angular.forEach(scope.attachments || [], function (o) {
+                                        ids.push(o.id);
                                     });
-                                });
-                            }
-                            scope.options = options;
-                            var url = CommonUtils.contextPathURL('/attachment/upload2');
-                            if (options.thumb === true) {
-                                url += '?thumb=' + options.thumb + '&width=' + options.thumbWidth + '&height=' + options.thumbHeight
-                            }
-                            options.swfOption = angular.extend(new SWFOption(), cfg.swfOption, {
-                                multi: options.multi || false,
-                                swf: uploadifySwfPath,
-                                formData: {businessType: btype},
-                                uploader: url,
-                                onUploadSuccess: function (file, data, response) {
-                                    var obj = $.parseJSON(data);
-                                    if (!(angular.isArray(obj) && obj.length > 0)) {
-                                        alert('附件上传失败!');
-                                        throw '附件上传失败!没有获取到返回的附件信息!' + (obj.error || obj.fail || obj.message || "");
+                                    return ids;
+                                };
+                                /**
+                                 * 通过附件ID删除附件
+                                 * @param index
+                                 * @param id
+                                 */
+                                options.deleteAttachments = function (index, id,ids) {
+                                    scope.content = '附件删除后,将不可恢复,请确认删除!';
+                                    ModalFactory.remove(scope, function () {
+                                        $http.get(CommonUtils.contextPathURL('/attachment/delete?ids=' + id))
+                                            .success(function (data) {
+                                                if (data && data.success) {
+                                                    // 通知删除
+                                                    if (angular.isFunction(options.onDelete)) {
+                                                        options.onDelete(id);
+                                                    }
+                                                    scope.attachments.splice(index, 1);
+                                                }
+                                                $('#' + ids + '').hide();
+                                            })
+                                    });
+                                };
+
+                                options.downloads=function(id){
+                                    scope.download(id);
+                                }
+
+                                /**
+                                 * 清空所有上传的附件
+                                 */
+                                options.removeAll = function () {
+                                    var attachments = scope.attachments;
+                                    if (attachments.length > 0) {
+                                        var url = CommonUtils.contextPathURL('/attachment/delete?ids=' + this.getAttachment().join(','));
+                                        $http.get(url).success(function () {
+                                            //fileupload.uploadify('cancel', '*');
+                                            attachments.length = 0;
+                                        }).error(function () {
+                                            alert('附件清除失败!');
+                                        });
                                     }
 
-                                    // 获得附件信息
-                                    scope.$apply(function () {
-                                        angular.forEach(obj, function (o) {
+                                };
+
+                                /**
+                                 * 移除指定的附件列表
+                                 * @param ids 附件ID集合
+                                 * @param callback
+                                 */
+                                options.remove = function (ids, callback) {
+                                    ids = (typeof ids === 'string' ? [ids] : ids);
+                                    var attachments = this.getAttachment();
+                                    if ($.isArray(ids) && attachments.length > 0) {
+                                        var url = CommonUtils.contextPathURL('/attachment/delete?ids=' + ids.join(','));
+                                        $http.get(url).success(function () {
+                                            angular.forEach(function (ids, id) {
+                                                //fileupload.uploadify('cancel', id, true);
+                                                scope.attachments.splice($.inArray(id, attachments), 1);
+                                            });
+                                            angular.isFunction(callback) && callback();
+                                        }).error(function () {
+                                            alert('附件清除失败!');
+                                        });
+                                    }
+                                };
+
+                                // 回显
+                                var bid = options.bid;
+                                var btype = options.btype || '';
+                                if (options.bid) {
+                                    var url = CommonUtils.contextPathURL('/attachment/query?bid=' + options.bid);
+                                    if (options.btype) {
+                                        url = url + '&btype=' + btype;
+                                    }
+                                    $http.get(url).success(function (data) {
+                                        data = data.data || [];
+                                        angular.forEach(data, function (o) {
                                             var end = o.fileName.substr(o.fileName.lastIndexOf('.') + 1);
                                             if ("jpg|JPG|png|PNG|jpeg|gif|bmp".indexOf(end) > -1) {
                                                 o.isImage = true;
@@ -411,42 +407,70 @@ SWFOption.prototype = {
                                             scope.attachments.push(o);
                                         });
                                     });
-
-                                    // 第三方回调
-                                    if (angular.isFunction(options.onSuccess)) {
-                                        options.onSuccess(obj[0], obj);
-                                    }
-                                    // 支持多附件同时上传
-                                    var queue = swfContext.queueData || {};
-                                    if (!$.isEmptyObject(queue.files)) {
-                                        fileupload.uploadify('upload', '*');
-                                    }
-                                },
-                                onInit: function (swf) {
-                                    swfContext = swf;
                                 }
+                                scope.options = options;
+                                var url = CommonUtils.contextPathURL('/attachment/upload2');
+                                if (options.thumb === true) {
+                                    url += '?thumb=' + options.thumb + '&width=' + options.thumbWidth + '&height=' + options.thumbHeight
+                                }
+                                options.swfOption = angular.extend(new SWFOption(), cfg.swfOption, {
+                                    multi: options.multi || false,
+                                    swf: uploadifySwfPath,
+                                    formData: {businessType: btype},
+                                    uploader: url,
+                                    onUploadSuccess: function (file, data, response) {
+                                        var obj = $.parseJSON(data);
+                                        if (!(angular.isArray(obj) && obj.length > 0)) {
+                                            alert('附件上传失败!');
+                                            throw '附件上传失败!没有获取到返回的附件信息!' + (obj.error || obj.fail || obj.message || "");
+                                        }
+
+                                        // 获得附件信息
+                                        scope.$apply(function () {
+                                            angular.forEach(obj, function (o) {
+                                                var end = o.fileName.substr(o.fileName.lastIndexOf('.') + 1);
+                                                if ("jpg|JPG|png|PNG|jpeg|gif|bmp".indexOf(end) > -1) {
+                                                    o.isImage = true;
+                                                }
+                                                scope.attachments.push(o);
+                                            });
+                                        });
+
+                                        // 第三方回调
+                                        if (angular.isFunction(options.onSuccess)) {
+                                            options.onSuccess(obj[0], obj);
+                                        }
+                                        // 支持多附件同时上传
+                                        var queue = swfContext.queueData || {};
+                                        if (!$.isEmptyObject(queue.files)) {
+                                            fileupload.uploadify('upload', '*');
+                                        }
+                                    },
+                                    onInit: function (swf) {
+                                        swfContext = swf;
+                                    }
+                                });
+
+
+                                // 真正初始化
+                                fileupload.uploadify(options.swfOption);
                             });
+                    };
 
+                    // 加载js失败
+                    var loadError = function (errorMsg) {
+                        alert(errorMsg);
+                    };
 
-                            // 真正初始化
-                            fileupload.uploadify(options.swfOption);
-                        });
-                };
-
-                // 加载js失败
-                var loadError = function (errorMsg) {
-                    alert(errorMsg);
-                };
-
-                // 加载js和样式
-                CommonUtils.chain([loadJs, loadCss], init, loadError);
-            }
-        };
-    }
-    ])
-    /**
-     * 格式化文件大小
-     */
+                    // 加载js和样式
+                    CommonUtils.chain([loadJs, loadCss], init, loadError);
+                }
+            };
+        }
+        ])
+        /**
+         * 格式化文件大小
+         */
         .filter('fileSize', function () {
             return function (value) {
                 if (typeof value === 'number') {

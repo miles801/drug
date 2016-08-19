@@ -249,6 +249,14 @@ public class UserServiceImpl implements UserService, BeanWrapCallback<User, User
         return vo;
     }
 
+    @Override
+    public String updateUserImg(String id,String ds) {
+        User user=userDao.findById(id);
+//        user.setUserImg(ds);
+        userDao.update(user);
+        return user.businessId();
+    }
+
     /**
      * 通过业务参数的类型以及名称找到对应value
      *

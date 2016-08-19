@@ -240,6 +240,13 @@ public class UserCtrl extends BaseController {
         GsonUtils.printSuccess(response);
     }
 
+    @RequestMapping(value = "updateUserImg", params = {"id","attachmentIds"}, method = RequestMethod.POST)
+    @ResponseBody
+    public void updateUserImg(@RequestParam String id, @RequestParam String attachmentIds,HttpServletResponse response) {
+        userService.updateUserImg(id,attachmentIds);
+        GsonUtils.printSuccess(response);
+    }
+
     /**
      * 下载模板
      * @param request

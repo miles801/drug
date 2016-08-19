@@ -10,12 +10,37 @@
         'eccrm.base.user.modal',
         'drug.relation'
     ]);
-    app.controller('Ctrl', function ($scope, CommonUtils, AlertFactory, ModalFactory, RelationService, RelationParam) {
+    app.controller('Ctrl', function ($scope,LeaveWindowService, CommonUtils, AlertFactory, ModalFactory, RelationService, RelationParam) {
         var id = $('#id').val();
         $scope.condition = {
             id:id
         };
-
+        $scope.user
+        // 家庭照片上传
+        $scope.openImgUploadWindow = function () {
+            LeaveWindowService.createWindow({
+                multi: true,
+                bid: id,
+                btype: 'degreeImage',
+                title: '家庭照片',
+                limit: 10, // 文件上传数量,
+                imgIds:null
+            }, function (d) {
+                return CommonUtils.promise(function (defer) {
+                    var promise = RelationService.updateUserImg({
+                        id: id,
+                        userImg: d.imgIds.toString()
+                    }, function (data) {
+                        if (data.success) {
+                            AlertFactory.success("家庭照片更新成功！");
+                        } else {
+                            AlertFactory.error("家庭照片更新失败！");
+                        }
+                    });
+                    CommonUtils.loading(promise, 'Loading...');
+                });
+            });
+        };
         //查询数据
         $scope.query = function() {
             $scope.pager.query();
