@@ -2,6 +2,7 @@ package eccrm.base.drug.dao.impl;
 
 import com.michael.base.common.BaseParameter;
 import com.ycrl.core.HibernateDaoHelper;
+import com.ycrl.core.context.SecurityContext;
 import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.DrugBo;
@@ -43,6 +44,12 @@ public class DrugDaoImpl extends HibernateDaoHelper implements DrugDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<DrugVo> query(DrugBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Drug l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -53,6 +60,11 @@ public class DrugDaoImpl extends HibernateDaoHelper implements DrugDao {
         }
         if (!StringUtils.isEmpty(bo.getDrugType())) {
             hql.append(" and l.drugType='" + bo.getDrugType() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         Query query = getSession().createQuery(hql.toString());
@@ -90,6 +102,12 @@ public class DrugDaoImpl extends HibernateDaoHelper implements DrugDao {
 
     @Override
     public Long getTotal(DrugBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Drug l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -100,6 +118,11 @@ public class DrugDaoImpl extends HibernateDaoHelper implements DrugDao {
         }
         if (!StringUtils.isEmpty(bo.getDrugType())) {
             hql.append(" and l.drugType='" + bo.getDrugType() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         Query query = getSession().createQuery(hql.toString());

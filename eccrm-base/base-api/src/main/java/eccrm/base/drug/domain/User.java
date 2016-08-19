@@ -32,7 +32,7 @@ public class User extends CommonDomain implements AttachmentSymbol {
     private String orgId;
 
     @ApiField(value = "组织名称")
-    @Column(length = 10)
+    @Column
     private String orgName;
 
     @ApiField(value = "民族")

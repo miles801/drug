@@ -2,6 +2,7 @@ package eccrm.base.drug.dao.impl;
 
 import com.michael.base.org.domain.Org;
 import com.ycrl.core.HibernateDaoHelper;
+import com.ycrl.core.context.SecurityContext;
 import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.UserBo;
@@ -11,12 +12,15 @@ import eccrm.base.drug.domain.User;
 import eccrm.base.drug.vo.AllDrugVo;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +45,17 @@ public class UserDaoImpl extends HibernateDaoHelper implements UserDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<User> query(UserBo bo) {
+        String orgId=SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> list=  getSession().createSQLQuery(ad).list();
         Criteria criteria = createCriteria(User.class);
+        if(list!=null&&list.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            criteria.add(Property.forName("orgId").in(o));
+        }
         initCriteria(criteria, bo);
         criteria.addOrder(Order.asc("name"));
         if(!StringUtils.isEmpty(Pager.getStart())){

@@ -1,6 +1,7 @@
 package eccrm.base.drug.dao.impl;
 
 import com.michael.base.common.BaseParameter;
+import com.ycrl.core.context.SecurityContext;
 import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.LaborBo;
 import eccrm.base.drug.domain.Labor;
@@ -44,6 +45,12 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<LaborVo> query(LaborBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Labor l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -54,6 +61,11 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
         }
         if (!StringUtils.isEmpty(bo.getPhone())) {
             hql.append(" and u.phone='" + bo.getPhone() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         Query query = getSession().createQuery(hql.toString());
@@ -91,6 +103,12 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
 
     @Override
     public Long getTotal(LaborBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Labor l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -101,6 +119,11 @@ public class LaborDaoImpl extends HibernateDaoHelper implements LaborDao {
         }
         if (!StringUtils.isEmpty(bo.getPhone())) {
             hql.append(" and u.phone='" + bo.getPhone() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         List lists = getSession().createQuery(hql.toString()).list();

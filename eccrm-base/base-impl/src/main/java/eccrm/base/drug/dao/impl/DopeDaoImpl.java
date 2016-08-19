@@ -2,6 +2,7 @@ package eccrm.base.drug.dao.impl;
 
 import com.michael.base.common.BaseParameter;
 import com.ycrl.core.HibernateDaoHelper;
+import com.ycrl.core.context.SecurityContext;
 import com.ycrl.core.hibernate.criteria.CriteriaUtils;
 import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.DopeBo;
@@ -15,6 +16,7 @@ import eccrm.base.drug.vo.UserVo;
 import eccrm.base.parameter.service.ParameterContainer;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Property;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -41,9 +43,17 @@ public class DopeDaoImpl extends HibernateDaoHelper implements DopeDao {
         getSession().update(dope);
     }
 
+
     @Override
     @SuppressWarnings("unchecked")
     public List<DopeVo> query(DopeBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Dope l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -51,6 +61,11 @@ public class DopeDaoImpl extends HibernateDaoHelper implements DopeDao {
         }
         if (!StringUtils.isEmpty(bo.getOrgId())) {
             hql.append(" and u.orgId='" + bo.getOrgId() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         Query query = getSession().createQuery(hql.toString());

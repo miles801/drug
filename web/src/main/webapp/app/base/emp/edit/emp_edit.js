@@ -81,9 +81,8 @@
         // 选择岗位
         $scope.pickPosition = function () {
             // 获取已保存的岗位信息
-            var beans = $scope.beans;
-            var ids = (beans.roleIds || '').split(',');
-            var names = (beans.roleNames || '').split(',');
+            var ids = ($scope.beans.roles || '').split(',');
+            var names = ($scope.beans.roleNames || '').split(',');
             // 选择岗位
             PositionModal.pickMulti({ids: ids, names: names}, function (ps) {
                 var pIds = [];
@@ -92,8 +91,8 @@
                     pIds.push(p.id);
                     pNames.push(p.name);
                 });
-                beans.roleNames = pNames.join(",");
-                beans.roles = pIds.join(",");
+                $scope.beans.roleNames = pNames.join(",");
+                $scope.beans.roles = pIds.join(",");
             });
         };
 
@@ -113,7 +112,9 @@
 
         // 更新
         $scope.update = function () {
+            $scope.beans.roles=$scope.beans.roleIds;
             var promise = EmpService.update($scope.beans, function (data) {
+
                 AlertFactory.success('更新成功!');
                 $scope.form.$setValidity('committed', false);
                 CommonUtils.addTab('update');

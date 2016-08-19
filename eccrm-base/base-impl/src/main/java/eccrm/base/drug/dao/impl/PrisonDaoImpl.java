@@ -1,6 +1,7 @@
 package eccrm.base.drug.dao.impl;
 
 import com.michael.base.common.BaseParameter;
+import com.ycrl.core.context.SecurityContext;
 import com.ycrl.core.pager.Pager;
 import eccrm.base.drug.bo.PrisonBo;
 import eccrm.base.drug.domain.Dope;
@@ -48,6 +49,12 @@ public class PrisonDaoImpl extends HibernateDaoHelper implements PrisonDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<PrisonVo> query(PrisonBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Prison l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -55,6 +62,11 @@ public class PrisonDaoImpl extends HibernateDaoHelper implements PrisonDao {
         }
         if (!StringUtils.isEmpty(bo.getOrgId())) {
             hql.append(" and u.orgId='" + bo.getOrgId() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         Query query = getSession().createQuery(hql.toString());
@@ -86,6 +98,12 @@ public class PrisonDaoImpl extends HibernateDaoHelper implements PrisonDao {
 
     @Override
     public Long getTotal(PrisonBo bo) {
+        String orgId= SecurityContext.getOrgId();
+        String ad="SELECT a.id FROM `sys_position_resource` a ,sys_position p,sys_resource r ,sys_position_emp e " +
+                " where e.positionId=p.id and e.empId='"+SecurityContext.getEmpId()+"' " +
+                "and a.positionId=p.id  and a.resourceId=r.id and r.`code`='IS_ADMIN' and p.`code`='superAdmin'";
+        List<Object> lis=  getSession().createSQLQuery(ad).list();
+
         StringBuffer hql = new StringBuffer();
         hql.append("from User u,Prison l where u.id=l.userId ");
         if (!StringUtils.isEmpty(bo.getName())) {
@@ -93,6 +111,11 @@ public class PrisonDaoImpl extends HibernateDaoHelper implements PrisonDao {
         }
         if (!StringUtils.isEmpty(bo.getOrgId())) {
             hql.append(" and u.orgId='" + bo.getOrgId() + "'");
+        }
+        if(lis!=null&&lis.size()==0){
+            String sql="SELECT id FROM `sys_org` where id='"+orgId+"' or parentId='"+orgId+"'";
+            List<Object> o=  getSession().createSQLQuery(sql).list();
+            hql.append(" and u.orgId in (" + ListToStringUtil.listToString(o) + ")");
         }
         hql.append(" order by l.createdDatetime desc");
         Query query = getSession().createQuery(hql.toString());
